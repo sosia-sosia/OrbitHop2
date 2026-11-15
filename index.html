@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
-<title>オービット・ホップ</title>
+<title>オービット・ホップ2</title>
 <style>
 :root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#0d1020;--ink:#f2efe6;--dim:#9aa0bd;--acc:#ffb74a}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
@@ -16,12 +16,13 @@ canvas{position:fixed;top:0;display:block;box-shadow:0 0 40px rgba(0,0,0,.6)}
 #ov h1{margin:0;font-size:38px;font-weight:900;letter-spacing:.04em}
 #ov p{margin:0;color:var(--dim);font-size:15px;line-height:1.7;max-width:300px}
 #go,#startbtn{font:inherit;font-size:20px;font-weight:900;background:var(--acc);color:#2a1a00;border:0;border-radius:40px;padding:14px 44px}
-#barw{width:200px;height:8px;border-radius:4px;background:rgba(255,255,255,.12);margin:8px auto 4px;overflow:hidden}#bar{height:100%;width:100%;background:#ffb74a}#hint{font-size:11px;color:var(--dim);height:14px;margin-top:2px}
+#barw{width:200px;height:8px;border-radius:4px;background:rgba(255,255,255,.12);margin:8px auto 4px;overflow:hidden}#bar{height:100%;width:100%;background:#ffb74a}
 #combo{height:18px;color:#ffe066;font-weight:900;font-size:14px}
 #grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;max-width:320px;width:100%}
 .st{font:inherit;font-size:22px;font-weight:900;border:0;border-radius:14px;padding:10px 0;background:#242a52;color:var(--ink)}
 .st small{display:block;font-size:11px;color:var(--acc)}.st.lock{opacity:.4}
-#menu,#snd{font:inherit;font-size:15px;background:none;color:var(--dim);border:1px solid var(--dim);border-radius:30px;padding:8px 26px}
+.st.bn{background:rgba(255,183,74,.14);box-shadow:inset 0 0 0 1.5px rgba(255,183,74,.75);color:#ffd27a}.st.bn small{color:#ffe066}
+#menu,#snd,#colbtn,#dexbtn,#slotbtn{font:inherit;font-size:15px;background:none;color:var(--dim);border:1px solid var(--dim);border-radius:30px;padding:8px 26px}
 .scr{box-sizing:border-box;position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px}
 #logo{background:#0d1020}
 #lgt{font-size:40px;font-weight:900;letter-spacing:.12em}
@@ -32,22 +33,121 @@ canvas{position:fixed;top:0;display:block;box-shadow:0 0 40px rgba(0,0,0,.6)}
 #startbtn{flex:0 0 auto}
 #title h1{margin:0 0 10px;font-size:40px;font-weight:900;letter-spacing:.04em}
 #title p{margin:0;color:var(--dim)}
+#collect{justify-content:flex-start;align-items:stretch;text-align:left;gap:10px;background:#080a18;padding:calc(env(safe-area-inset-top,0px) + 14px) 14px 10px}
+#chead{display:flex;align-items:center;gap:8px;flex:0 0 auto}
+#cback{font:inherit;font-size:15px;font-weight:700;color:var(--ink);background:#242a52;border:0;border-radius:24px;padding:10px 16px;min-height:44px}
+#ctitle{flex:1;text-align:center;font-size:19px;font-weight:900}
+#ccount{font-size:13px;font-weight:900;color:var(--acc);white-space:nowrap}
+#clist{flex:1;min-height:0;overflow-y:auto;touch-action:pan-y;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;align-content:start;padding-bottom:12px}
+.csh{grid-column:1/-1;font-size:13px;font-weight:700;color:var(--dim);margin-top:6px}
+.cc{background:#1b2040;border:1px solid transparent;border-radius:14px;padding:8px 4px;text-align:center;min-width:0}
+.cc.on{border-color:rgba(255,183,74,.55)}
+.cc canvas{position:static;display:block;box-shadow:none;width:100%;max-width:84px;aspect-ratio:1;margin:0 auto}
+.cn{font-size:13px;font-weight:900;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cs{font-size:10px;color:var(--dim)}.cs.ok{color:var(--acc)}
+#dex,#slots,#admin,#bonus,#binfo{justify-content:flex-start;align-items:stretch;text-align:left;gap:10px;background:#080a18;padding:calc(env(safe-area-inset-top,0px) + 14px) 14px 10px}
+#dhead,#dhead2,#ahead,#bhead,#bihead{display:flex;align-items:center;gap:8px;flex:0 0 auto}
+#dback,#sback,#aback,#bback,#biback{font:inherit;font-size:15px;font-weight:700;color:var(--ink);background:#242a52;border:0;border-radius:24px;padding:10px 16px;min-height:44px}
+#dtitle,#stitle,#atitle,#btitle,#bititle{flex:1;text-align:center;font-size:19px;font-weight:900}
+#dhead2::after,#ahead::after,#bhead::after,#bihead::after{content:"";width:84px}
+#dcount{font-size:13px;font-weight:900;color:var(--acc);white-space:nowrap}
+#dlist,#slist{flex:1;min-height:0;overflow-y:auto;touch-action:pan-y;display:flex;flex-direction:column;gap:10px;padding-bottom:12px}
+.dc{display:flex;gap:12px;align-items:center;background:#1b2040;border:1px solid transparent;border-radius:14px;padding:10px 12px}
+.dc.on{border-color:rgba(255,183,74,.55)}
+.dc canvas{position:static;box-shadow:none;width:56px;height:56px;flex:0 0 56px;display:block}
+.dn{font-size:15px;font-weight:900}.dd{font-size:12px;color:var(--dim);margin-top:3px;line-height:1.55}
+.sc{background:#1b2040;border:1px solid transparent;border-radius:16px;padding:14px}
+.sc.on{border-color:rgba(255,183,74,.55)}
+.sh{display:flex;justify-content:space-between;align-items:baseline;font-weight:900;font-size:18px}
+.sh small{font-size:11px;font-weight:400;color:var(--dim)}
+.ss{font-size:13px;margin-top:8px;line-height:1.75}.ss b{color:var(--acc)}
+.sb{display:flex;gap:8px;margin-top:12px}
+.sb button{font:inherit;font-size:15px;font-weight:900;border-radius:24px;min-height:44px;border:0}
+.sp{flex:1;background:var(--acc);color:#2a1a00}.sx{background:none;color:var(--dim);border:1px solid var(--dim)!important;padding:0 16px}.sd{background:#c0344b;color:#fff;padding:0 18px}
+.sq{flex:1;align-self:center;font-size:13px}
+#lockbtn{position:absolute;left:12px;top:calc(env(safe-area-inset-top,0px) + 12px);width:44px;height:44px;padding:0;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);color:var(--dim);display:flex;align-items:center;justify-content:center}
+#apwv{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center}
+#apwv p{margin:0;color:var(--dim)}
+#apw{width:180px;font:inherit;font-size:24px;text-align:center;letter-spacing:.4em;color:var(--ink);background:#1b2040;border:1px solid #3a4170;border-radius:14px;padding:12px;-webkit-user-select:text;user-select:text;touch-action:auto}
+#aerr{height:18px;color:#ff7b8a;font-size:13px}
+#aok{font:inherit;font-size:18px;font-weight:900;background:var(--acc);color:#2a1a00;border:0;border-radius:40px;padding:12px 40px}
+#apan{flex:1;min-height:0;overflow-y:auto;touch-action:pan-y;padding-bottom:16px}
+.at{display:flex;gap:6px}.at button{flex:1;font:inherit;font-size:15px;font-weight:900;min-height:44px;border-radius:12px;border:1px solid #3a4170;background:#1b2040;color:var(--dim)}
+.at button.on{background:var(--acc);color:#2a1a00;border-color:var(--acc)}
+.ah{margin:18px 0 8px;font-size:14px;font-weight:900;display:flex;justify-content:space-between;align-items:center}
+.ah small{font-weight:400;color:var(--dim);font-size:12px}
+.ast{display:flex;align-items:center;justify-content:center;gap:16px;background:#1b2040;border-radius:14px;padding:10px}
+.ast button{font:inherit;font-size:22px;font-weight:900;width:52px;height:44px;border-radius:12px;border:0;background:#242a52;color:var(--ink)}
+.ast div{min-width:130px;text-align:center;font-size:16px;font-weight:900}.ast b{color:var(--acc);font-size:22px}
+.ab{display:flex;gap:8px;margin-bottom:8px}.ab button{flex:1;font:inherit;font-size:13px;min-height:40px;border-radius:20px;border:1px solid var(--dim);background:none;color:var(--dim)}
+.cg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.cg.two{grid-template-columns:repeat(2,1fr)}
+.ch{font:inherit;font-size:13px;min-height:44px;border-radius:12px;border:1px solid #3a4170;background:#1b2040;color:var(--dim);padding:4px 6px}
+.ch.on{background:rgba(255,183,74,.18);border-color:var(--acc);color:var(--ink);font-weight:900}
+.csh2{grid-column:1/-1;font-size:12px;color:var(--dim);margin-top:4px}
+#bonusbtn{font:inherit;font-size:15px;font-weight:700;color:var(--ink);background:none;border:1px solid var(--dim);border-radius:30px;padding:8px 22px;line-height:1.35}
+#bonusbtn small{display:block;font-size:11px;font-weight:400;color:var(--dim)}
+#bonusbtn.new{border-color:var(--acc)}#bonusbtn.new small{color:var(--acc);font-weight:900}
+#bbody{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center}
+#bcap{font-size:16px;font-weight:900}
+#bcount{font-size:46px;font-weight:900;color:var(--acc);line-height:1}#bcount small{font-size:16px;color:var(--ink);font-weight:700}
+#bstat{font-size:14px;color:var(--dim)}
+#bclaim{font:inherit;font-size:18px;font-weight:900;background:var(--acc);color:#2a1a00;border:0;border-radius:40px;padding:14px 34px;min-height:48px}
+#bclaim:disabled{background:#3a4170;color:var(--dim)}
+#bmsg{min-height:20px;color:#8fe3ff;font-size:14px;font-weight:900}
+#bnote{font-size:12px;color:var(--dim);max-width:290px;margin:4px 0 0;line-height:1.6}
+#rsbtn{font:inherit;font-size:15px;font-weight:900;background:#7dd3fc;color:#04202e;border:0;border-radius:40px;padding:14px 16px;margin-bottom:10px;max-width:92%}
+#rsbtn:disabled{background:#3a4170;color:var(--dim)}
+#bibody{flex:1;min-height:0;overflow-y:auto;touch-action:pan-y;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;padding-bottom:14px}
+.bil{font-size:14px;margin:6px 0 4px}.bil b{color:var(--acc)}
+.bir{display:flex;align-items:center;gap:10px;background:#1b2040;border:1px solid transparent;border-radius:12px;padding:8px 12px;text-align:left;margin-top:4px}
+.bir.ok{border-color:rgba(255,183,74,.55)}.bir canvas{position:static;box-shadow:none;width:44px;height:44px;flex:0 0 44px;display:block}
+.bir>div:nth-child(2){flex:1}.bn1{font-size:12px;color:var(--dim)}.bn2{font-size:16px;font-weight:900}.bst{font-size:12px;color:var(--dim);white-space:nowrap}.bir.ok .bst{color:var(--acc)}
+#biplay{font:inherit;font-size:18px;font-weight:900;background:var(--acc);color:#2a1a00;border:0;border-radius:40px;padding:14px 40px;margin-top:14px}
+.rkb,.rwb{width:100%;max-width:300px;margin:12px auto 0}.rkt{font-size:12px;color:var(--dim);margin-bottom:2px}
+.rk,.rw{display:flex;align-items:baseline;gap:8px;background:#1b2040;border:1px solid transparent;border-radius:10px;padding:6px 12px;margin-top:4px;font-size:14px;text-align:left}
+.rk b,.rw b{flex:1;margin-left:6px}.rk small,.rw small{color:var(--dim);font-size:11px}
+.rk.hi{border-color:var(--acc)}.rk.hi small,.rw small.nw{color:var(--acc);font-weight:900}.rw.ok b{color:#8fe3ff}
+#ov small{display:block;margin-top:8px;color:var(--dim);font-size:11px}
+#congrats{background:rgba(8,10,24,.95);overflow:hidden;z-index:5}
+#cgbody{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:10px;max-width:320px}
+#cgbody p{margin:0;font-size:15px;line-height:1.7}.cgt{font-size:30px;font-weight:900;color:var(--acc)}
+#cgbody canvas{position:static;box-shadow:none;width:170px;height:170px;display:block}
+#cgok{font:inherit;font-size:18px;font-weight:900;background:var(--acc);color:#2a1a00;border:0;border-radius:40px;padding:14px 44px;margin-top:6px}
+.cf{position:absolute;top:-20px;width:8px;height:14px;opacity:.9;animation:cf 3s linear infinite}
+@keyframes cf{0%{transform:translateY(-30px) rotate(0)}100%{transform:translateY(110vh) rotate(540deg)}}
 .hide{display:none!important}
 </style>
 </head>
 <body>
 <canvas id="c"></canvas>
-<div id="hud" class="hide"><div id="score"></div><div id="combo"></div><div id="hint"></div></div>
+<div id="hud" class="hide"><div id="score"></div><div id="combo"></div></div>
 <div id="logo" class="scr"><img id="lg" src="Glogo.png" alt="" style="visibility:hidden;width:100%;max-height:50%;object-fit:contain" onload="this.style.visibility='visible'" onerror="this.remove();document.getElementById('lgt').classList.remove('hide')"><div id="lgt" class="hide">ORBIT HOP</div><div id="tap" class="hide">タップして進む</div></div>
-<div id="title" class="scr hide"><div style="width:100%"><img id="ti" src="Gtitle.png" alt="" style="visibility:hidden;width:100%;max-height:calc(var(--u,8px)*40);object-fit:contain;display:block" onload="this.style.visibility='visible'" onerror="this.remove();document.getElementById('tit').classList.remove('hide')"><div id="tit" class="hide"><h1>オービット・ホップ</h1><p>惑星をわたって、ゴールをめざせ</p></div></div><button id="startbtn">スタート</button></div>
+<div id="title" class="scr hide"><button id="lockbtn" aria-label="管理者"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10" rx="2.2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/><circle cx="12" cy="15.5" r="1.2" fill="currentColor"/></svg></button><div style="width:100%"><img id="ti" src="Gtitle.png" alt="" style="visibility:hidden;width:100%;max-height:calc(var(--u,8px)*40);object-fit:contain;display:block" onload="this.style.visibility='visible'" onerror="this.remove();document.getElementById('tit').classList.remove('hide')"><div id="tit" class="hide"><h1>オービット・ホップ2</h1><p>惑星をわたって、ゴールをめざせ</p></div></div><button id="startbtn">スタート</button></div>
 <div id="ov">
   <h1 id="t"></h1>
   <p id="d"></p>
   <div id="grid" class="hide"></div>
+  <button id="rsbtn" class="hide"></button>
   <button id="go" class="hide"></button>
   <button id="menu" class="hide">ステージ選択</button>
+  <button id="colbtn" class="hide">なかまずかん</button>
+  <button id="dexbtn" class="hide">わくせいずかん</button>
+  <button id="bonusbtn" class="hide"></button>
+  <button id="slotbtn" class="hide">データ選択</button>
   <button id="snd" class="hide">♪ BGM ON</button>
 </div>
+<div id="collect" class="scr hide"><div id="chead"><button id="cback">‹ もどる</button><div id="ctitle">なかまずかん</div><div id="ccount"></div></div><div id="clist"></div></div>
+<div id="dex" class="scr hide"><div id="dhead"><button id="dback">‹ もどる</button><div id="dtitle">わくせいずかん</div><div id="dcount"></div></div><div id="dlist"></div></div>
+<div id="slots" class="scr hide"><div id="dhead2"><button id="sback">‹ もどる</button><div id="stitle">セーブデータを選ぶ</div></div><div id="slist"></div></div>
+<div id="admin" class="scr hide">
+  <div id="ahead"><button id="aback">‹ もどる</button><div id="atitle">管理者</div></div>
+  <div id="apwv"><p>パスワードを入力してください</p><input id="apw" type="password" inputmode="numeric" pattern="[0-9]*" autocomplete="off" maxlength="12"><div id="aerr"></div><button id="aok">ひらく</button></div>
+  <div id="apan" class="hide"></div>
+</div>
+<div id="bonus" class="scr hide"><div id="bhead"><button id="bback">‹ もどる</button><div id="btitle">ログインボーナス</div></div>
+  <div id="bbody"><svg viewBox="0 0 64 40" width="96" height="60" fill="none" stroke="#ffb74a" stroke-width="2.5" stroke-linejoin="round"><path d="M6 6h52v9a5 5 0 0 0 0 10v9H6v-9a5 5 0 0 0 0-10z" fill="rgba(255,183,74,.12)"/><path d="M42 8v24" stroke-dasharray="3 4"/><path d="M22 14l3 6 6 1-4.5 4 1.3 6-5.8-3.3L16.2 31l1.3-6-4.5-4 6-1z" fill="#ffb74a" stroke="none" transform="translate(-3 -2) scale(.9)"/></svg><div id="bcap">再スタートチケット</div><div id="bcount"></div><div id="bstat"></div><button id="bclaim"></button><div id="bmsg"></div><p id="bnote">ゲームオーバーのとき、セーブポイントの惑星からやり直せます（1回につき1枚つかいます）。</p></div></div>
+<div id="binfo" class="scr hide"><div id="bihead"><button id="biback">‹ もどる</button><div id="bititle">ボーナスステージ</div></div><div id="bibody"></div></div>
+<div id="congrats" class="scr hide"><div id="cgbody"></div></div>
 <script>
 const cv=document.getElementById('c'),ctx=cv.getContext('2d');
 const $=id=>document.getElementById(id);
@@ -62,18 +162,58 @@ function resize(){
   cv.width=Math.round(bw*dpr);cv.height=Math.round(bh*dpr);ctx.setTransform(dpr*s,0,0,dpr*s,0,0);
   cv.style.width=bw+'px';cv.style.height=bh+'px';cv.style.left=l+'px';cv.style.top=t+'px';
   document.documentElement.style.setProperty('--u',(H/100)+'px');
-  for(const id of['ov','hud','logo','title']){const e=document.getElementById(id);
+  for(const id of['ov','hud','logo','title','collect','dex','slots','admin','bonus','binfo','congrats']){const e=document.getElementById(id);
     e.style.left=l+'px';e.style.top=t+'px';e.style.right='auto';e.style.bottom='auto';
     e.style.width=W+'px';e.style.transformOrigin='0 0';e.style.transform=s===1?'':'scale('+s+')';
     if(id!=='hud')e.style.height=H+'px'}}
 addEventListener('resize',resize);resize();
 
-const NS=10;
+/* ============================================================
+   続編：ルート／ステージデータ
+   ステージは「legs（区間）」の並びで作る。1区間 = 進行方向 d と 惑星の数 n。
+     d : 'up' | 'down' | 'left' | 'right'（その区間の自動スクロール方向）
+     n : その区間の惑星数（最後の区間の最後の惑星がゴール）
+   区間が切り替わるところが「方向転換位置」。カメラはルートに沿った軌道を時間どおりに進み、曲がり角は円弧で向きを変える。
+   画面の動きはプレイヤーの動きには左右されない（前作と同じ自動スクロール）。
+   新しい区間は必ず、直前の区間とは別のレーン（別の位置）に作られる（逆走させない）。
+   ステージのその他の項目（すべて省略可）
+     start     : 最初の惑星のワールド座標 {x,y}（既定 {0,0}）
+     seed      : 惑星配置の乱数の種
+     speed     : スクロール速度の倍率（既定1）
+     zoom      : 表示倍率（既定は難易度から自動）
+     lane      : ジグザグの振れ幅（既定は難易度から自動）
+     startFrac : 開始惑星を「後ろ側の画面端」から何割の位置に置くか
+     corner    : 曲がり角でカメラが描く円弧の半径（既定 280）
+     place     : 特別な惑星の指定 {惑星番号:'save'|'ultra'}（乱数は消費しないので、他の惑星の配置は変わらない）
+   形の追加は ROUTE に関数を足すだけ（legs の配列を返せばよい）。
+   ============================================================ */
+const DIRS={up:{x:0,y:-1},down:{x:0,y:1},left:{x:-1,y:0},right:{x:1,y:0}};
+const OPP={up:'down',down:'up',left:'right',right:'left'};
+const ARW={up:'↑',down:'↓',left:'←',right:'→'};
+const ROUTE={
+  line:(d,n)=>[{d,n}],                                                    // 直線
+  U:(d,n1,m,n2,t)=>[{d,n:n1},{d:t,n:m},{d:OPP[d],n:n2}],                 // U字：進む→横へ→逆向きに進む
+  Z:(d,n1,m,n2,t)=>[{d,n:n1},{d:t,n:m},{d,n:n2}],                         // Z字：進む→横へずれる→同じ向きに進む
+  S:(d,n1,m1,n2,m2,n3,t)=>[{d,n:n1},{d:t,n:m1},{d:OPP[d],n:n2},{d:t,n:m2},{d,n:n3}] // S字：U字を2回つなぐ
+};
+const STAGES=[
+  {name:'直線・上',legs:ROUTE.line('up',8),place:{6:'save'}},
+  {name:'直線・右',legs:ROUTE.line('right',10),place:{6:'save'}},
+  {name:'直線・下',legs:ROUTE.line('down',12),place:{6:'save'}},
+  {name:'直線・左',legs:ROUTE.line('left',14),place:{5:'save',10:'save'}},
+  {name:'U字（上→左→下）',legs:ROUTE.U('up',5,5,5,'left'),place:{5:'save',10:'save'}},
+  {name:'Z字（右→下→右）',legs:ROUTE.Z('right',4,5,5,'down'),place:{5:'save',10:'save'}},
+  {name:'S字（上→左→下→左→上）',legs:ROUTE.S('up',3,5,3,5,3,'left'),place:{4:'ultra',7:'save',11:'ultra',13:'save',17:'ultra'}},
+  {name:'U字（右→上→左）',legs:ROUTE.U('right',6,5,6,'up'),place:{3:'ultra',6:'save',9:'ultra',12:'save',14:'ultra'}},
+  {name:'S字（右→下→左→下→右）',legs:ROUTE.S('right',4,5,4,5,4,'down'),place:{4:'ultra',8:'save',13:'ultra',15:'save',20:'ultra'}},
+  {name:'長い蛇行（下→右→上→右→下→右）',legs:[{d:'down',n:4},{d:'right',n:5},{d:'up',n:4},{d:'right',n:5},{d:'down',n:4},{d:'right',n:4}],place:{5:'ultra',9:'save',14:'ultra',18:'save',22:'ultra'}}
+];
+const NS=STAGES.length;
 // 画像スロット: 各キーにdata URI(base64)を入れると、その画像が使われます。空なら標準の描画。
 const IMG={};
-const ASSETS={player:'Gplayer.png',bg:'Gbg.png',goal:'Ggoal.png',normal:'Gnormal.png',fast:'Gfast.png',slow:'Gslow.png',pulse:'Gpulse.png',mover:'Gmover.png',boost:'Gboost.png',reverse:'Greverse.png',small:'Gsmall.png',rock:'Grock.png',normal2:'Gnormal2.png',normal3:'Gnormal3.png',bomb:'Gbom.png',ghost:'Gsuru.png'};
+const ASSETS={player:'Gplayer.png',bg:'Gbg.png',goal:'Ggoal.png',normal:'Gnormal.png',fast:'Gfast.png',slow:'Gslow.png',pulse:'Gpulse.png',mover:'Gmover.png',boost:'Gboost.png',reverse:'Greverse.png',small:'Gsmall.png',rock:'Grock.png',normal2:'Gnormal2.png',normal3:'Gnormal3.png',bomb:'Gbom.png',ghost:'Gsuru.png',ultra:'Gultra.png',save:'Gsave.png'};
 for(const k in ASSETS)if(ASSETS[k]){const i=new Image();i.onload=()=>{IMG[k]=i};i.src=ASSETS[k]}
-const TY={normal:{},fast:{h:5,g:'≫'},slow:{h:210,g:'…'},pulse:{h:280,g:'〜'},mover:{h:150,g:'↔'},boost:{h:50,g:'⚡'},reverse:{h:320,g:'⇄'},small:{h:190,g:'小'},normal2:{},normal3:{},ghost:{h:260,g:'透'},bomb:{h:0,g:'爆'}};
+const TY={normal:{},fast:{h:5,g:'≫'},slow:{h:210,g:'…'},pulse:{h:280,g:'〜'},mover:{h:150,g:'↔'},boost:{h:50,g:'⚡'},reverse:{h:320,g:'⇄'},small:{h:190,g:'小'},normal2:{},normal3:{},ghost:{h:260,g:'透'},bomb:{h:0,g:'爆'},ultra:{h:90,g:'⋙'},save:{h:125,g:'保'}};
 function pickNormal(i){const w3=Math.max(0,6-.7*(i-1)),w2=Math.max(1,5-.4*(i-1)),w1=1+(i-1)*.8,x=rng()*(w1+w2+w3);return x<w3?'normal3':x<w3+w2?'normal2':'normal'}
 function pick(i){
   if(i<2||rng()>=.6)return pickNormal(i);
@@ -81,12 +221,12 @@ function pick(i){
   return a[Math.floor(rng()*a.length)];
 }
 function pulseScale(t){const u=t%.5;return u<.25?1-.4*u:u<.4?.9+(u-.25)/.15*.2:1.1-(u-.4)/.1*.1}
-function spd(q){const t=q.type;return t==='fast'?1.8:t==='slow'?.55:t==='pulse'?1+.6*Math.sin(clock*2.2):1}
-function drawBg(){const im=IMG.bg,th=W*im.naturalHeight/im.naturalWidth,off=((-camY*.15)%th+th)%th;for(let y=off-th;y<H;y+=th)ctx.drawImage(im,0,y,W,th+1)}
+function spd(q){const t=q.type;return t==='ultra'?2.8:t==='fast'?1.8:t==='slow'?.55:t==='pulse'?1+.6*Math.sin(clock*2.2):1}
+function drawBg(){const im=IMG.bg,th=W*im.naturalHeight/im.naturalWidth,off=((-camY*.15)%th+th)%th,ox=((-camX*.15)%W+W)%W;for(let x=ox-W;x<W;x+=W)for(let y=off-th;y<H;y+=th)ctx.drawImage(im,x,y,W+1,th+1)}
 function isDark(q){return q.hold?q.hold==='dark':Math.floor(clock+q.ph)%2===1}
 function drawPlanet(q){
   const im=IMG[q.type];
-  if(q.amp){ctx.beginPath();ctx.moveTo(q.bx-q.amp,q.y);ctx.lineTo(q.bx+q.amp,q.y);ctx.strokeStyle='rgba(154,160,189,.25)';ctx.lineWidth=1;ctx.stroke()}
+  if(q.amp){ctx.beginPath();ctx.moveTo(q.bx-q.cx*q.amp,q.by-q.cy*q.amp);ctx.lineTo(q.bx+q.cx*q.amp,q.by+q.cy*q.amp);ctx.strokeStyle='rgba(154,160,189,.25)';ctx.lineWidth=1;ctx.stroke()}
   if(im){ctx.shadowColor='rgba(255,255,255,.95)';ctx.shadowBlur=7;ctx.drawImage(im,q.x-q.r,q.y-q.r,q.r*2,q.r*2);ctx.drawImage(im,q.x-q.r,q.y-q.r,q.r*2,q.r*2);ctx.shadowBlur=0}
   else{
     const gr=ctx.createRadialGradient(q.x-q.r*.35,q.y-q.r*.35,q.r*.1,q.x,q.y,q.r);
@@ -100,41 +240,573 @@ function drawPlanet(q){
   if(q.type==='ghost'&&isDark(q)){ctx.beginPath();ctx.arc(q.x,q.y,q.r+1,0,7);ctx.fillStyle='rgba(8,10,24,.78)';ctx.fill()}
   if(q.type==='bomb'&&q.t!=null){ctx.fillStyle='#fff';ctx.strokeStyle='rgba(200,30,30,.9)';ctx.lineWidth=4;ctx.font='900 '+Math.round(q.r*1.2)+'px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';const n=String(Math.ceil(q.t));ctx.strokeText(n,q.x,q.y+1);ctx.fillText(n,q.x,q.y+1);ctx.textBaseline='alphabetic'}
 }
-let prog={};try{prog=JSON.parse(localStorage.getItem('orbithop2')||'{}')}catch(e){}
-function save(){try{localStorage.setItem('orbithop2',JSON.stringify(prog))}catch(e){}}
+let prog={};   // いま選んでいるセーブデータのステージ進行 {ステージ:★数}
+function save(){Slot.save()}
+/* ============================================================
+   セーブスロット（3つ）。1スロット = 進行(prog) + 救出した仲間 + 触れた惑星 を1つのキーに保存
+   キー: orbithop3_slot1 〜 orbithop3_slot3
+   ============================================================ */
+const SLOTS=3,SLOT_KEY=n=>'orbithop3_slot'+n;
+const Slot=(()=>{
+  const obj=o=>o&&typeof o==='object'&&!Array.isArray(o)?o:{},mem={};
+  const tkn=t=>({n:Math.max(0,Math.floor(+(t&&t.n)||0)),last:t&&typeof t.last==='string'?t.last:''});   // 再スタートチケット {所持数, 最後に受け取った日}   // mem: localStorageが使えない時の代わり
+  const S={cur:0,tk:{n:0,last:''},bonus:{},
+    read(n){let o=null;try{o=JSON.parse(localStorage.getItem(SLOT_KEY(n))||'null')}catch(e){}if(!o&&mem[n])o=mem[n];
+      return o&&typeof o==='object'?{prog:obj(o.prog),allies:obj(o.allies),planets:obj(o.planets),tk:tkn(o.tk),bonus:obj(o.bonus),t:+o.t||0}:null},
+    write(n,d){const o={v:1,t:Date.now(),prog:d.prog,allies:d.allies,planets:d.planets,tk:tkn(d.tk),bonus:obj(d.bonus)};mem[n]=o;try{localStorage.setItem(SLOT_KEY(n),JSON.stringify(o));return true}catch(e){return false}},
+    save(){return S.cur?S.write(S.cur,{prog,allies:Ally.rescued,planets:Dex.seen,tk:S.tk,bonus:S.bonus}):false},
+    use(n){S.cur=n;const d=S.read(n)||{prog:{},allies:{},planets:{},tk:tkn(),bonus:{}};prog=d.prog;Ally.rescued=d.allies;Dex.seen=d.planets;S.tk=d.tk;S.bonus=d.bonus;Ally.labels();Dex.labels()},
+    clear(n){delete mem[n];try{localStorage.removeItem(SLOT_KEY(n))}catch(e){}if(S.cur===n){S.cur=0;prog={};Ally.rescued={};Dex.seen={};S.tk={n:0,last:''};S.bonus={}}},
+    summary(n){const d=S.read(n);if(!d)return null;let clear=0,stars=0,un=1;
+      for(let i=1;i<=NS;i++){const v=+d.prog[i]||0;if(v>0){clear++;stars+=v;un=i+1}}
+      return{un:Math.min(un,NS),all:clear>=NS,clear,stars,al:ALLY_DATA.filter(a=>d.allies[a.id]).length,pd:DEX_DATA.filter(p=>d.planets[p.id]).length,tk:d.tk.n,t:d.t}}
+  };
+  // 以前の単一セーブ(orbithop3 / orbithop3_allies)は、初回だけスロット1へコピーする（元のキーは消さない）
+  try{if(!localStorage.getItem('orbithop3_migrated')){
+    const p=localStorage.getItem('orbithop3'),a=localStorage.getItem('orbithop3_allies');
+    if((p||a)&&!S.read(1)){let pr={},al={};try{pr=JSON.parse(p||'{}')}catch(e){}try{const o=JSON.parse(a||'null');if(o&&o.rescued)al=o.rescued}catch(e){}S.write(1,{prog:obj(pr),allies:obj(al),planets:{}})}
+    localStorage.setItem('orbithop3_migrated','1')}}catch(e){}
+  // 以前は端末に1つだけ保存していたチケット(orbithop3_bonus)は、初回だけスロット1へ引き継ぐ（元のキーは消さない）
+  try{if(!localStorage.getItem('orbithop3_tkmig')){const o=JSON.parse(localStorage.getItem('orbithop3_bonus')||'null'),d1=S.read(1);
+    if(o&&d1&&d1.tk.n===0&&!d1.tk.last)S.write(1,{...d1,tk:tkn({n:o.tickets,last:o.last})});
+    localStorage.setItem('orbithop3_tkmig','1')}}catch(e){}
+  return S;
+})();
 let seed=1;
 function rng(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}
 const rnd=(a,b)=>a+rng()*(b-a);
 
-let meteors=[],spawnT=2,scrollV=30,scrolling=false,Z=1,relAng=0,rings=[],parts=[],texts=[],par=1,P={x:0,y:0},pl,items,cur,ang,dir,orbR,state='menu',camY=0,score,trail=[],ignore,shake=0,energy,got,total,N,stage=1,clock=0,goAct;
+
+/* ============================================================
+   仲間収集システム（本体とは分離。ゲーム本体との接点は下記6か所だけ）
+     prep()      末尾  : Ally.begin(i)     … そのステージの未救出の仲間を配置
+     update()    着地時: Ally.onLand(cur)  … 着地した惑星に仲間がいれば「仮救出」
+     update()    末尾  : Ally.update(dt)   … 演出の時間更新
+     draw()      惑星後: Ally.drawWorld()  / 末尾: Ally.drawUI()
+     finish()    冒頭  : Ally.end(win)     … クリアなら正式登録、失敗なら破棄
+   仲間を増やす・配置を変えるには ALLY_DATA を編集するだけです。
+     id     : 一意のID（保存に使うので、一度決めたら変えない）
+     name   : 表示名
+     img    : 画像ファイル（無い/未設定ならプログラム描画の仮キャラ）
+     stage  : 配置するステージ番号 (1〜NS)
+     planet : 配置する惑星番号（1=スタートの次の惑星。ゴールとスタート惑星は不可）
+     bonus/tier : ボーナスステージの報酬（bonus=ボーナス番号3/6/9、tier=0,1,2 → 目標点 / +5点 / +10点で獲得）
+     special: 39体すべて救出するとステージ選択画面で獲得できる40体目
+     画像は GK_01.png 〜 GK_40.png（id の数字と同じ番号）
+   ============================================================ */
+const ALLY_DATA=[
+  {id:'a01',name:'ポポ',img:'GK_01.png',stage:1,planet:3},
+  {id:'a02',name:'ルナ',img:'GK_02.png',stage:1,planet:4},
+  {id:'a03',name:'ミルク',img:'GK_03.png',stage:1,planet:5},
+  {id:'a04',name:'ノヴァ',img:'GK_04.png',stage:2,planet:2},
+  {id:'a05',name:'コスモ',img:'GK_05.png',stage:2,planet:5},
+  {id:'a06',name:'ピコ',img:'GK_06.png',stage:2,planet:8},
+  {id:'a07',name:'モチ',img:'GK_07.png',stage:3,planet:3},
+  {id:'a08',name:'ララ',img:'GK_08.png',stage:3,planet:7},
+  {id:'a09',name:'チャム',img:'GK_09.png',stage:3,planet:9},
+  {id:'a10',name:'ナナ',img:'GK_10.png',stage:4,planet:2},
+  {id:'a11',name:'プル',img:'GK_11.png',stage:4,planet:7},
+  {id:'a12',name:'リコ',img:'GK_12.png',stage:4,planet:12},
+  {id:'a13',name:'ペペ',img:'GK_13.png',stage:5,planet:3},
+  {id:'a14',name:'ニコ',img:'GK_14.png',stage:5,planet:7},
+  {id:'a15',name:'ユラ',img:'GK_15.png',stage:5,planet:12},
+  {id:'a16',name:'タマ',img:'GK_16.png',stage:6,planet:2},
+  {id:'a17',name:'ソラ',img:'GK_17.png',stage:6,planet:8},
+  {id:'a18',name:'ヒカリ',img:'GK_18.png',stage:6,planet:12},
+  {id:'a19',name:'クルミ',img:'GK_19.png',stage:7,planet:3},
+  {id:'a20',name:'ロッコ',img:'GK_20.png',stage:7,planet:9},
+  {id:'a21',name:'メルル',img:'GK_21.png',stage:7,planet:16},
+  {id:'a22',name:'フウ',img:'GK_22.png',stage:8,planet:2},
+  {id:'a23',name:'ヌヌ',img:'GK_23.png',stage:8,planet:8},
+  {id:'a24',name:'ケイ',img:'GK_24.png',stage:8,planet:15},
+  {id:'a25',name:'ジジ',img:'GK_25.png',stage:9,planet:3},
+  {id:'a26',name:'ズズ',img:'GK_26.png',stage:9,planet:12},
+  {id:'a27',name:'ボン',img:'GK_27.png',stage:9,planet:19},
+  {id:'a28',name:'ガブ',img:'GK_28.png',stage:10,planet:2},
+  {id:'a29',name:'ダイ',img:'GK_29.png',stage:10,planet:13},
+  {id:'a30',name:'ホシ',img:'GK_30.png',stage:10,planet:24},
+  {id:'a31',name:'モコ',img:'GK_31.png',bonus:3,tier:0},
+  {id:'a32',name:'リン',img:'GK_32.png',bonus:3,tier:1},
+  {id:'a33',name:'ポム',img:'GK_33.png',bonus:3,tier:2},
+  {id:'a34',name:'ルチ',img:'GK_34.png',bonus:6,tier:0},
+  {id:'a35',name:'ミケ',img:'GK_35.png',bonus:6,tier:1},
+  {id:'a36',name:'ハナ',img:'GK_36.png',bonus:6,tier:2},
+  {id:'a37',name:'ソウ',img:'GK_37.png',bonus:9,tier:0},
+  {id:'a38',name:'ネネ',img:'GK_38.png',bonus:9,tier:1},
+  {id:'a39',name:'ラム',img:'GK_39.png',bonus:9,tier:2},
+  {id:'a40',name:'ステラ',img:'GK_40.png',special:true}
+];
+const Ally=(()=>{
+  const has=(o,k)=>Object.prototype.hasOwnProperty.call(o,k);
+  const byId={};for(const a of ALLY_DATA)byId[a.id]=a;
+  function load(){const d=Slot.cur?Slot.read(Slot.cur):null;const r={};if(d)for(const k in d.allies)if(has(d.allies,k)&&d.allies[k])r[k]=d.allies[k];return r}   // 保存データ（選択中スロット）から読む
+  function write(){return Slot.save()}
+  const imgs={};
+  function imgOf(a){
+    if(!a.img)return null;
+    let i=imgs[a.id];
+    if(!i){i=imgs[a.id]=new Image();i.onload=()=>{if(!$('collect').classList.contains('hide'))A.render()};i.src=a.img}
+    return i.complete&&i.naturalWidth?i:null;
+  }
+  function hash(id){let h=0;for(const c of id)h=(h*31+c.charCodeAt(0))>>>0;h=Math.imul(h^h>>>15,2246822519)>>>0;h=Math.imul(h^h>>>13,3266489917)>>>0;return(h^h>>>16)>>>0}
+  // 仲間1体の描画（画像があれば画像、無ければ仮キャラ）。x,y=中心 s=大きさ
+  function drawAlly(g,x,y,s,a){
+    const im=imgOf(a);
+    g.save();
+    if(im){g.drawImage(im,x-s/2,y-s/2,s,s)}
+    else{
+      const h=hash(a.id),hue=h%360,k=(h>>>9)%3,r=s*.36,lw=Math.max(1.5,s*.05);
+      g.translate(x,y+s*.06);g.lineWidth=lw;g.strokeStyle='rgba(255,255,255,.92)';g.fillStyle=`hsl(${hue},70%,58%)`;
+      if(k===0){for(const sg of[-1,1]){g.beginPath();g.moveTo(sg*r*.35,-r*.8);g.lineTo(sg*r*.95,-r*1.35);g.lineTo(sg*r*.95,-r*.35);g.closePath();g.fill();g.stroke()}}
+      else if(k===1){g.beginPath();g.moveTo(0,-r*.9);g.lineTo(0,-r*1.35);g.stroke();g.beginPath();g.arc(0,-r*1.45,r*.2,0,7);g.fillStyle='#ffe066';g.fill();g.stroke();g.fillStyle=`hsl(${hue},70%,58%)`}
+      else{for(const sg of[-1,1]){g.beginPath();g.arc(sg*r*.8,-r*.75,r*.33,0,7);g.fill();g.stroke()}}
+      for(const sg of[-1,1]){g.beginPath();g.ellipse(sg*r*.45,r*.95,r*.3,r*.18,0,0,7);g.fill();g.stroke()}
+      const gr=g.createRadialGradient(-r*.3,-r*.3,r*.1,0,0,r);gr.addColorStop(0,`hsl(${hue},80%,78%)`);gr.addColorStop(1,`hsl(${hue},65%,50%)`);
+      g.beginPath();g.arc(0,0,r,0,7);g.fillStyle=gr;g.fill();g.stroke();
+      for(const sg of[-1,1]){g.beginPath();g.arc(sg*r*.38,-r*.1,r*.27,0,7);g.fillStyle='#fff';g.fill();g.beginPath();g.arc(sg*r*.38+r*.04,-r*.08,r*.13,0,7);g.fillStyle='#1b2040';g.fill()}
+      g.beginPath();g.arc(0,r*.18,r*.28,.15*Math.PI,.85*Math.PI);g.strokeStyle='#1b2040';g.lineWidth=Math.max(1.2,s*.04);g.stroke();
+    }
+    g.restore();
+  }
+  function rr(g,x,y,w,h,r){g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath()}
+
+  const A={
+    rescued:{},              // 正式な救出済み {id:時刻}（これだけが保存される。スロット選択時に読み込む）
+    temp:new Set(),          // 仮救出（このプレイ中だけの一時データ。保存しない）
+    active:[],n:0,fx:[],toast:null,
+    count(){let c=0;for(const a of ALLY_DATA)if(has(A.rescued,a.id))c++;return c},
+    // --- ステージ開始/リトライ時：未救出の仲間だけを配置。仮救出は毎回リセット ---
+    begin(i){
+      A.temp=new Set();A.fx=[];A.toast=null;A.active=[];
+      const cnt={};
+      for(const a of ALLY_DATA){
+        if(a.stage!==i||has(A.rescued,a.id))continue;                 // 救出済み→通常の惑星
+        const q=pl[a.planet];if(!q||q.goal||a.planet<1||a.planet>=N)continue; // 不正な配置は無視
+        cnt[a.planet]=(cnt[a.planet]||0)+1;
+        A.active.push({a,planet:a.planet,slot:cnt[a.planet]-1});
+      }
+      for(const e of A.active)e.cnt=cnt[e.planet];
+      A.n=A.active.length;
+    },
+    // --- 惑星に着地したとき：仮救出（操作不要） ---
+    onLand(i){
+      if(state!=='play')return;
+      for(const e of A.active){
+        if(e.planet!==i||A.temp.has(e.a.id))continue;
+        const q=pl[i];A.temp.add(e.a.id);
+        const sz=A.size();
+        A.fx.push({a:e.a,x:q.x+A.dx(e,sz),y:q.y-q.r-sz*.42,s:sz,t:0});
+        rings.push({x:q.x,y:q.y,r:q.r,life:1});rings.push({x:q.x,y:q.y,r:q.r*1.5,life:1});
+        for(let k=0;k<22;k++){const an=Math.random()*6.28,sp=70+Math.random()*150;parts.push({x:q.x,y:q.y-q.r,vx:Math.cos(an)*sp,vy:Math.sin(an)*sp-40,life:1,h:Math.random()<.5?50:180})}
+        A.toast={a:e.a,life:2.6};
+        blip(880,.08);setTimeout(()=>blip(1175,.14),90);vib([15,30,15]);
+      }
+    },
+    // --- ステージ終了時：クリアなら正式登録、失敗なら破棄。結果表示用HTMLを返す ---
+    end(win){
+      const ids=[...A.temp];let html='';
+      A.temp=new Set();A.active=[];A.n=0;A.fx=[];A.toast=null;
+      if(win){
+        const merged=load();for(const k in A.rescued)if(has(A.rescued,k))merged[k]=A.rescued[k]; // 他タブの保存と統合
+        A.rescued=merged;
+        const add=[];for(const id of ids)if(byId[id]&&!has(A.rescued,id)){A.rescued[id]=Date.now();add.push(byId[id])}
+        if(add.length){write();html='<br><span style="color:#8fe3ff;font-weight:900">仲間を救出！ '+add.map(a=>a.name).join('・')+'</span><br><small>なかまずかん '+A.count()+' / '+ALLY_DATA.length+'</small>'}
+        A.labels();
+      }else if(ids.length){html='<br><small>仮救出した仲間 '+ids.length+'体は連れ帰れなかった…（クリアで確定）</small>'}
+      return html;
+    },
+    size(){return 34/Math.pow(Z,.75)},
+    dx(e,sz){return (e.slot-(e.cnt-1)/2)*sz*.95},
+    update(dt){
+      for(const f of A.fx)f.t+=dt;A.fx=A.fx.filter(f=>f.t<1.1);
+      if(A.toast){A.toast.life-=dt;if(A.toast.life<=0)A.toast=null}
+    },
+    // --- 惑星上の仲間（ワールド座標で描画） ---
+    drawWorld(){
+      if(!A.active.length&&!A.fx.length)return;
+      const sz=A.size();
+      for(const e of A.active){
+        if(A.temp.has(e.a.id))continue;
+        const q=pl[e.planet];if(!q||q.gone)continue;
+        if(q.passed)continue;const o=scr(q.x,q.y),sy=o.y;if(sy>H+80||sy<-100||o.x>W+100||o.x<-100)continue;
+        const bob=Math.sin(clock*4+e.slot*1.7)*3,x=q.x+A.dx(e,sz),y=q.y-q.r-sz*.42+bob;
+        const gl=ctx.createRadialGradient(x,y,2,x,y,sz*.95);gl.addColorStop(0,'rgba(143,227,255,.55)');gl.addColorStop(1,'rgba(143,227,255,0)');
+        ctx.beginPath();ctx.arc(x,y,sz*.95,0,7);ctx.fillStyle=gl;ctx.fill();
+        ctx.beginPath();ctx.arc(q.x,q.y,q.r+7,0,7);ctx.strokeStyle=`rgba(143,227,255,${.45+.35*Math.sin(clock*5)})`;ctx.lineWidth=2;ctx.setLineDash([3,5]);ctx.stroke();ctx.setLineDash([]);
+        drawAlly(ctx,x,y,sz,e.a);
+        const bx=x+sz*.5,by=y-sz*.55,br=sz*.2;
+        ctx.beginPath();ctx.arc(bx,by,br,0,7);ctx.fillStyle='#ff5d73';ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=1.5;ctx.stroke();
+        ctx.fillStyle='#fff';ctx.font='900 '+Math.round(br*1.6)+'px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('!',bx,by+1);ctx.textBaseline='alphabetic';
+      }
+      for(const f of A.fx){
+        const u=f.t/1.1;ctx.save();ctx.globalAlpha=Math.max(0,1-u*u);
+        drawAlly(ctx,f.x,f.y-u*80,f.s*(1+u*.5),f.a);
+        ctx.fillStyle='#ffe066';ctx.font='900 '+Math.round(f.s*.5)+'px sans-serif';ctx.textAlign='center';
+        ctx.fillText('✦',f.x-f.s*.7,f.y-u*60-f.s*.3);ctx.fillText('✦',f.x+f.s*.7,f.y-u*100);ctx.restore();
+      }
+    },
+    // --- 通知バナーと仲間カウンタ（画面座標で描画） ---
+    drawUI(){
+      if(state!=='play')return;
+      const g=ctx;g.save();
+      if(A.n>0){
+        g.textAlign='left';g.textBaseline='alphabetic';g.font='900 13px sans-serif';
+        g.fillStyle='rgba(143,227,255,.95)';
+        g.fillText('仲間 '+A.temp.size+'/'+A.n+(A.temp.size?'（クリアで確定）':''),12,H-24);
+      }
+      const t=A.toast;
+      if(t){
+        const tw=Math.min(W-24,320),x=(W-tw)/2,k=Math.min(1,(2.6-t.life)*5),y=H*.2-(1-k)*14;
+        g.globalAlpha=Math.min(1,t.life*2.5)*k;
+        rr(g,x,y,tw,58,14);g.fillStyle='rgba(18,28,66,.92)';g.fill();g.strokeStyle='#8fe3ff';g.lineWidth=2;g.stroke();
+        drawAlly(g,x+34,y+29,42,t.a);
+        g.textAlign='left';g.fillStyle='#fff';g.font='900 17px sans-serif';g.fillText(t.a.name+'を救出！',x+64,y+25);
+        g.fillStyle='#9aa0bd';g.font='700 11px sans-serif';g.fillText('ステージクリアで仲間に登録されるよ',x+64,y+44);
+      }
+      g.restore();
+    },
+    // --- なかまずかん ---
+    labels(){const c=A.count(),n=ALLY_DATA.length;$('colbtn').textContent='なかまずかん '+c+'/'+n;},
+    // --- 仲間のグループ分け（ステージ／ボーナス／スペシャル） ---
+    group(a){
+      if(a.special)return{k:'x',label:'スペシャル',hint:'39体すべて救出すると…？'};
+      if(a.bonus){const n=Object.keys(BONUS_STAGES).indexOf(String(a.bonus))+1,g=BONUS_STAGES[a.bonus].goal,st=BONUS_CFG.allyStep;return{k:'b'+a.bonus,label:'ボーナス '+n,hint:g+'点・'+(g+st)+'点・'+(g+2*st)+'点で獲得'}}
+      return{k:'s'+a.stage,label:'ステージ '+a.stage,hint:''};
+    },
+    groups(){const m=new Map();for(const a of ALLY_DATA){const g=A.group(a);if(!m.has(g.k))m.set(g.k,{...g,list:[]});m.get(g.k).list.push(a)}return[...m.values()]},
+    coreTotal(){return ALLY_DATA.filter(a=>!a.special).length},                       // 39体（スペシャルを除く）
+    coreCount(){return ALLY_DATA.filter(a=>!a.special&&has(A.rescued,a.id)).length},
+    // 仲間を正式に獲得して保存（すでにいる仲間は重複しない）。新しく獲得した仲間を返す
+    grant(ids){const add=[];for(const id of ids)if(byId[id]&&!has(A.rescued,id)){A.rescued[id]=Date.now();add.push(byId[id])}if(add.length){Slot.save();A.labels()}return add},
+    // キャンバスに仲間（known=falseならシルエット）を描く
+    paint(c,a,known){const s=c.width,g=c.getContext('2d');g.clearRect(0,0,s,s);
+      if(known){drawAlly(g,s/2,s/2,s*.83,a);return}
+      const o=document.createElement('canvas');o.width=o.height=s;const og=o.getContext('2d');drawAlly(og,s/2,s/2,s*.83,a);og.globalCompositeOperation='source-in';og.fillStyle='#0b0e24';og.fillRect(0,0,s,s);
+      g.drawImage(o,0,0);g.fillStyle='rgba(154,160,189,.8)';g.font='900 '+Math.round(s*.33)+'px sans-serif';g.textAlign='center';g.textBaseline='middle';g.fillText('?',s/2,s/2+s*.02)},
+    open(){A.render();$('collect').classList.remove('hide');$('clist').scrollTop=0},
+    close(){$('collect').classList.add('hide')},
+    render(){
+      $('ccount').textContent='救出 '+A.count()+' / '+ALLY_DATA.length;
+      const L=$('clist');const keep=L.scrollTop;L.innerHTML='';
+      for(const gr of A.groups()){
+        const got=gr.list.filter(a=>has(A.rescued,a.id)).length;
+        const h=document.createElement('div');h.className='csh';h.textContent=gr.label+'　'+got+'/'+gr.list.length+(gr.hint?'　'+gr.hint:'');L.appendChild(h);
+        for(const a of gr.list){
+          const ok=has(A.rescued,a.id),d=document.createElement('div');d.className='cc'+(ok?' on':'');
+          const c=document.createElement('canvas');c.width=c.height=168;A.paint(c,a,ok);d.appendChild(c);
+          const n=document.createElement('div');n.className='cn';n.textContent=ok?a.name:'？？？？';d.appendChild(n);
+          const s=document.createElement('div');s.className='cs'+(ok?' ok':'');s.textContent=ok?'✓ 救出済み':'未救出';d.appendChild(s);
+          L.appendChild(d);
+        }
+      }
+      L.scrollTop=keep;
+    }
+  };
+  return A;
+})();
+$('colbtn').addEventListener('click',e=>{e.stopPropagation();Ally.open()});
+$('cback').addEventListener('click',e=>{e.stopPropagation();Ally.close()});
+Ally.labels();
+/* ===================== 仲間収集システムここまで ===================== */
+/* ============================================================
+   わくせいずかん：着地して「触れた」ことのある惑星の説明を見られるページ
+   惑星の種類を増やすときは DEX_DATA に1行足す（id は惑星の type 名。normal2/normal3 は normal にまとめる）
+   ============================================================ */
+const DEX_DATA=[
+  {id:'normal', name:'ふつうの惑星',  h:215, desc:'いちばん基本の惑星。大きさは小・中・大の3種類で、大きいほど着地しやすい。'},
+  {id:'fast',   name:'高速の惑星',    h:5,   desc:'まわるスピードが速い（約1.8倍）。飛び出すタイミングに注意。'},
+  {id:'ultra',  name:'超高速の惑星',  h:90,  desc:'まわるスピードが「高速の惑星」よりさらに速い（約2.8倍）。ねらうのがとてもむずかしい。'},
+  {id:'save',   name:'セーブポイントの惑星', h:125, desc:'着地すると、ここを再スタート地点として記録する。ゲームオーバーのとき、再スタートチケット1枚でここからやり直せる。'},
+  {id:'slow',   name:'低速の惑星',    h:210, desc:'まわるスピードがゆっくり（約0.55倍）。じっくり狙える。'},
+  {id:'pulse',  name:'変速の惑星',    h:280, desc:'まわるスピードが速くなったり遅くなったりする。'},
+  {id:'reverse',name:'逆回転の惑星',  h:320, desc:'着地したときに、まわる向きが逆になる。'},
+  {id:'ghost',  name:'すり抜けの惑星',h:260, desc:'約1秒ごとに暗くなる。暗いあいだは着地できず、通りぬけてしまう。'},
+  {id:'mover',  name:'移動する惑星',  h:150, desc:'進む方向と直角に、行ったり来たりと動く。'},
+  {id:'bomb',   name:'爆発の惑星',    h:0,   desc:'着地すると3秒後にバクハツ。すぐに飛び出そう。'},
+  {id:'boost',  name:'加速の惑星',    h:50,  desc:'飛び出す速さが約1.6倍になる。遠くの惑星にも届く。'},
+  {id:'small',  name:'小型の惑星',    h:190, desc:'とても小さい惑星。着地できる範囲がせまいので正確に狙おう。'},
+  {id:'goal',   name:'ゴール',        h:48,  desc:'ここに着地するとステージクリア。'}
+];
+const Dex=(()=>{
+  const by={};for(const p of DEX_DATA)by[p.id]=p;const has=(o,k)=>Object.prototype.hasOwnProperty.call(o,k);
+  const A={seen:{},                                       // 触れた惑星 {id:時刻}（スロットごとに保存）
+    count(){let c=0;for(const p of DEX_DATA)if(has(A.seen,p.id))c++;return c},
+    touch(q){const k=q.type==='normal2'||q.type==='normal3'?'normal':q.type;if(!by[k]||has(A.seen,k))return;
+      A.seen[k]=Date.now();Slot.save();A.labels();
+      texts.push({t:'わくせいずかんに登録！',x:q.x,y:q.y-q.r-100,life:1.8})},
+    labels(){$('dexbtn').textContent='わくせいずかん '+A.count()+'/'+DEX_DATA.length},
+    open(){A.render();$('dex').classList.remove('hide');$('dlist').scrollTop=0},
+    close(){$('dex').classList.add('hide')},
+    icon(c,p,known){
+      const g=c.getContext('2d'),r=36,x=56,y=56;g.clearRect(0,0,112,112);
+      if(!known){g.beginPath();g.arc(x,y,r,0,7);g.fillStyle='#0b0e24';g.fill();g.fillStyle='rgba(154,160,189,.8)';g.font='900 36px sans-serif';g.textAlign='center';g.textBaseline='middle';g.fillText('?',x,y+2);return}
+      const im=IMG[p.id==='normal'?'normal':p.id];
+      if(im)g.drawImage(im,x-r,y-r,r*2,r*2);
+      else{const gr=g.createRadialGradient(x-r*.35,y-r*.35,r*.1,x,y,r);gr.addColorStop(0,`hsl(${p.h},75%,72%)`);gr.addColorStop(1,`hsl(${p.h+30},60%,38%)`);g.beginPath();g.arc(x,y,r,0,7);g.fillStyle=gr;g.fill()}
+      const gl=p.id==='goal'?'★':TY[p.id]&&TY[p.id].g;
+      if(gl||p.id==='goal'){g.beginPath();g.arc(x,y,r+4,0,7);g.strokeStyle=p.id==='goal'?'#ffe066':`hsl(${p.h},85%,70%)`;g.lineWidth=3;g.stroke();
+        if(!im||p.id==='goal'){g.fillStyle='rgba(255,255,255,.92)';g.font='900 30px sans-serif';g.textAlign='center';g.textBaseline='middle';g.fillText(gl,x,y+2)}}
+    },
+    render(){
+      $('dcount').textContent='発見 '+A.count()+' / '+DEX_DATA.length;
+      const L=$('dlist'),keep=L.scrollTop;L.innerHTML='';
+      for(const p of DEX_DATA){
+        const ok=has(A.seen,p.id),d=document.createElement('div');d.className='dc'+(ok?' on':'');
+        const c=document.createElement('canvas');c.width=c.height=112;A.icon(c,p,ok);d.appendChild(c);
+        const t=document.createElement('div'),n=document.createElement('div'),e=document.createElement('div');
+        n.className='dn';n.textContent=ok?p.name:'？？？？';e.className='dd';e.textContent=ok?p.desc:'まだ触れたことのない惑星。着地すると説明が見られるようになる。';
+        t.appendChild(n);t.appendChild(e);d.appendChild(t);L.appendChild(d);
+      }
+      L.scrollTop=keep;
+    }
+  };
+  return A;
+})();
+Dex.labels();
+$('dexbtn').addEventListener('click',e=>{e.stopPropagation();Dex.open()});
+$('dback').addEventListener('click',e=>{e.stopPropagation();Dex.close()});
+
+/* ===== セーブデータ選択画面 ===== */
+const Slots=(()=>{
+  const U={ask:0,from:'title',
+    open(from){U.from=from;U.ask=0;$('title').classList.add('hide');$('ov').classList.add('hide');$('hud').classList.add('hide');$('slots').classList.remove('hide');U.render()},
+    back(){$('slots').classList.add('hide');if(U.from==='menu')showMenu();else{$('title').classList.remove('hide');state='title'}},
+    pick(n){Slot.use(n);$('slots').classList.add('hide');bgmPlay();showMenu()},
+    fmt(t){const d=new Date(t);return (d.getMonth()+1)+'/'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')},
+    render(){
+      const L=$('slist');L.innerHTML='';
+      let last=0,lastN=0;for(let n=1;n<=SLOTS;n++){const m=Slot.summary(n);if(m&&m.t>last){last=m.t;lastN=n}}
+      for(let n=1;n<=SLOTS;n++){
+        const m=Slot.summary(n),d=document.createElement('div');d.className='sc'+(n===lastN?' on':'');
+        const prog2=m?(m.all?'<b>全ステージクリア！</b>':'<b>ステージ '+m.un+'</b> まで進行中')+'（クリア '+m.clear+'/'+NS+'）':'まだ何も記録されていません';
+        d.innerHTML='<div class="sh">データ'+n+'<small>'+(m?'最終 '+U.fmt(m.t):'NEW')+'</small></div><div class="ss">'+prog2+(m?'<br>★ <b>'+m.stars+'</b>/'+NS*3+'　仲間 <b>'+m.al+'</b>/'+ALLY_DATA.length+'　惑星 <b>'+m.pd+'</b>/'+DEX_DATA.length+'<br>再スタートチケット <b>'+m.tk+'</b>枚':'')+'</div>';
+        const b=document.createElement('div');b.className='sb';
+        if(U.ask===n){b.innerHTML='<div class="sq">このデータを消しますか？</div>';
+          const y=document.createElement('button');y.className='sd';y.textContent='消す';y.onclick=e=>{e.stopPropagation();Slot.clear(n);U.ask=0;Ally.labels();Dex.labels();U.render()};
+          const c=document.createElement('button');c.className='sx';c.textContent='やめる';c.onclick=e=>{e.stopPropagation();U.ask=0;U.render()};b.appendChild(y);b.appendChild(c)}
+        else{const p=document.createElement('button');p.className='sp';p.textContent=m?'つづきから':'はじめる';p.onclick=e=>{e.stopPropagation();U.pick(n)};b.appendChild(p);
+          if(m){const x=document.createElement('button');x.className='sx';x.textContent='削除';x.onclick=e=>{e.stopPropagation();U.ask=n;U.render()};b.appendChild(x)}}
+        d.appendChild(b);L.appendChild(d);
+      }
+    }
+  };
+  return U;
+})();
+$('sback').addEventListener('click',e=>{e.stopPropagation();Slots.back()});
+$('slotbtn').addEventListener('click',e=>{e.stopPropagation();Slots.open('menu')});
+
+/* ============================================================
+   管理者メニュー（タイトル左上の鍵）。パスワード入力後、セーブデータを選んで
+   ・クリア済みステージ数  ・仲間の救出（個別オン/オフ）  ・惑星図鑑（個別オン/オフ） を直接書き換える。
+   ※ パスワードはこのファイル内に書かれているため、本格的な保護ではなく「うっかり防止」用。
+   ============================================================ */
+const ADMIN_PW='1985';
+const Admin=(()=>{
+  const U={sel:1,
+    open(){$('admin').classList.remove('hide');$('apwv').classList.remove('hide');$('apan').classList.add('hide');$('atitle').textContent='管理者';$('apw').value='';$('aerr').textContent='';setTimeout(()=>{try{$('apw').focus()}catch(e){}},50)},
+    close(){$('apw').blur();$('apw').value='';$('apan').innerHTML='';$('admin').classList.add('hide')},   // 閉じると毎回パスワードが必要
+    unlock(){if($('apw').value===ADMIN_PW){$('apw').blur();$('apwv').classList.add('hide');$('apan').classList.remove('hide');$('atitle').textContent='管理者メニュー';U.render()}
+      else{$('aerr').textContent='パスワードが違います';$('apw').value='';$('apw').focus()}},
+    data(){return Slot.read(U.sel)||{prog:{},allies:{},planets:{}}},
+    commit(d){Slot.write(U.sel,d);if(Slot.cur===U.sel)Slot.use(U.sel);U.render()},          // 選択中のデータなら画面側の状態も更新
+    upTo(d){let n=0;for(let i=1;i<=NS;i++)if((+d.prog[i]||0)>0)n=i;return n},
+    setStage(n){const d=U.data();n=Math.max(0,Math.min(NS,n));
+      for(let i=1;i<=NS;i++){if(i<=n)d.prog[i]=Math.max(+d.prog[i]||0,1);else delete d.prog[i]}   // n以下は少なくとも★1でクリア扱い、超える分は未クリアに戻す
+      U.commit(d)},
+    toggle(kind,id){const d=U.data(),o=d[kind];if(o[id])delete o[id];else o[id]=Date.now();U.commit(d)},
+    all(kind,list,on){const d=U.data();d[kind]={};if(on)for(const x of list)d[kind][x.id]=Date.now();U.commit(d)},
+    el(tag,cls,txt,fn){const e=document.createElement(tag);if(cls)e.className=cls;if(txt!==undefined)e.textContent=txt;if(fn)e.onclick=ev=>{ev.stopPropagation();fn()};return e},
+    render(){
+      const P=$('apan'),keep=P.scrollTop;P.innerHTML='';const d=U.data(),E=U.el;
+      // データ選択
+      const tabs=E('div','at');for(let n=1;n<=SLOTS;n++)tabs.appendChild(E('button',n===U.sel?'on':'','データ'+n,()=>{U.sel=n;U.render()}));P.appendChild(tabs);
+      // クリア済みステージ
+      const up=U.upTo(d),h1=E('div','ah');h1.appendChild(E('span','','クリア済みステージ'));h1.appendChild(E('small','','増やすと★1でクリア扱い'));P.appendChild(h1);
+      const st=E('div','ast');st.appendChild(E('button','','−',()=>U.setStage(up-1)));
+      const mid=E('div');mid.innerHTML='ステージ <b>'+up+'</b> / '+NS+' まで';st.appendChild(mid);st.appendChild(E('button','','＋',()=>U.setStage(up+1)));P.appendChild(st);
+      // 仲間
+      const na=ALLY_DATA.filter(a=>d.allies[a.id]).length,h2=E('div','ah');h2.appendChild(E('span','','仲間の救出'));h2.appendChild(E('small','',na+' / '+ALLY_DATA.length));P.appendChild(h2);
+      const b2=E('div','ab');b2.appendChild(E('button','','全員 救出',()=>U.all('allies',ALLY_DATA,true)));b2.appendChild(E('button','','全員 未救出',()=>U.all('allies',ALLY_DATA,false)));P.appendChild(b2);
+      const g2=E('div','cg');for(const gr of Ally.groups()){g2.appendChild(E('div','csh2',gr.label));
+        for(const a of gr.list)g2.appendChild(E('button','ch'+(d.allies[a.id]?' on':''),(d.allies[a.id]?'✓ ':'')+a.name,()=>U.toggle('allies',a.id)))}P.appendChild(g2);
+      // 惑星図鑑
+      const nd=DEX_DATA.filter(p=>d.planets[p.id]).length,h3=E('div','ah');h3.appendChild(E('span','','惑星図鑑の表示'));h3.appendChild(E('small','',nd+' / '+DEX_DATA.length));P.appendChild(h3);
+      const b3=E('div','ab');b3.appendChild(E('button','','全て 表示',()=>U.all('planets',DEX_DATA,true)));b3.appendChild(E('button','','全て 非表示',()=>U.all('planets',DEX_DATA,false)));P.appendChild(b3);
+      const g3=E('div','cg two');for(const p of DEX_DATA)g3.appendChild(E('button','ch'+(d.planets[p.id]?' on':''),(d.planets[p.id]?'✓ ':'')+p.name,()=>U.toggle('planets',p.id)));P.appendChild(g3);
+      P.scrollTop=keep;
+    }
+  };
+  return U;
+})();
+$('lockbtn').addEventListener('click',e=>{e.stopPropagation();Admin.open()});
+$('aback').addEventListener('click',e=>{e.stopPropagation();Admin.close()});
+$('aok').addEventListener('click',e=>{e.stopPropagation();Admin.unlock()});
+$('apw').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();Admin.unlock()}});
+
+
+let meteors=[],spawnT=2,scrollV=30,scrolling=false,Z=1,relAng=0,rings=[],parts=[],texts=[],par=1,P={x:0,y:0},pl,items,cur,ang,dir,orbR,state='menu',camY=0,camX=0,tgX=0,tgY=0,cvx=0,cvy=0,scrollDir=DIRS.up,legs=[],curLeg=0,baseV=30,curSv=0,camU=0,camPath=null,camLeg=0,lastPiece=-1,passedLeg=-1,turnToast=null,tan={x:0,y:-1},score,trail=[],ignore,shake=0,energy,got,total,N,stage=1,clock=0,goAct;
 
 function zone(q){return q.r+Math.max(36,56-stage*2)}
-function prep(i){
-  stage=i;seed=i*7919+13;N=6+i*2;par=Math.ceil(N/2);
-  Z=Math.max(.65,1-(i-1)*.035);scrollV=(24+4*i)*1.2;scrolling=false;meteors=[];spawnT=2.5;
-  const WW=W/Z,cx=W/2,sx=Math.min(WW/2-85,W/2-25),jit=25+i*3,rp=i<2?0:Math.min(.12*(i-1),.7);
-  pl=[{type:'normal',bx:cx-sx,x:cx-sx,amp:0,ph:0,y:0,r:24,h:35}];items=[];
-  for(let k=1;k<=N;k++){
-    const lp=pl[k-1],side=k%2?1:-1;
-    const ty=pick(i),amp=ty==='mover'?rnd(30,55):0;
-    const bx=Math.max(cx-WW/2+50+amp,Math.min(cx+WW/2-50-amp,cx+side*sx+rnd(-jit,jit)));
-    pl.push({type:ty,bx,x:bx,amp,ph:rnd(0,6),y:lp.y-rnd(120,170),r:(ty==='small'?rnd(10,13):rnd(16,28))*(ty==='normal2'?1.5:ty==='normal3'?2:1),h:TY[ty].h===undefined?rnd(0,360):TY[ty].h});
-    if(rng()<rp){const t=rnd(.4,.6),rx=lp.x+(bx-lp.x)*t+rnd(-30,30);items.push({t:'r',bx:rx,x:rx,y:lp.y+(pl[k].y-lp.y)*t,r:rnd(24,36),amp:i>=3&&rng()<.4?rnd(30,60):0,ph:rnd(0,6)})}
+const HSPD=.85,TURN_GAP=60,TURN_RAMP=2.4,FRAC={up:.22,down:.26,left:.30,right:.30};
+const TRAIL_MSG={up:'画面の下に取り残された',down:'画面の上に取り残された',right:'画面の左に取り残された',left:'画面の右に取り残された'};
+/* ---- 画面座標・判定（スクロール方向に応じて前/後ろの端を入れ替える） ---- */
+function scr(x,y){return{x:(x-camX)*Z,y:(y-camY)*Z}}
+// 着地できるのは画面内の惑星だけ。進行方向側の端は10px内側、横方向は5ワールド単位内側、後ろ側の端は制限なし
+// （進行方向 t は軸に沿っているとき従来と同じ判定。曲がり角の円弧の間は連続的に切り替わる）
+function landableAt(x,y,cx,cy,t){
+  const sx=(x-cx)*Z,sy=(y-cy)*Z,m5=5*Z,ax=Math.abs(t.x),ay=Math.abs(t.y);
+  const mt=10*Math.max(0,-t.y)+m5*(1-ay)-1e4*Math.max(0,t.y),mb=10*Math.max(0,t.y)+m5*(1-ay)-1e4*Math.max(0,-t.y);
+  const ml=10*Math.max(0,-t.x)+m5*(1-ax)-1e4*Math.max(0,t.x),mr=10*Math.max(0,t.x)+m5*(1-ax)-1e4*Math.max(0,-t.x);
+  return sy>mt&&sy<H-mb&&sx>ml&&sx<W-mr;
+}
+function landable(q){return landableAt(q.x,q.y,camX,camY,tan)}
+// 飛行中の画面外判定：前の端30px・後ろの端60px・横30*Z
+function outsideAt(sx,sy,t){const ax=Math.abs(t.x),ay=Math.abs(t.y),xm=30*Z;
+  const top=30*Math.max(0,-t.y)+60*Math.max(0,t.y)+xm*(1-ay),bot=30*Math.max(0,t.y)+60*Math.max(0,-t.y)+xm*(1-ay);
+  const lef=30*Math.max(0,-t.x)+60*Math.max(0,t.x)+xm*(1-ax),rig=30*Math.max(0,t.x)+60*Math.max(0,-t.x)+xm*(1-ax);
+  return sy<-top||sy>H+bot||sx<-lef||sx>W+rig}
+function outside(s){return outsideAt(s.x,s.y,tan)}
+// 後ろ側の画面端（進行方向の反対側）から8px内側より後ろへ出たら「取り残された」
+function behindWhy(s,t){t=t||tan;const k=.5;   // 軸に沿って進む間は後ろ端だけ。曲がり角の円弧の間は旧い向き・新しい向き両方の後ろ端を見る
+  if(t.y<-k&&s.y>H-8)return TRAIL_MSG.up;if(t.y>k&&s.y<8)return TRAIL_MSG.down;
+  if(t.x<-k&&s.x>W-8)return TRAIL_MSG.left;if(t.x>k&&s.x<8)return TRAIL_MSG.right;return null}
+function behind(s){return behindWhy(s)!==null}
+/* ---- 流れ星：進行方向の前の端から、こちらへ向かって飛んでくる ---- */
+function spawnMeteor(){
+  const a=scrollDir,sp=130+stage*6+Math.random()*40,lat=(Math.random()-.5)*100;let x,y;
+  if(a.y!==0){x=camX+W/(2*Z)+(Math.random()-.5)*(W/Z-80);y=a.y<0?camY:camY+H/Z}
+  else{y=camY+H/(2*Z)+(Math.random()-.5)*(H/Z-80);x=a.x<0?camX:camX+W/Z}
+  meteors.push({x,y,vx:-a.x*sp-a.y*lat,vy:-a.y*sp+a.x*lat,w:1,aim:false});
+}
+function pinMeteor(m){const a=scrollDir;if(a.y<0)m.y=camY+10/Z;else if(a.y>0)m.y=camY+H/Z-10/Z;else if(a.x>0)m.x=camX+W/Z-10/Z;else m.x=camX+10/Z}
+function keepMeteor(m){const s=scr(m.x,m.y),a=scrollDir,tr=a.y<0?s.y-H:a.y>0?-s.y:a.x>0?-s.x:s.x-W;
+  const cr=a.y!==0?Math.abs(m.x-(camX+W/(2*Z)))<W/Z:Math.abs(m.y-(camY+H/(2*Z)))<H/Z;return tr<80&&cr}
+/* ---- カメラ：区間ごとの「定位置」を計算し、方向転換時はそこへ滑らかに移動 ---- */
+// 区間Lのレーン中心が画面の横(縦)中央、惑星qが後ろ側の端から startFrac の位置になるカメラ左上座標
+function frame(L,q){
+  const f=L.f;
+  if(L.a.y!==0)return{x:L.c.x*L.lc-W/(2*Z),y:L.a.y<0?q.y-(1-f)*H/Z:q.y-f*H/Z};
+  return{x:L.a.x>0?q.x-f*W/Z:q.x-(1-f)*W/Z,y:L.c.y*L.lc-H/(2*Z)};
+}
+/* ---- カメラの軌道 ----
+   各区間のレーン中心を結んだ経路（曲がり角は円弧）をステージ開始時に1本作り、カメラは最初のジャンプのあと
+   その上を一定の速さで時間どおりに進む。プレイヤーの着地・位置・タイミングには一切左右されない。 */
+const CORNER_R=280;      // 曲がり角でカメラが描く円弧の半径（ステージデータの corner で変更可）
+function buildCam(S){
+  const n=legs.length,X=legs.map(L=>L.a.y!==0?L.c.x*L.lc-W/(2*Z):L.c.y*L.lc-H/(2*Z));   // 各区間の「横方向」カメラ座標（レーン中心が画面中央）
+  const f0=frame(legs[0],pl[0]),V=[{x:f0.x,y:f0.y}];                                       // 頂点: 開始位置 + 各曲がり角
+  for(let m=1;m<n;m++)V.push(legs[m-1].a.y!==0?{x:X[m-1],y:X[m]}:{x:X[m],y:X[m-1]});
+  const len=[];for(let m=1;m<n;m++){const a=legs[m-1].a;len[m]=(V[m].x-V[m-1].x)*a.x+(V[m].y-V[m-1].y)*a.y}
+  const R=S.corner||CORNER_R,rho=[];
+  for(let m=1;m<n;m++)rho[m]=Math.max(20,Math.min(R,.45*len[m],m<n-1?.45*len[m+1]:1e9));  // 短い区間では円弧を小さくする
+  const sp=L=>baseV*(L.horiz?HSPD:1),pcs=[],lineOf=[];let px=V[0].x,py=V[0].y,u=0;
+  for(let j=0;j<n;j++){
+    const a=legs[j].a,last=j===n-1;let ex=0,ey=0,l=1e6;
+    if(!last){const r=rho[j+1];ex=V[j+1].x-a.x*r;ey=V[j+1].y-a.y*r;l=Math.max(0,(ex-px)*a.x+(ey-py)*a.y)}
+    lineOf[j]=pcs.length;pcs.push({k:'line',leg:j,x:px,y:py,ax:a.x,ay:a.y,len:l,u0:u,v0:sp(legs[j]),v1:sp(legs[j])});u+=l;
+    if(!last){const b=legs[j+1].a,r=rho[j+1],al=Math.PI*r/2;
+      pcs.push({k:'arc',leg:j,x:ex+b.x*r,y:ey+b.y*r,ax:a.x,ay:a.y,bx:b.x,by:b.y,r,len:al,u0:u,v0:sp(legs[j]),v1:sp(legs[j+1])});u+=al;
+      px=V[j+1].x+b.x*r;py=V[j+1].y+b.y*r}
   }
-  pl[N].goal=true;pl[N].type='goal';pl[N].amp=0;pl[N].x=pl[N].bx;pl[N].r=30;pl[N].h=48;
+  camPath={pcs,lineOf,total:u,V,len,rho};
+}
+// 経路上の位置 u(進んだ距離)でのカメラ左上座標・進行方向(接線)・区間番号・速さ
+function camAt(u){
+  const pcs=camPath.pcs;if(u<0)u=0;let k=0;
+  while(k<pcs.length-1&&u>=pcs[k].u0+pcs[k].len)k++;
+  const c=pcs[k],d=u-c.u0;
+  if(c.k==='line')return{x:c.x+c.ax*d,y:c.y+c.ay*d,tx:c.ax,ty:c.ay,k,leg:c.leg,v:c.v0};
+  const th=d/c.r,cs=Math.cos(th),sn=Math.sin(th);
+  return{x:c.x+(-c.bx*cs+c.ax*sn)*c.r,y:c.y+(-c.by*cs+c.ay*sn)*c.r,tx:c.bx*sn+c.ax*cs,ty:c.by*sn+c.ay*cs,k,leg:th<Math.PI/4?c.leg:c.leg+1,v:c.v0+(c.v1-c.v0)*th/(Math.PI/2)};
+}
+function camSetU(u){
+  camU=u;const c=camAt(u);camX=tgX=c.x;camY=tgY=c.y;tan={x:c.tx,y:c.ty};
+  scrollDir=Math.abs(c.tx)>Math.abs(c.ty)?(c.tx>0?DIRS.right:DIRS.left):(c.ty>0?DIRS.down:DIRS.up);
+  camLeg=curLeg=c.leg;scrollV=curSv=c.v;
+  const done=camPath.pcs[c.k].leg;                                       // カメラが完全に次の区間へ入った区間の惑星は「通過済み」（カメラの進み具合で決まる）
+  if(done!==passedLeg){passedLeg=done;for(const q of pl)q.passed=q.leg<done}
+  return c;
+}
+function camAdvance(dt){
+  const v=camAt(camU).v;camSetU(camU+v*dt);
+  const c=camAt(camU);
+  if(c.k!==lastPiece){lastPiece=c.k;const p=camPath.pcs[c.k];if(p.k==='arc')turnToast={t:'方向転換！ '+ARW[legs[p.leg+1].d],life:2.4}}   // 曲がり角に入ったら知らせる
+  if(turnToast){turnToast.life-=dt;if(turnToast.life<=0)turnToast=null}
+}
+// 惑星 k が画面の定位置に来るときのカメラ位置(u)。再スタート用
+function uForPlanet(k){
+  const q=pl[k],j=Math.min(q.leg,legs.length-1),f=frame(legs[j],q),c=camPath.pcs[camPath.lineOf[j]];
+  return c.u0+Math.max(0,Math.min(c.len,(f.x-c.x)*c.ax+(f.y-c.y)*c.ay));
+}
+function drawTurnToast(){
+  if(!turnToast||state!=='play')return;
+  const t=turnToast,k=Math.min(1,(2.4-t.life)*4);ctx.save();ctx.globalAlpha=Math.min(1,t.life*2)*k;
+  ctx.font='900 22px sans-serif';ctx.textAlign='center';const w=ctx.measureText(t.t).width+36,x=W/2-w/2,y=H*.3;
+  ctx.fillStyle='rgba(18,28,66,.85)';ctx.beginPath();ctx.moveTo(x+16,y);ctx.arcTo(x+w,y,x+w,y+40,16);ctx.arcTo(x+w,y+40,x,y+40,16);ctx.arcTo(x,y+40,x,y,16);ctx.arcTo(x,y,x+w,y,16);ctx.closePath();ctx.fill();
+  ctx.strokeStyle='#8fe3ff';ctx.lineWidth=2;ctx.stroke();ctx.fillStyle='#fff';ctx.fillText(t.t,W/2,y+28);ctx.restore();
+}
+/* ---- ルート生成 ---- */
+function genRoute(S,i,sx,jit,rp){
+  const st=S.start||{x:0,y:0};
+  pl=[{type:'normal',bx:st.x,by:st.y,x:st.x,y:st.y,amp:0,ph:0,r:24,h:35,leg:0,cx:0,cy:0}];items=[];legs=[];
+  let lp=pl[0],idx=0;
+  S.legs.forEach((def,j)=>{
+    const a=DIRS[def.d],c={x:-a.y,y:a.x},pa=j?DIRS[S.legs[j-1].d]:null;
+    const sd=j?(c.x*pa.x+c.y*pa.y>0?1:-1):1;               // レーン中心を、直前の区間の先側へ置く＝別の位置に新ルート
+    const lc=lp.x*c.x+lp.y*c.y+sd*(sx+(j?TURN_GAP:0));
+    const L={d:def.d,a,c,lc,n:def.n,horiz:a.y===0,f:def.f||S.startFrac||FRAC[def.d]};legs.push(L);
+    const Vc=a.y!==0?W/Z:H/Z;
+    for(let h=1;h<=def.n;h++){
+      idx++;const p0=pl[idx-1],side=h%2?sd:-sd;
+      const ty=pick(i),amp=ty==='mover'?rnd(30,55):0;
+      const cross=Math.max(lc-Vc/2+50+amp,Math.min(lc+Vc/2-50-amp,lc+side*sx+rnd(-jit,jit)));
+      const along=p0.x*a.x+p0.y*a.y+rnd(120,170);
+      const x=a.x*along+c.x*cross,y=a.y*along+c.y*cross;
+      pl.push({type:ty,bx:x,by:y,x,y,amp,ph:rnd(0,6),leg:j,cx:c.x,cy:c.y,r:(ty==='small'?rnd(10,13):rnd(16,28))*(ty==='normal2'?1.5:ty==='normal3'?2:1),h:TY[ty].h===undefined?rnd(0,360):TY[ty].h});
+      if(rng()<rp){const t=rnd(.4,.6),j2=rnd(-30,30),ix=p0.x+(x-p0.x)*t+c.x*j2,iy=p0.y+(y-p0.y)*t+c.y*j2;
+        items.push({t:'r',bx:ix,by:iy,x:ix,y:iy,r:rnd(24,36),amp:i>=3&&rng()<.4?rnd(30,60):0,ph:rnd(0,6),cx:c.x,cy:c.y})}
+      lp=pl[idx];
+    }
+  });
+  if(S.place)for(const k in S.place){const idx=+k,q=pl[idx],ty=S.place[k];   // 特別な惑星（ゴール/スタートは対象外）
+    if(!q||idx<1||idx>=pl.length-1||!TY[ty])continue;
+    q.type=ty;q.amp=0;q.x=q.bx;q.y=q.by;q.h=TY[ty].h;q.r=Math.max(20,Math.min(34,q.r))}
+}
+function segX(p,q,r,t){const o=(a,b,c)=>(b.x-a.x)*(c.y-a.y)-(b.y-a.y)*(c.x-a.x);return o(p,q,r)*o(p,q,t)<0&&o(r,t,p)*o(r,t,q)<0}
+// 惑星どうしが重ならない／ルートが自分自身と交差しない（＝通過済みの道を戻らない）ことを確認
+function routeOK(){
+  for(let a=0;a<pl.length;a++)for(let b=a+1;b<pl.length;b++){
+    const p=pl[a],q=pl[b],d=Math.hypot(p.x-q.x,p.y-q.y);
+    if(d<p.r+(p.amp||0)+q.r+(q.amp||0)+(b-a===1?50:80))return false;
+    if(b-a>=2&&d<200)return false;
+  }
+  for(let a=0;a<pl.length-1;a++)for(let b=a+2;b<pl.length-1;b++)if(segX(pl[a],pl[a+1],pl[b],pl[b+1]))return false;
+  return true;
+}
+function prep(i){
+  stage=i;const S=STAGES[i-1];
+  N=S.legs.reduce((t,l)=>t+l.n,0);par=Math.ceil(N/2);
+  const Z0=Math.max(.65,1-(i-1)*.035),hz=S.legs.some(l=>l.d==='left'||l.d==='right');
+  Z=S.zoom||(hz?Math.min(Z0,.68):Z0);                                  // 横スクロールを含む面は少し引いて先を見せる
+  baseV=(24+4*i)*1.2*(S.speed||1);scrolling=false;meteors=[];spawnT=2.5;
+  const sx=S.lane||Math.min(W/Z0/2-85,W/2-25),jit=25+i*3,rp=i<2?0:Math.min(.12*(i-1),.7);
+  const base=S.seed||i*104729+57;
+  for(let t=0;t<60;t++){seed=base+t*977;genRoute(S,i,sx,jit,rp);if(routeOK())break}   // 重なる配置になったら種をずらして作り直す
+  items=items.filter(m=>pl.every(q=>Math.hypot(m.x-q.x,m.y-q.y)>=m.r+(m.amp||0)+q.r+(q.amp||0)+36));
+  pl[N].goal=true;pl[N].type='goal';pl[N].amp=0;pl[N].x=pl[N].bx;pl[N].y=pl[N].by;pl[N].r=30;pl[N].h=48;
   cur=0;ang=Math.PI/2;dir=1;orbR=pl[0].r+30;score=0;trail=[];ignore=0;
   P={x:pl[0].x,y:pl[0].y+orbR,vx:0,vy:0,orbit:true};
-  camY=-H*0.78/Z;
+  buildCam(S);lastPiece=0;passedLeg=-1;turnToast=null;camSetU(0);   // カメラの軌道を作り、開始位置に置く
+  Ally.begin(i);
 }
 const BGM_SRC='ginganoren.mp3'; // HTMLと同じフォルダに置く
 let bgm=null,bgmOn=true;
 if(BGM_SRC){bgm=new Audio(BGM_SRC);bgm.loop=true;bgm.volume=.4;bgm.preload='auto';bgm.addEventListener('canplay',()=>$('snd').classList.remove('hide'));$('snd').onclick=e=>{e.stopPropagation();bgmOn=!bgmOn;$('snd').textContent='♪ BGM '+(bgmOn?'ON':'OFF');bgmOn?bgmPlay():bgm.pause()}}
 function bgmPlay(){if(bgm&&bgmOn)bgm.play().catch(()=>{})}
-function start(i){prep(i);bgmPlay();state='play';$('ov').classList.add('hide');$('hud').classList.remove('hide')}
+function start(i){Restart.clear();prep(i);bgmPlay();state='play';$('ov').classList.add('hide');$('hud').classList.remove('hide')}
 function hud(){
   $('score').textContent='ステージ '+stage;
-  $('combo').textContent='ジャンプ '+score+'　★3は'+(par+1)+'回以内';
-  $('hint').textContent=[['≫','高速',2],['…','低速',2],['〜','変速',3],['↔','移動',4],['⇄','逆回転',3],['⚡','加速',5],['小','小型',6],['岩','隕石',2],['☄','流れ星',2],['透','すり抜け',3],['爆','爆発',4]].filter(a=>stage>=a[2]).map(a=>a[0]+a[1]).join('　');
+  $('combo').textContent='ジャンプ '+score+'　★3は'+(par+1)+'回以内　進行'+ARW[legs[curLeg].d];
 }
 function omega(){return 2.2+stage*0.12}
 const SEA={},SEOK={};
@@ -164,15 +836,15 @@ function preview(){
   }
 }
 function release(){
-  if(state!=='play'||!P.orbit)return;
+  if((state!=='play'&&state!=='bonus')||!P.orbit)return;
   const sp=pl[cur].type==='boost'?640:400;
   P.vx=-Math.sin(ang)*dir*sp;P.vy=Math.cos(ang)*dir*sp;
   if(pl[cur].type==='ghost')pl[cur].hold=null;P.orbit=false;ignore=0.25;score++;scrolling=true;relAng=Math.atan2(P.vy,P.vx);playSE(score===1?'SE_start.mp3':'SE_jump.mp3',()=>blip(520,.06));vib(8);
 }
 function showMenu(){
-  state='menu';
-  $('t').textContent='オービット・ホップ';
-  $('d').textContent='ゴールは上。最初の1回を飛ぶと画面が上へ流れ始めます。取り残される、または画面外へ出ると失敗。流れ星と隕石をよけ、少ないジャンプ回数を目指そう。';
+  state='menu';Restart.clear();$('rsbtn').classList.add('hide');
+  $('t').textContent='オービット・ホップ2';
+  $('d').textContent='ゴールの方向はステージごとに違います。最初の1回を飛ぶと画面が自動で流れ始め、ルートの曲がり角では画面が滑らかに向きを変えます。ステージのあいだの「B」はボーナスステージ（前のステージをクリアすると挑戦できます）。取り残される、または画面外へ出ると失敗。流れ星と隕石をよけ、少ないジャンプ回数を目指そう。';
   $('go').classList.add('hide');$('menu').classList.add('hide');
   const g=$('grid');g.classList.remove('hide');g.innerHTML='';
   let un=1;for(let i=1;i<=NS;i++)if(prog[i])un=i+1;
@@ -182,24 +854,267 @@ function showMenu(){
     b.innerHTML=i+'<small>'+(ok?'★'.repeat(n)+'☆'.repeat(3-n):'🔒')+'</small>';
     if(ok)b.onclick=e=>{e.stopPropagation();start(i)};
     g.appendChild(b);
+    if(BONUS_STAGES[i]){                                  // ステージ i と i+1 のあいだに、ボーナスステージのタイルを置く
+      const k=i,open=(prog[i]||0)>0,rec=Slot.bonus[k]||{},n=Object.keys(BONUS_STAGES).indexOf(String(k))+1,bb=document.createElement('button');
+      bb.className='st bn'+(open?'':' lock');
+      bb.innerHTML='B'+n+'<small>'+(open?(rec.clear?'CLEAR':'BONUS'):'🔒')+'</small>';
+      if(open)bb.onclick=e=>{e.stopPropagation();Bonus.info(k)};
+      g.appendChild(bb);
+    }
   }
+  $('colbtn').classList.remove('hide');$('dexbtn').classList.remove('hide');$('bonusbtn').classList.remove('hide');LoginBonus.refresh();$('slotbtn').classList.remove('hide');$('slotbtn').textContent='データ'+Slot.cur+'（データ選択へ）';Ally.labels();Dex.labels();
   $('hud').classList.add('hide');$('ov').classList.remove('hide');
+  Congrats.check();
 }
 function finish(win,msg){
   if(state!=='play')return;
+  const allyHtml=Ally.end(win);
   state=win?'clear':'over';shake=0.4;if(!win)playSE('SE_out.mp3',()=>blip(150,.3));vib(win?[20,40,20]:60);
+  if(win)Restart.clear();
   let st=0;
   if(win){st=score<=par+1?3:score<=Math.max(par+3,Math.round(N*.8))?2:1;if(st>(prog[stage]||0)){prog[stage]=st;save()}}
   $('t').textContent=win?(stage<NS?'ステージ '+stage+' クリア！':'全ステージ制覇！'):'失敗';
-  $('d').innerHTML=win?'★'.repeat(st)+'☆'.repeat(3-st)+'<br>'+score+'回のジャンプ（★3は'+(par+1)+'回以内）'+(st<3?'<br>惑星を飛ばして進めると回数を減らせます':''):msg+'<br>配置は毎回同じ。覚えて再挑戦！';
+  $('d').innerHTML=win?'★'.repeat(st)+'☆'.repeat(3-st)+'<br>'+score+'回のジャンプ（★3は'+(par+1)+'回以内）'+(st<3?'<br>惑星を飛ばして進めると回数を減らせます':'')+allyHtml:msg+'<br>配置は毎回同じ。覚えて再挑戦！'+allyHtml;
   $('go').textContent=win?(stage<NS?'次のステージ':'ステージ選択'):'リトライ';
   goAct=win?(stage<NS?()=>start(stage+1):showMenu):()=>start(stage);
-  $('grid').classList.add('hide');$('go').classList.remove('hide');$('menu').classList.remove('hide');
+  Restart.showButton(!win);
+  $('grid').classList.add('hide');$('colbtn').classList.add('hide');$('dexbtn').classList.add('hide');$('slotbtn').classList.add('hide');$('bonusbtn').classList.add('hide');$('go').classList.remove('hide');$('menu').classList.remove('hide');
   $('ov').classList.remove('hide');
 }
 $('go').addEventListener('click',e=>{e.stopPropagation();goAct()});
 $('menu').addEventListener('click',e=>{e.stopPropagation();showMenu()});
 addEventListener('pointerdown',e=>{if(e.target.tagName!=='BUTTON')release()});
+
+
+/* ============================================================
+   再スタートチケット／ログインボーナス（セーブデータごとに記録）
+   記録先: 選択中のセーブスロット内の tk = {n:所持数, last:最後に受け取った日 'YYYY-MM-DD'}
+   ============================================================ */
+const Ticket=(()=>{
+  const pad=n=>String(n).padStart(2,'0');
+  const T={now:()=>new Date(),
+    today(){const d=T.now();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())},
+    count(){return Slot.cur?Slot.tk.n:0},
+    canClaim(){return !!Slot.cur&&T.today()>Slot.tk.last},               // 日付が進んだときだけ受け取れる（同じ日・日付を戻した場合は不可）
+    claim(){if(!T.canClaim())return false;Slot.tk.n+=1;Slot.tk.last=T.today();Slot.save();return true},
+    use(){if(!Slot.cur||Slot.tk.n<1)return false;Slot.tk.n-=1;Slot.save();return true}
+  };
+  return T;
+})();
+const LoginBonus=(()=>{
+  const U={msg:'',
+    refresh(){const c=Ticket.canClaim(),n=Ticket.count(),b=$('bonusbtn');b.className=c?'new':'';
+      b.innerHTML='ログインボーナス<small>'+(c?'● 今日の分を受け取れます':'✓ 今日は受け取り済み')+'　チケット '+n+'枚</small>';
+      $('bcount').innerHTML=n+'<small> 枚</small>';
+      $('bstat').textContent=c?'今日の再スタートチケットを受け取れます':'今日の分は受け取り済みです。次は日付が変わってから。';
+      $('bclaim').disabled=!c;$('bclaim').textContent=c?'今日の1枚を受け取る':'受け取り済み';$('bmsg').textContent=U.msg},
+    open(){U.msg='';U.refresh();$('bonus').classList.remove('hide')},
+    close(){$('bonus').classList.add('hide')},
+    claim(){if(Ticket.claim()){U.msg='再スタートチケットを1枚獲得しました！';blip(880,.08);setTimeout(()=>blip(1175,.14),90);vib([15,30,15])}else U.msg='今日の分は受け取り済みです';U.refresh()}
+  };
+  return U;
+})();
+$('bonusbtn').addEventListener('click',e=>{e.stopPropagation();LoginBonus.open()});
+$('bback').addEventListener('click',e=>{e.stopPropagation();LoginBonus.close()});
+$('bclaim').addEventListener('click',e=>{e.stopPropagation();LoginBonus.claim()});
+addEventListener('focus',()=>LoginBonus.refresh());document.addEventListener('visibilitychange',()=>{if(!document.hidden)LoginBonus.refresh()});
+LoginBonus.refresh();
+
+/* ============================================================
+   セーブポイント／再スタート
+   再スタート地点は「プレイ中だけの一時記録」。チケットや進行データとは別にメモリ上だけで持ち、保存しない。
+   ============================================================ */
+const Restart=(()=>{
+  const R={point:null,
+    clear(){R.point=null},
+    onLand(q){if(state!=='play'||q.type!=='save'||cur>=N)return;
+      R.point={stage,idx:cur,score,temp:[...Ally.temp]};                  // 最後に着地したセーブポイントで更新（仮救出した仲間も一緒に記録）
+      rings.push({x:q.x,y:q.y,r:q.r,life:1});texts.push({t:'セーブ！ ここから再スタートできる',x:q.x,y:q.y-q.r-128,life:2});
+      blip(988,.08);setTimeout(()=>blip(1319,.12),80);vib(12)},
+    can(){return !!R.point&&R.point.stage===stage&&state==='over'},
+    showButton(over){const b=$('rsbtn'),ok=over&&R.can();b.classList.toggle('hide',!ok);
+      if(ok){const n=Ticket.count();b.disabled=n<1;b.textContent=n>0?'チケット1枚で再スタート（所持'+n+'枚）':'再スタートチケットなし（所持0枚）'}},
+    go(){const p=R.point;if(!R.can()||!Ticket.use())return false;       // チケットが無ければ再スタート不可
+      prep(p.stage);                                                       // 同じ配置のステージを作り直し、記録した惑星から再開
+      const idx=p.idx;cur=idx;scrolling=false;
+      ang=Math.PI/2;dir=1;orbR=pl[idx].r+30;score=p.score;trail=[];ignore=0;
+      P={x:pl[idx].x,y:pl[idx].y+orbR,vx:0,vy:0,orbit:true};
+      lastPiece=-1;camSetU(uForPlanet(idx));                                 // その惑星が画面の定位置に来る軌道上の位置へカメラを置く
+      Ally.temp=new Set(p.temp);                                           // 記録時点までの仮救出を引き継ぐ
+      bgmPlay();state='play';$('ov').classList.add('hide');$('rsbtn').classList.add('hide');$('hud').classList.remove('hide');
+      blip(660,.1);vib(10);return true}
+  };
+  return R;
+})();
+$('rsbtn').addEventListener('click',e=>{e.stopPropagation();Restart.go()});
+
+/* ============================================================
+   ボーナスステージ（通常ステージ3・6・9のクリア後に挿入）
+   画面固定・惑星6個（四隅4＋中央の左右2）。惑星と惑星の間にだけ出るターゲットに触れて得点を集める。
+   制限時間・目標点数・出現間隔などは下の設定値で調整できる。通常ステージの進行データ(prog)には一切触れない。
+   ============================================================ */
+const BONUS_STAGES={          // キー=ステージ選択で、このステージの次に並ぶボーナス（3なら3と4のあいだ）
+  3:{time:30,goal:10,types:['normal','normal2','normal3','slow','boost','normal2']},   // かんたん：ふつう3種＋低速・加速
+  6:{time:30,goal:12,types:['normal','normal3','slow','boost','pulse','fast']},        // ふつう  ：変速・高速が登場
+  9:{time:30,goal:15,types:['normal2','boost','pulse','fast','ultra','small']}         // むずかしい：超高速・小型が登場
+};   // types は惑星の配置順（左上・右上・中央左・中央右・左下・右下）
+const BONUS_CFG={
+  ready:1.8,                 // 開始前の準備時間(秒)。この間は時間が進まない
+  spawnEvery:.8,             // ターゲットの出現間隔(秒)
+  maxTargets:3,              // 同時に出る最大数
+  planetR:22,
+  radius:{normal:22,normal2:30,normal3:38,small:12},   // 惑星の種類ごとの大きさ
+  hues:[215,170,35,290,120,330],                       // ふつうの惑星の色
+  outPenalty:5,              // 場外に出たときの減点
+  allyStep:5,                // 仲間の獲得ライン：目標点 / +allyStep点 / +2×allyStep点
+  freeRatio:.5,              // ターゲットを「惑星の間以外の空いた場所」に出す割合
+  kinds:[{v:1,r:17,life:3.2,w:50,h:200},{v:2,r:20,life:2.8,w:32,h:130},{v:3,r:23,life:2.4,w:18,h:48}],  // 得点・大きさ・消えるまでの秒数・出やすさ・色
+  layout:[[.16,.20],[.84,.20],[.22,.52],[.78,.52],[.16,.88],[.84,.88]],   // 0左上 1右上 2中央左 3中央右 4左下 5右下（画面に対する割合）
+  edges:[[0,1],[4,5],[0,2],[2,4],[1,3],[3,5],[2,3]],                       // ターゲットが出てよい「惑星と惑星の間」
+  startPlanet:2
+};
+const Bonus=(()=>{
+  const B={st:0,cfg:null,t:0,score:0,ready:0,targets:[],spawn:0,win:false,
+    start(n){
+      Restart.clear();B.st=n;B.cfg=BONUS_STAGES[n];
+      Z=1;camX=camY=tgX=tgY=cvx=cvy=0;tan={x:0,y:-1};turnToast=null;
+      Ally.active=[];Ally.n=0;Ally.temp=new Set();Ally.fx=[];Ally.toast=null;   // 通常ステージの仲間はボーナスには出さない
+      pl=BONUS_CFG.layout.map(([fx,fy],k)=>{const ty=(B.cfg.types&&B.cfg.types[k])||'normal',R=BONUS_CFG.radius[ty]||BONUS_CFG.planetR,h=TY[ty]&&TY[ty].h!==undefined?TY[ty].h:BONUS_CFG.hues[k%BONUS_CFG.hues.length];
+        return{type:ty,x:W*fx,y:H*fy,bx:W*fx,by:H*fy,r:R,h,amp:0,ph:k*1.3,cx:0,cy:0,leg:0}});
+      items=[];meteors=[];rings=[];parts=[];texts=[];trail=[];shake=0;
+      cur=BONUS_CFG.startPlanet;ang=Math.PI/2;dir=1;orbR=pl[cur].r+30;P={x:pl[cur].x,y:pl[cur].y+orbR,vx:0,vy:0,orbit:true};ignore=0;
+      B.t=B.cfg.time;B.score=0;B.ready=BONUS_CFG.ready;B.targets=[];B.spawn=0;B.win=false;
+      state='bonus';bgmPlay();$('ov').classList.add('hide');$('rsbtn').classList.add('hide');$('hud').classList.remove('hide');B.hud()},
+    // --- ごほうび（仲間）とランキング ---
+    thresholds(goal){const st=BONUS_CFG.allyStep;return[goal,goal+st,goal+2*st]},                     // 獲得ライン：決められた点 / +5点 / +10点
+    allies(k){return ALLY_DATA.filter(a=>a.bonus===k).sort((x,y)=>x.tier-y.tier)},
+    rank(k){const r=Slot.bonus[k]&&Slot.bonus[k].rank;return Array.isArray(r)?r.filter(e=>e&&isFinite(+e.s)).map(e=>({s:+e.s,t:+e.t||0})).sort((a,b)=>b.s-a.s||a.t-b.t).slice(0,3):[]},
+    addRank(k,score){const rec=Slot.bonus[k]=Slot.bonus[k]||{},e={s:score,t:Date.now()},l=B.rank(k).concat([e]).sort((a,b)=>b.s-a.s||a.t-b.t).slice(0,3);rec.rank=l;return l.indexOf(e)},   // 入った順位(0〜2)、圏外なら-1
+    fmt(t){const d=new Date(t);return (d.getMonth()+1)+'/'+d.getDate()},
+    rankHtml(k,hi){const l=B.rank(k);let h='<div class="rkb"><div class="rkt">ランキング TOP3（クリアした得点）</div>';
+      for(let i=0;i<3;i++){const e=l[i];h+='<div class="rk'+(i===hi?' hi':'')+'"><span>'+(i+1)+'位</span><b>'+(e?e.s+'点':'--')+'</b><small>'+(e?B.fmt(e.t)+(i===hi?'　NEW!':''):'')+'</small></div>'}
+      return h+'</div>'},
+    // ステージ選択でボーナスのタイルを押したときの画面：目標・ごほうび・ランキング
+    info(k){
+      const cfg=BONUS_STAGES[k],n=Object.keys(BONUS_STAGES).indexOf(String(k))+1,th=B.thresholds(cfg.goal),al=B.allies(k),P=$('bibody');
+      $('bititle').textContent='ボーナスステージ '+n;P.innerHTML='';
+      const E=(tag,cls,html)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(html!==undefined)e.innerHTML=html;return e};
+      P.appendChild(E('div','bil','目標 <b>'+cfg.goal+'点</b> ／ '+cfg.time+'秒　場外に出ると −'+BONUS_CFG.outPenalty+'点'));
+      const rb=E('div','rwb');rb.appendChild(E('div','rkt','仲間のごほうび（得点で獲得）'));
+      al.forEach((a,i)=>{const own=!!Ally.rescued[a.id],row=E('div','bir'+(own?' ok':'')),c=document.createElement('canvas');c.width=c.height=88;Ally.paint(c,a,own);row.appendChild(c);
+        row.appendChild(E('div','','<div class="bn1">'+th[i]+'点 でゲット</div><div class="bn2">'+(own?a.name:'？？？？')+'</div>'));row.appendChild(E('div','bst',own?'✓ 獲得済み':'未獲得'));rb.appendChild(row)});
+      P.appendChild(rb);P.appendChild(E('div','','')).innerHTML=B.rankHtml(k,-1);
+      const pb=E('button','','あそぶ');pb.id='biplay';pb.onclick=e=>{e.stopPropagation();$('binfo').classList.add('hide');B.start(k)};P.appendChild(pb);
+      $('binfo').classList.remove('hide');P.scrollTop=0},
+    hud(){$('score').textContent='ボーナス';$('combo').textContent='のこり '+Math.max(0,Math.ceil(B.t))+'秒　得点 '+B.score+' / 目標 '+B.cfg.goal+'点'},
+    // ターゲットを「惑星と惑星の間」(edges) の線分上にだけ出す。惑星の周回軌道とは重ならない位置に限る
+    trySpawn(){
+      let x=Math.random()*100,K=BONUS_CFG.kinds[0];for(const k of BONUS_CFG.kinds){if(x<k.w){K=k;break}x-=k.w}
+      const free=Math.random()<BONUS_CFG.freeRatio;                       // 半分ほどは惑星の間以外（空いた場所）に出す
+      for(let tr=0;tr<30;tr++){
+        let tx,ty,kind;
+        if(free){tx=34+Math.random()*(W-68);ty=130+Math.random()*(H-130-34);kind='free';
+          if(pl.some(q=>Math.hypot(q.x-tx,q.y-ty)<q.r+30+K.r+8))continue}     // 惑星の周回軌道には重ねない
+        else{const e=BONUS_CFG.edges[Math.floor(Math.random()*BONUS_CFG.edges.length)],a=pl[e[0]],b=pl[e[1]],L=Math.hypot(b.x-a.x,b.y-a.y);
+          const m=Math.max(a.r,b.r)+30+K.r+8,lo=m/L,hi=1-m/L;if(lo>=hi)continue;
+          const u=lo+Math.random()*(hi-lo);tx=a.x+(b.x-a.x)*u;ty=a.y+(b.y-a.y)*u;kind='edge'}
+        if(B.targets.some(o=>Math.hypot(o.x-tx,o.y-ty)<o.r+K.r+10))continue;
+        B.targets.push({x:tx,y:ty,v:K.v,r:K.r,h:K.h,life:K.life,max:K.life,done:false,kind});return true}
+      return false},
+    update(dt){
+      clock+=dt;
+      for(const r of rings){r.life-=dt*1.8;r.r+=dt*140}rings=rings.filter(r=>r.life>0);
+      for(const p of parts){p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt*1.6}parts=parts.filter(p=>p.life>0);
+      for(const t of texts){t.life-=dt;t.y-=dt*20}texts=texts.filter(t=>t.life>0);
+      if(shake>0)shake-=dt;
+      if(state!=='bonus')return;
+      const c=pl[cur];
+      if(P.orbit){ang+=dir*omega()*spd(c)*dt;orbR+=((c.r+30)-orbR)*Math.min(1,dt*10);P.x=c.x+Math.cos(ang)*orbR;P.y=c.y+Math.sin(ang)*orbR}   // 惑星の種類ごとの回転速度が効く
+      else{
+        P.x+=P.vx*dt;P.y+=P.vy*dt;ignore-=dt;
+        for(let i=0;i<pl.length;i++){if(i===cur&&ignore>0)continue;const q=pl[i],dx=P.x-q.x,dy=P.y-q.y,d=Math.hypot(dx,dy);
+          if(d<zone(q)){cur=i;ang=Math.atan2(dy,dx);dir=(dx*P.vy-dy*P.vx)>0?1:-1;orbR=d;P.orbit=true;rings.push({x:q.x,y:q.y,r:q.r,life:1});blip(440+i*30,.05);Dex.touch(q);break}}
+        if(!P.orbit&&(P.x<-12||P.x>W+12||P.y<-12||P.y>H+12)){     // 場外へ出たら減点して、直前の惑星に戻る（準備中は減点なし）
+          P.orbit=true;ang=Math.PI/2;orbR=pl[cur].r+30;
+          if(B.ready<=0){B.score-=BONUS_CFG.outPenalty;texts.push({t:'場外！ -'+BONUS_CFG.outPenalty,x:pl[cur].x,y:pl[cur].y-pl[cur].r-44,life:1.5});blip(180,.2);vib(40);shake=.25}
+          else texts.push({t:'もどった',x:pl[cur].x,y:pl[cur].y-pl[cur].r-40,life:1})}
+      }
+      trail.push({x:P.x,y:P.y});if(trail.length>26)trail.shift();
+      if(B.ready>0){B.ready-=dt;B.hud();return}
+      B.t-=dt;B.spawn-=dt;
+      if(B.spawn<=0&&B.targets.length<BONUS_CFG.maxTargets){B.trySpawn();B.spawn=BONUS_CFG.spawnEvery}
+      for(const g of B.targets){g.life-=dt;
+        if(!g.done&&Math.hypot(P.x-g.x,P.y-g.y)<g.r+11){g.done=true;B.score+=g.v;            // 触れたら得点。消えるので同じターゲットでは二重に得点できない
+          for(let k=0;k<14;k++){const an=Math.random()*6.28,sp=60+Math.random()*120;parts.push({x:g.x,y:g.y,vx:Math.cos(an)*sp,vy:Math.sin(an)*sp,life:1,h:g.h})}
+          texts.push({t:'+'+g.v,x:g.x,y:g.y-g.r-6,life:1});blip(520+g.v*140,.07);vib(8)}}
+      B.targets=B.targets.filter(g=>!g.done&&g.life>0);
+      B.hud();
+      if(B.t<=0){B.t=0;B.end()}
+    },
+    end(){
+      state='bonusend';B.win=B.score>=B.cfg.goal;B.targets=[];
+      const pv=Slot.bonus[B.st]||{},g=B.cfg.goal;Slot.bonus[B.st]=Object.assign({},pv,{best:Math.max(+pv.best||0,B.score),clear:!!(pv.clear||B.win)});   // ボーナスの記録（通常ステージのprogには触れない）
+      const hi=B.win?B.addRank(B.st,B.score):-1;                                       // ランキングはクリア(目標達成)した得点だけ記録
+      const th=B.thresholds(g),al=B.allies(B.st);
+      const got=Ally.grant(al.filter(a=>B.score>=th[a.tier]).map(a=>a.id));            // 目標点 / +5点 / +10点 で仲間を獲得
+      Slot.save();
+      $('t').textContent=B.win?'ボーナス成功！':'ボーナス失敗…';
+      $('d').innerHTML='得点 <b style="color:#ffb74a">'+B.score+'</b> / 目標 '+g+'点<br>'+(B.win?'目標達成！':'あと '+(g-B.score)+'点 たりなかった')
+        +'<div class="rwb"><div class="rkt">仲間のごほうび</div>'+al.map((a,i)=>{const own=!!Ally.rescued[a.id],now=got.indexOf(a)>=0;
+          return '<div class="rw'+(own?' ok':'')+'"><span>'+th[i]+'点</span><b>'+(own?a.name:'？？？')+'</b><small'+(now?' class="nw"':'')+'>'+(now?'NEW! 仲間になった':own?'獲得済み':'')+'</small></div>'}).join('')+'</div>'
+        +B.rankHtml(B.st,hi)+'<small>通常ステージのクリア記録には影響しません</small>';
+      $('go').textContent='もう一度あそぶ';goAct=()=>Bonus.start(B.st);
+      $('grid').classList.add('hide');$('colbtn').classList.add('hide');$('dexbtn').classList.add('hide');$('slotbtn').classList.add('hide');$('bonusbtn').classList.add('hide');$('rsbtn').classList.add('hide');
+      $('go').classList.remove('hide');$('menu').classList.remove('hide');$('ov').classList.remove('hide');$('hud').classList.add('hide');
+      if(B.win)playSE('SE_gole.mp3',()=>blip(784,.2));else blip(200,.25);vib(B.win?[20,40,20]:50)},
+    drawWorld(){
+      if(state!=='bonus'&&state!=='bonusend')return;
+      ctx.save();ctx.strokeStyle='rgba(154,160,189,.16)';ctx.lineWidth=1.5;ctx.setLineDash([3,7]);
+      for(const e of BONUS_CFG.edges){ctx.beginPath();ctx.moveTo(pl[e[0]].x,pl[e[0]].y);ctx.lineTo(pl[e[1]].x,pl[e[1]].y);ctx.stroke()}ctx.restore();ctx.setLineDash([]);
+      for(const g of B.targets){const a=Math.min(1,g.life/.5),f=g.life/g.max;
+        ctx.save();ctx.globalAlpha=a;ctx.beginPath();ctx.arc(g.x,g.y,g.r,0,7);ctx.fillStyle=`hsla(${g.h},85%,60%,.28)`;ctx.fill();
+        ctx.beginPath();ctx.arc(g.x,g.y,g.r,-Math.PI/2,-Math.PI/2+6.2832*f);ctx.strokeStyle=`hsl(${g.h},90%,68%)`;ctx.lineWidth=3;ctx.stroke();
+        ctx.fillStyle='#fff';ctx.font='900 '+Math.round(g.r*1.1)+'px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(g.v,g.x,g.y+1);ctx.textBaseline='alphabetic';ctx.restore()}
+    },
+    drawUI(){
+      if(state!=='bonus'&&state!=='bonusend')return;
+      const g=ctx;g.save();
+      const f=Math.max(0,Math.min(1,B.t/B.cfg.time));g.fillStyle='rgba(255,255,255,.12)';g.fillRect(20,100,W-40,6);g.fillStyle=f<.25?'#ff6b6b':'#ffb74a';g.fillRect(20,100,(W-40)*f,6);
+      if(state==='bonus'&&B.ready>0){g.fillStyle='rgba(8,10,24,.62)';g.fillRect(0,H*.39,W,H*.25);g.fillStyle='#fff';g.textAlign='center';g.font='900 26px sans-serif';g.fillText('ボーナスステージ！',W/2,H*.45);
+        g.font='700 15px sans-serif';g.fillStyle='#ffe066';g.fillText('目標 '+B.cfg.goal+'点 ／ '+B.cfg.time+'秒',W/2,H*.495);g.fillStyle='#cfd3ea';g.font='700 13px sans-serif';g.fillText('惑星の間にも、空いた場所にもターゲットが出るよ',W/2,H*.53);
+        g.fillStyle='#ff8a8a';g.font='900 14px sans-serif';g.fillText('場外に出ると −'+BONUS_CFG.outPenalty+'点',W/2,H*.565)}
+      g.restore()}
+  };
+  return B;
+})();
+
+
+/* ============================================================
+   お祝い：39体すべての仲間（スペシャル以外）を救出したら、ステージ選択画面でお祝いのメッセージと40体目を獲得
+   ============================================================ */
+const Congrats=(()=>{
+  const C={
+    check(){
+      if(!Slot.cur)return;const sp=ALLY_DATA.find(a=>a.special);
+      if(!sp||Ally.rescued[sp.id]||Ally.coreCount()<Ally.coreTotal())return;       // すでに40体目がいる／39体そろっていない → 何もしない
+      if(Ally.grant([sp.id]).length)C.show(sp);
+    },
+    show(a){
+      const B=$('cgbody');B.innerHTML='';
+      const E=(tag,cls,html)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(html!==undefined)e.innerHTML=html;return e};
+      for(let i=0;i<30;i++){const f=E('span','cf');f.style.left=(Math.random()*100)+'%';f.style.background='hsl('+Math.floor(Math.random()*360)+',85%,62%)';f.style.animationDelay=(-Math.random()*3.4)+'s';f.style.animationDuration=(2.6+Math.random()*1.8)+'s';$('congrats').appendChild(f)}
+      B.appendChild(E('div','cgt','★ おめでとう！ ★'));
+      B.appendChild(E('p','','すべての仲間（'+Ally.coreTotal()+'体）を救出しました！'));
+      const c=document.createElement('canvas');c.width=c.height=340;Ally.paint(c,a,true);B.appendChild(c);
+      B.appendChild(E('p','','ひみつの仲間 <b style="color:#ffb74a">'+a.name+'</b> が<br>'+ALLY_DATA.length+'体目の仲間になりました！'));
+      const ok=E('button','','やったー！');ok.id='cgok';ok.onclick=e=>{e.stopPropagation();C.close()};B.appendChild(ok);
+      $('congrats').classList.remove('hide');blip(988,.1);setTimeout(()=>blip(1319,.12),110);setTimeout(()=>blip(1568,.2),240);vib([20,40,20,40,60]);
+    },
+    close(){$('congrats').classList.add('hide');for(const f of [...$('congrats').querySelectorAll('.cf')])f.remove()}
+  };
+  return C;
+})();
+$('biback').addEventListener('click',e=>{e.stopPropagation();$('binfo').classList.add('hide')});
 
 let last=performance.now();
 function loop(now){
@@ -207,21 +1122,22 @@ function loop(now){
   if(!inactive)update(dt);draw();requestAnimationFrame(loop);
 }
 function update(dt){
+  if(state==='bonus'||state==='bonusend'){Bonus.update(dt);return}
   clock+=dt;
-  for(const q of pl)if(q.amp)q.x=q.bx+Math.sin(clock*.9+q.ph)*q.amp;
-  for(const m of items)if(m.amp)m.x=m.bx+Math.sin(clock*1.1+m.ph)*m.amp;
+  for(const q of pl)if(q.amp){const o=Math.sin(clock*.9+q.ph)*q.amp;q.x=q.bx+q.cx*o;q.y=q.by+q.cy*o}
+  for(const m of items)if(m.amp){const o=Math.sin(clock*1.1+m.ph)*m.amp;m.x=m.bx+m.cx*o;m.y=m.by+m.cy*o}
   const c=pl[cur];
   if(state==='play'&&scrolling){
-    camY-=scrollV*dt;spawnT-=dt;
+    camAdvance(dt);spawnT-=dt;   // カメラはルートの軌道に沿って時間で進む（プレイヤーの動きには関係しない）
     if(stage>=2&&spawnT<=0){
       spawnT=Math.max(1.8,5-.3*stage)*(.7+Math.random()*.6);
-      meteors.push({x:W/2+(Math.random()-.5)*(W/Z-80),y:camY,vx:(Math.random()-.5)*100,vy:130+stage*6+Math.random()*40,w:1,aim:false});
+      spawnMeteor();
     }
     for(const m of meteors){
-      if(m.w>0){m.w-=dt;m.y=camY+10/Z;if(m.aim){const t=Math.max(.3,(P.y-m.y)/m.vy);m.vx=Math.max(-220,Math.min(220,(P.x-m.x)/t))}}
+      if(m.w>0){m.w-=dt;pinMeteor(m);if(m.aim){const t=Math.max(.3,(P.y-m.y)/m.vy);m.vx=Math.max(-220,Math.min(220,(P.x-m.x)/t))}}
       else{m.x+=m.vx*dt;m.y+=m.vy*dt;if(Math.hypot(P.x-m.x,P.y-m.y)<13)finish(false,'流れ星に衝突')}
     }
-    meteors=meteors.filter(m=>(m.y-camY)*Z<H+80&&Math.abs(m.x-W/2)<W/Z);
+    meteors=meteors.filter(keepMeteor);
   }
   if(state==='play'){
     for(const q of pl){
@@ -237,26 +1153,31 @@ function update(dt){
       P.x+=P.vx*dt;P.y+=P.vy*dt;ignore-=dt;
       for(let i=0;i<pl.length;i++){if(i===cur&&ignore>0)continue;
         const q=pl[i],dx=P.x-q.x,dy=P.y-q.y,d=Math.hypot(dx,dy);
-        if(q.gone)continue;
-        if(d<zone(q)&&(q.y-camY)*Z>10&&Math.abs(q.x-W/2)<W/(2*Z)-5){
+        if(q.gone||q.passed||q.leg>camLeg+1)continue;   // 区間を2つ以上先の惑星には着地できない（つなぎの区間を丸ごと飛ばして、カメラの来ない列に取り残されるのを防ぐ）
+        if(d<zone(q)&&landable(q)){
           if(q.type==='ghost'){if(q.hold==='dark')continue;if(!q.hold&&isDark(q)){q.hold='dark';continue}q.hold='norm'}
           if(q.type==='bomb'&&q.t==null)q.t=3;
           {const va=Math.atan2(P.vy,P.vx),df=va-relAng,bend=Math.abs(Math.atan2(Math.sin(df),Math.cos(df)));celebrate(q,Math.max(0,i-cur-1),bend)}
           cur=i;ang=Math.atan2(dy,dx);
           dir=(dx*P.vy-dy*P.vx)>0?1:-1;if(q.type==='reverse')dir=-dir;
           orbR=d;P.orbit=true;
+          Ally.onLand(cur);
+          Dex.touch(q);
+          Restart.onLand(q);
           if(cur===N)finish(true);
           break;
         }
       }
-      const sy=(P.y-camY)*Z;
-      if(state==='play'&&!P.orbit&&(sy>H+60||sy<-30||Math.abs(P.x-W/2)>W/(2*Z)+30))finish(false,'宇宙の果てへ飛んでいった');
+      if(state==='play'&&!P.orbit&&outside(scr(P.x,P.y)))finish(false,'宇宙の果てへ飛んでいった');
     }
-    if(state==='play'){trail.push({x:P.x,y:P.y});if(trail.length>26)trail.shift();if((P.y-camY)*Z>H-8){finish(false,'画面の下に取り残された')}else if(!P.orbit)for(const m of items)if(Math.hypot(P.x-m.x,P.y-m.y)<m.r+6){finish(false,'隕石に衝突');break}}
+    if(state==='play'){trail.push({x:P.x,y:P.y});if(trail.length>26)trail.shift();{const o=scr(P.x,P.y);   // 後ろ側の端から8px内側より後ろへ出たら「取り残された」
+      const why=behindWhy(o);
+      if(why)finish(false,why);else if(!P.orbit)for(const m of items)if(Math.hypot(P.x-m.x,P.y-m.y)<m.r+6){finish(false,'隕石に衝突');break}}}
   }
   for(const r of rings){r.life-=dt*1.8;r.r+=dt*140}rings=rings.filter(r=>r.life>0);
   for(const p of parts){p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt*1.6}parts=parts.filter(p=>p.life>0);
   for(const t of texts){t.life-=dt;t.y-=dt*20}texts=texts.filter(t=>t.life>0);
+  Ally.update(dt);
   hud();
   if(shake>0)shake-=dt;
 }
@@ -267,66 +1188,78 @@ function draw(){
   if(IMG.bg)drawBg();
   ctx.fillStyle='rgba(242,239,230,.5)';
   for(let i=0;!IMG.bg&&i<50;i++){
-    const sx=(i*137.5)%W,k=0.2+(i%3)*0.15;
+    const k=0.2+(i%3)*0.15,sx=(((i*137.5)-camX*k)%W+W)%W;
     const sy=(((i*91.3)-camY*k)%H+H)%H;
     ctx.fillRect(sx,sy,1.5,1.5);
   }
   ctx.save();
   const sh=shake>0?(Math.random()-.5)*10:0;
-  ctx.translate(sh+W/2,0);ctx.scale(Z,Z);ctx.translate(-W/2,-camY);
+  ctx.translate(sh,0);ctx.scale(Z,Z);ctx.translate(-camX,-camY);
   for(let i=0;i<pl.length;i++){
     const q=pl[i];
     if(q.gone)continue;
-    if((q.y-camY)*Z>H+80||(q.y-camY)*Z<-100)continue;
+    {const o=scr(q.x,q.y);if(o.y>H+80||o.y<-100||o.x>W+100||o.x<-100)continue}
     const isNext=false;
-    ctx.beginPath();ctx.arc(q.x,q.y,zone(q),0,7);
+    if(!q.passed){ctx.beginPath();ctx.arc(q.x,q.y,zone(q),0,7);
     ctx.strokeStyle=isNext?'rgba(255,183,74,.45)':'rgba(154,160,189,.12)';
-    ctx.lineWidth=isNext?2:1;ctx.setLineDash([4,7]);ctx.stroke();ctx.setLineDash([]);
+    ctx.lineWidth=isNext?2:1;ctx.setLineDash([4,7]);ctx.stroke();ctx.setLineDash([])}
     if(i===cur){ctx.beginPath();ctx.arc(q.x,q.y,q.r+30,0,7);ctx.strokeStyle='rgba(242,239,230,.25)';ctx.lineWidth=1.5;ctx.stroke()}
-    {const sc=pulseScale(clock);ctx.save();ctx.translate(q.x,q.y);ctx.scale(sc,sc);ctx.translate(-q.x,-q.y);drawPlanet(q);ctx.restore()}
+    {const sc=pulseScale(clock);ctx.save();if(q.passed)ctx.globalAlpha=.3;ctx.translate(q.x,q.y);ctx.scale(sc,sc);ctx.translate(-q.x,-q.y);drawPlanet(q);ctx.restore()}
     if(q.goal){
       ctx.beginPath();ctx.arc(q.x,q.y,q.r+8,0,7);ctx.strokeStyle='#ffe066';ctx.lineWidth=3;ctx.stroke();
       ctx.fillStyle='#ffe066';ctx.font='bold 14px sans-serif';ctx.textAlign='center';ctx.fillText('ゴール',q.x,q.y-q.r-64);
     }
   }
+  Ally.drawWorld();
+  Bonus.drawWorld();
   for(const m of items){
-    const sy=(m.y-camY)*Z;if(sy>H+40||sy<-40)continue;
+    {const o=scr(m.x,m.y);if(o.y>H+40||o.y<-40||o.x>W+40||o.x<-40)continue}
     if(IMG.rock)ctx.drawImage(IMG.rock,m.x-m.r,m.y-m.r,m.r*2,m.r*2);
     else{ctx.beginPath();ctx.arc(m.x,m.y,m.r,0,7);ctx.fillStyle='#6b6f86';ctx.fill();ctx.strokeStyle='#9aa0bd';ctx.lineWidth=2;ctx.stroke();
       ctx.beginPath();ctx.moveTo(m.x-m.r*.5,m.y-m.r*.2);ctx.lineTo(m.x,m.y+m.r*.1);ctx.lineTo(m.x+m.r*.4,m.y-m.r*.4);ctx.stroke()}
   }
   for(const m of meteors){
-    if(m.w>0){const a=.4+.4*Math.sin(clock*18);ctx.strokeStyle=`rgba(255,90,90,${a})`;ctx.lineWidth=2;ctx.setLineDash([6,8]);ctx.beginPath();ctx.moveTo(m.x,m.y);ctx.lineTo(m.x+m.vx/m.vy*600,m.y+600);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle=`rgba(255,90,90,${a+.3})`;ctx.font='900 22px sans-serif';ctx.textAlign='center';ctx.fillText('!',m.x,m.y+26)}
+    if(m.w>0){const a=.4+.4*Math.sin(clock*18);ctx.strokeStyle=`rgba(255,90,90,${a})`;ctx.lineWidth=2;ctx.setLineDash([6,8]);ctx.beginPath();const mm=Math.max(Math.abs(m.vx),Math.abs(m.vy));ctx.moveTo(m.x,m.y);ctx.lineTo(m.x+m.vx/mm*600,m.y+m.vy/mm*600);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle=`rgba(255,90,90,${a+.3})`;ctx.font='900 22px sans-serif';ctx.textAlign='center';const hx=Math.abs(m.vx)>Math.abs(m.vy);ctx.fillText('!',m.x+(hx?Math.sign(m.vx)*26:0),m.y+(hx?0:Math.sign(m.vy)*26))}
     else{const L=Math.hypot(m.vx,m.vy),tx=-m.vx/L*60,ty=-m.vy/L*60,g=ctx.createLinearGradient(m.x,m.y,m.x+tx,m.y+ty);g.addColorStop(0,'rgba(255,240,200,.9)');g.addColorStop(1,'rgba(255,160,60,0)');ctx.strokeStyle=g;ctx.lineWidth=7;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(m.x,m.y);ctx.lineTo(m.x+tx,m.y+ty);ctx.stroke();if(IMG.rock){ctx.save();ctx.translate(m.x,m.y);ctx.rotate(clock*3);ctx.drawImage(IMG.rock,-15,-15,30,30);ctx.restore()}else{ctx.beginPath();ctx.arc(m.x,m.y,7,0,7);ctx.fillStyle='#fff6dc';ctx.fill()}}
   }
   for(const r of rings){ctx.beginPath();ctx.arc(r.x,r.y,r.r,0,7);ctx.strokeStyle=`rgba(255,246,220,${r.life*.7})`;ctx.lineWidth=3;ctx.stroke()}
   for(const p of parts){ctx.fillStyle=`hsla(${p.h},90%,75%,${p.life})`;ctx.fillRect(p.x-2,p.y-2,4,4)}
   ctx.textAlign='center';ctx.font='900 20px sans-serif';
   for(const t of texts){ctx.fillStyle=`rgba(255,224,102,${Math.min(1,t.life)})`;ctx.fillText(t.t,t.x,t.y)}
-  if(state==='play'&&P.orbit)preview();
+  if((state==='play'||state==='bonus')&&P.orbit)preview();
   for(let i=0;i<trail.length;i++){
     const a=i/trail.length;
     ctx.beginPath();ctx.arc(trail[i].x,trail[i].y,2+a*4,0,7);
     ctx.fillStyle=`rgba(255,183,74,${a*0.5})`;ctx.fill();
   }
-  if(state==='play'||state==='clear'){
+  if(state==='play'||state==='clear'||state==='bonus'||state==='bonusend'){
     if(IMG.player){const hx=P.orbit?-Math.sin(ang)*dir:P.vx,hy=P.orbit?Math.cos(ang)*dir:P.vy;ctx.save();ctx.translate(P.x,P.y);ctx.rotate(Math.atan2(hy,hx)+Math.PI/2);ctx.shadowColor='rgba(255,255,255,.95)';ctx.shadowBlur=7;ctx.drawImage(IMG.player,-16,-16,32,32);ctx.drawImage(IMG.player,-16,-16,32,32);ctx.shadowBlur=0;ctx.restore()}
     else{ctx.beginPath();ctx.arc(P.x,P.y,7,0,7);ctx.fillStyle='#fff6dc';
     ctx.shadowColor='#ffb74a';ctx.shadowBlur=16;ctx.fill();ctx.shadowBlur=0}
-    if(P.orbit&&state==='play'){
+    if(P.orbit&&(state==='play'||state==='bonus')){
       const tx=-Math.sin(ang)*dir,ty=Math.cos(ang)*dir;
       ctx.beginPath();ctx.moveTo(P.x+tx*14,P.y+ty*14);ctx.lineTo(P.x+tx*34,P.y+ty*34);
       ctx.strokeStyle='rgba(255,246,220,.55)';ctx.lineWidth=2;ctx.setLineDash([3,5]);ctx.stroke();ctx.setLineDash([]);
     }
   }
   ctx.restore();
-  if(state==='play'&&scrolling){const sy=(P.y-camY)*Z;if(sy>H-150){const a=Math.min(.6,(sy-(H-150))/150),g2=ctx.createLinearGradient(0,H-120,0,H);g2.addColorStop(0,'rgba(255,60,60,0)');g2.addColorStop(1,`rgba(255,60,60,${a})`);ctx.fillStyle=g2;ctx.fillRect(0,H-120,W,120)}}
+  if(state==='play'&&scrolling){ // 後ろ側の画面端に近づいたら赤く警告
+    const o=scr(P.x,P.y),a0=scrollDir,dist=a0.y<0?H-o.y:a0.y>0?o.y:a0.x>0?o.x:W-o.x;
+    if(dist<150){const a=Math.min(.6,(150-dist)/150);let g2,rx=0,ry=0,rw=W,rh=H;
+      if(a0.y<0){g2=ctx.createLinearGradient(0,H-120,0,H);ry=H-120;rh=120}
+      else if(a0.y>0){g2=ctx.createLinearGradient(0,120,0,0);rh=120}
+      else if(a0.x>0){g2=ctx.createLinearGradient(120,0,0,0);rw=120}
+      else{g2=ctx.createLinearGradient(W-120,0,W,0);rx=W-120;rw=120}
+      g2.addColorStop(0,'rgba(255,60,60,0)');g2.addColorStop(1,`rgba(255,60,60,${a})`);ctx.fillStyle=g2;ctx.fillRect(rx,ry,rw,rh)}}
+  Ally.drawUI();
+  Bonus.drawUI();
+  drawTurnToast();
 }
 prep(1);state='logo';$('ov').classList.add('hide');$('hud').classList.add('hide');
 let logoReady=false;
 setTimeout(()=>{logoReady=true;$('tap').classList.remove('hide')},1000);
 $('logo').addEventListener('click',()=>{if(!logoReady)return;TBGM.play().catch(()=>{});for(const f in SEA)SEA[f].load();$('logo').classList.add('hide');$('title').classList.remove('hide');state='title'});
-$('startbtn').addEventListener('click',()=>{bgmPlay();$('title').classList.add('hide');showMenu()});
+$('startbtn').addEventListener('click',()=>Slots.open('title'));
 const TBGM=new Audio('obit.mp3');TBGM.loop=false;TBGM.volume=.4;
 let inactive=false,bgmWas=false,tWas=false;
 function setActive(a){

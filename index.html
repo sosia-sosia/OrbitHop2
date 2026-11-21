@@ -20,15 +20,26 @@ canvas{position:fixed;top:0;display:block;box-shadow:0 0 40px rgba(0,0,0,.6)}
 #combo{height:18px;color:#ffe066;font-weight:900;font-size:14px}
 #grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;max-width:320px;width:100%}
 .st{font:inherit;font-size:22px;font-weight:900;border:0;border-radius:14px;padding:10px 0;background:#242a52;color:var(--ink)}
-.st small{display:block;font-size:11px;color:var(--acc)}.st.lock{opacity:.4}
+.st small{display:block;font-size:11px;color:var(--acc)}
+.st{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 0 7px}
+.st .sn{line-height:1.1}
+.st .rs{display:flex;gap:1px;height:17px;width:100%;box-sizing:border-box;padding:0 2px;align-items:center;justify-content:center}
+.st .hp{flex:0 1 17px;min-width:0;height:17px;object-fit:contain;display:block}
+.st .hp.off{filter:brightness(0) opacity(.6)}
+.st .cr{height:13px;display:flex;align-items:center;justify-content:center}
+.st .cr .cm{font-size:10px;color:var(--acc)}
+.st.lock::after{content:"";position:absolute;inset:0;background:rgba(5,7,20,.62);border-radius:inherit;pointer-events:none}
+.st .lc{position:relative;z-index:1;height:32px;display:flex;align-items:center;justify-content:center;font-size:18px}
 .st.bn{background:rgba(255,183,74,.14);box-shadow:inset 0 0 0 1.5px rgba(255,183,74,.75);color:#ffd27a}.st.bn small{color:#ffe066}
-#menu,#snd,#colbtn,#dexbtn,#slotbtn{font:inherit;font-size:15px;background:none;color:var(--dim);border:1px solid var(--dim);border-radius:30px;padding:8px 26px}
+#menu,#snd,#colbtn,#dexbtn,#slotbtn,#helpbtn,#titlebtn{font:inherit;font-size:15px;background:none;color:var(--dim);border:1px solid var(--dim);border-radius:30px;padding:8px 26px}
 .scr{box-sizing:border-box;position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px}
 #logo{background:#0d1020}
 #lgt{font-size:40px;font-weight:900;letter-spacing:.12em}
 #tap{position:absolute;bottom:16%;color:var(--dim);font-size:14px;animation:bl 1.2s infinite}
 @keyframes bl{50%{opacity:.25}}
-#title{justify-content:center;gap:calc(var(--u,8px)*5);overflow-y:auto;background:rgba(13,16,32,.55);padding:calc(var(--u,8px)*4) 24px}
+#title{justify-content:flex-end;gap:calc(var(--u,8px)*3);overflow:hidden;background:rgba(13,16,32,.55);padding:calc(var(--u,8px)*4) 24px calc(var(--u,8px)*9)}
+#ti{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;object-position:center;visibility:hidden;z-index:0;pointer-events:none}   /* タイトル画像は画面いっぱい（はみ出す分は中央を残して切る） */
+#titw{width:100%;margin:auto 0}#title>#startbtn{position:relative;z-index:1}
 #title>div{flex:0 1 auto;min-height:0}
 #startbtn{flex:0 0 auto}
 #title h1{margin:0 0 10px;font-size:40px;font-weight:900;letter-spacing:.04em}
@@ -45,11 +56,11 @@ canvas{position:fixed;top:0;display:block;box-shadow:0 0 40px rgba(0,0,0,.6)}
 .cc canvas{position:static;display:block;box-shadow:none;width:100%;max-width:84px;aspect-ratio:1;margin:0 auto}
 .cn{font-size:13px;font-weight:900;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cs{font-size:10px;color:var(--dim)}.cs.ok{color:var(--acc)}
-#dex,#slots,#admin,#bonus,#binfo{justify-content:flex-start;align-items:stretch;text-align:left;gap:10px;background:#080a18;padding:calc(env(safe-area-inset-top,0px) + 14px) 14px 10px}
-#dhead,#dhead2,#ahead,#bhead,#bihead{display:flex;align-items:center;gap:8px;flex:0 0 auto}
-#dback,#sback,#aback,#bback,#biback{font:inherit;font-size:15px;font-weight:700;color:var(--ink);background:#242a52;border:0;border-radius:24px;padding:10px 16px;min-height:44px}
-#dtitle,#stitle,#atitle,#btitle,#bititle{flex:1;text-align:center;font-size:19px;font-weight:900}
-#dhead2::after,#ahead::after,#bhead::after,#bihead::after{content:"";width:84px}
+#dex,#slots,#admin,#bonus,#binfo,#help{justify-content:flex-start;align-items:stretch;text-align:left;gap:10px;background:#080a18;padding:calc(env(safe-area-inset-top,0px) + 14px) 14px 10px}
+#dhead,#dhead2,#ahead,#bhead,#bihead,#hhead{display:flex;align-items:center;gap:8px;flex:0 0 auto}
+#dback,#sback,#aback,#bback,#biback,#hback{font:inherit;font-size:15px;font-weight:700;color:var(--ink);background:#242a52;border:0;border-radius:24px;padding:10px 16px;min-height:44px}
+#dtitle,#stitle,#atitle,#btitle,#bititle,#htitle{flex:1;text-align:center;font-size:19px;font-weight:900}
+#dhead2::after,#ahead::after,#bhead::after,#bihead::after,#hhead::after{content:"";width:84px}
 #dcount{font-size:13px;font-weight:900;color:var(--acc);white-space:nowrap}
 #dlist,#slist{flex:1;min-height:0;overflow-y:auto;touch-action:pan-y;display:flex;flex-direction:column;gap:10px;padding-bottom:12px}
 .dc{display:flex;gap:12px;align-items:center;background:#1b2040;border:1px solid transparent;border-radius:14px;padding:10px 12px}
@@ -65,7 +76,7 @@ canvas{position:fixed;top:0;display:block;box-shadow:0 0 40px rgba(0,0,0,.6)}
 .sb button{font:inherit;font-size:15px;font-weight:900;border-radius:24px;min-height:44px;border:0}
 .sp{flex:1;background:var(--acc);color:#2a1a00}.sx{background:none;color:var(--dim);border:1px solid var(--dim)!important;padding:0 16px}.sd{background:#c0344b;color:#fff;padding:0 18px}
 .sq{flex:1;align-self:center;font-size:13px}
-#lockbtn{position:absolute;left:12px;top:calc(env(safe-area-inset-top,0px) + 12px);width:44px;height:44px;padding:0;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);color:var(--dim);display:flex;align-items:center;justify-content:center}
+#lockbtn{z-index:2;position:absolute;left:12px;top:calc(env(safe-area-inset-top,0px) + 12px);width:44px;height:44px;padding:0;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);color:var(--dim);display:flex;align-items:center;justify-content:center}
 #apwv{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center}
 #apwv p{margin:0;color:var(--dim)}
 #apw{width:180px;font:inherit;font-size:24px;text-align:center;letter-spacing:.4em;color:var(--ink);background:#1b2040;border:1px solid #3a4170;border-radius:14px;padding:12px;-webkit-user-select:text;user-select:text;touch-action:auto}
@@ -115,6 +126,43 @@ canvas{position:fixed;top:0;display:block;box-shadow:0 0 40px rgba(0,0,0,.6)}
 #cgok{font:inherit;font-size:18px;font-weight:900;background:var(--acc);color:#2a1a00;border:0;border-radius:40px;padding:14px 44px;margin-top:6px}
 .cf{position:absolute;top:-20px;width:8px;height:14px;opacity:.9;animation:cf 3s linear infinite}
 @keyframes cf{0%{transform:translateY(-30px) rotate(0)}100%{transform:translateY(110vh) rotate(540deg)}}
+#mbar{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:320px}
+#mbar button{width:100%;padding:9px 4px;font-size:13px;line-height:1.35}
+#mbar #bonusbtn,#mbar #titlebtn{grid-column:1/-1;padding:8px 10px}
+#hbody{flex:1;min-height:0;overflow-y:auto;touch-action:pan-y;text-align:left;padding:4px 4px 16px;max-width:340px;width:100%}
+#hbody h3{margin:16px 0 4px;font-size:15px;color:var(--acc)}#hbody p{margin:0;font-size:13.5px;line-height:1.75;color:var(--ink)}
+/* メニュー画像（読み込めたときだけ有効になる） */
+.sg,.lk,.cm{font-style:normal}.sg.lg{font-size:28px;letter-spacing:.08em}
+.im-staron .sg.on,.im-staroff .sg.off{font-size:0;display:inline-block;width:12px;height:12px;margin:0 1px;vertical-align:middle;background-position:center;background-size:contain;background-repeat:no-repeat}
+.im-staron .sg.on{background-image:var(--im-staron)}.im-staroff .sg.off{background-image:var(--im-staroff)}
+.im-staron .sg.lg.on,.im-staroff .sg.lg.off{width:34px;height:34px;margin:0 3px}
+.st .lc .lk{width:22px;height:22px}
+.im-lock .lk{font-size:0;display:inline-block;width:14px;height:14px;background:var(--im-lock) center/contain no-repeat;vertical-align:middle}
+.im-clearmark .cm{font-size:0;display:inline-block;width:40px;height:13px;background:var(--im-clearmark) center/contain no-repeat;vertical-align:middle}
+.nd{font-style:normal}
+.im-num0 .nd.d0{font-size:0;display:inline-block;width:16px;height:22px;background:var(--im-num0) center/contain no-repeat;vertical-align:middle}
+.im-num1 .nd.d1{font-size:0;display:inline-block;width:16px;height:22px;background:var(--im-num1) center/contain no-repeat;vertical-align:middle}
+.im-num2 .nd.d2{font-size:0;display:inline-block;width:16px;height:22px;background:var(--im-num2) center/contain no-repeat;vertical-align:middle}
+.im-num3 .nd.d3{font-size:0;display:inline-block;width:16px;height:22px;background:var(--im-num3) center/contain no-repeat;vertical-align:middle}
+.im-num4 .nd.d4{font-size:0;display:inline-block;width:16px;height:22px;background:var(--im-num4) center/contain no-repeat;vertical-align:middle}
+.im-num5 .nd.d5{font-size:0;display:inline-block;width:16px;height:22px;background:var(--im-num5) center/contain no-repeat;vertical-align:middle}
+.im-num6 .nd.d6{font-size:0;display:inline-block;width:16px;height:22px;background:var(--im-num6) center/contain no-repeat;vertical-align:middle}
+.im-num7 .nd.d7{font-size:0;display:inline-block;width:16px;height:22px;background:var(--im-num7) center/contain no-repeat;vertical-align:middle}
+.im-num8 .nd.d8{font-size:0;display:inline-block;width:16px;height:22px;background:var(--im-num8) center/contain no-repeat;vertical-align:middle}
+.im-num9 .nd.d9{font-size:0;display:inline-block;width:16px;height:22px;background:var(--im-num9) center/contain no-repeat;vertical-align:middle}
+.im-bn1 .nd.nb1{font-size:0;display:inline-block;width:32px;height:22px;background:var(--im-bn1) center/contain no-repeat;vertical-align:middle}
+.im-bn2 .nd.nb2{font-size:0;display:inline-block;width:32px;height:22px;background:var(--im-bn2) center/contain no-repeat;vertical-align:middle}
+.im-bn3 .nd.nb3{font-size:0;display:inline-block;width:32px;height:22px;background:var(--im-bn3) center/contain no-repeat;vertical-align:middle}
+/* 背景画像：メニュー（ステージ選択）と、図鑑・ログインボーナスなどの各画面。1枚を画面サイズに合わせて拡縮（cover） */
+.im-menubg #collect,.im-menubg #dex,.im-menubg #slots,.im-menubg #admin,.im-menubg #bonus,.im-menubg #binfo,.im-menubg #help{background:var(--im-menubg) center/cover no-repeat #080a18}
+.im-menubg #ov:has(#grid:not(.hide)){background:var(--im-menubg) center/cover no-repeat #080a18}
+/* テキストボックス画像：1枚を各ボックスの大きさに合わせて伸縮 */
+.im-panel .cc,.im-panel .dc,.im-panel .sc,.im-panel .bir,.im-panel .rk,.im-panel .rw,.im-panel .ast{background:var(--im-panel) center/100% 100% no-repeat;border-radius:0}
+.im-panel #bbody{flex:0 0 auto;margin:auto 0;padding:28px 18px;background:var(--im-panel) center/100% 100% no-repeat}
+.im-panel #hbody{padding:18px 20px;background:var(--im-panel) center/100% 100% no-repeat;box-sizing:border-box}
+.im-tile .st:not(.bn){background:var(--im-tile) center/100% 100% no-repeat;border-radius:0}
+.im-bonus .st.bn{background:var(--im-bonus) center/100% 100% no-repeat;border-radius:0;box-shadow:none}
+.ch{line-height:1.25}
 .hide{display:none!important}
 </style>
 </head>
@@ -122,7 +170,7 @@ canvas{position:fixed;top:0;display:block;box-shadow:0 0 40px rgba(0,0,0,.6)}
 <canvas id="c"></canvas>
 <div id="hud" class="hide"><div id="score"></div><div id="combo"></div></div>
 <div id="logo" class="scr"><img id="lg" src="Glogo.png" alt="" style="visibility:hidden;width:100%;max-height:50%;object-fit:contain" onload="this.style.visibility='visible'" onerror="this.remove();document.getElementById('lgt').classList.remove('hide')"><div id="lgt" class="hide">ORBIT HOP</div><div id="tap" class="hide">タップして進む</div></div>
-<div id="title" class="scr hide"><button id="lockbtn" aria-label="管理者"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10" rx="2.2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/><circle cx="12" cy="15.5" r="1.2" fill="currentColor"/></svg></button><div style="width:100%"><img id="ti" src="Gtitle.png" alt="" style="visibility:hidden;width:100%;max-height:calc(var(--u,8px)*40);object-fit:contain;display:block" onload="this.style.visibility='visible'" onerror="this.remove();document.getElementById('tit').classList.remove('hide')"><div id="tit" class="hide"><h1>オービット・ホップ2</h1><p>惑星をわたって、ゴールをめざせ</p></div></div><button id="startbtn">スタート</button></div>
+<div id="title" class="scr hide"><img id="ti" src="Gtitle.png" alt="" onload="this.style.visibility='visible'" onerror="this.remove();document.getElementById('tit').classList.remove('hide')"><button id="lockbtn" aria-label="管理者"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10" rx="2.2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/><circle cx="12" cy="15.5" r="1.2" fill="currentColor"/></svg></button><div id="titw"><div id="tit" class="hide"><h1>オービット・ホップ2</h1><p>惑星をわたって、ゴールをめざせ</p></div></div><button id="startbtn">スタート</button></div>
 <div id="ov">
   <h1 id="t"></h1>
   <p id="d"></p>
@@ -130,10 +178,14 @@ canvas{position:fixed;top:0;display:block;box-shadow:0 0 40px rgba(0,0,0,.6)}
   <button id="rsbtn" class="hide"></button>
   <button id="go" class="hide"></button>
   <button id="menu" class="hide">ステージ選択</button>
-  <button id="colbtn" class="hide">なかまずかん</button>
-  <button id="dexbtn" class="hide">わくせいずかん</button>
-  <button id="bonusbtn" class="hide"></button>
-  <button id="slotbtn" class="hide">データ選択</button>
+  <div id="mbar">
+    <button id="colbtn" class="hide">なかまずかん</button>
+    <button id="dexbtn" class="hide">わくせいずかん</button>
+    <button id="bonusbtn" class="hide"></button>
+    <button id="helpbtn" class="hide">あそびかた</button>
+    <button id="slotbtn" class="hide">データ選択</button>
+    <button id="titlebtn" class="hide">タイトルへ</button>
+  </div>
   <button id="snd" class="hide">♪ BGM ON</button>
 </div>
 <div id="collect" class="scr hide"><div id="chead"><button id="cback">‹ もどる</button><div id="ctitle">なかまずかん</div><div id="ccount"></div></div><div id="clist"></div></div>
@@ -146,6 +198,16 @@ canvas{position:fixed;top:0;display:block;box-shadow:0 0 40px rgba(0,0,0,.6)}
 </div>
 <div id="bonus" class="scr hide"><div id="bhead"><button id="bback">‹ もどる</button><div id="btitle">ログインボーナス</div></div>
   <div id="bbody"><svg viewBox="0 0 64 40" width="96" height="60" fill="none" stroke="#ffb74a" stroke-width="2.5" stroke-linejoin="round"><path d="M6 6h52v9a5 5 0 0 0 0 10v9H6v-9a5 5 0 0 0 0-10z" fill="rgba(255,183,74,.12)"/><path d="M42 8v24" stroke-dasharray="3 4"/><path d="M22 14l3 6 6 1-4.5 4 1.3 6-5.8-3.3L16.2 31l1.3-6-4.5-4 6-1z" fill="#ffb74a" stroke="none" transform="translate(-3 -2) scale(.9)"/></svg><div id="bcap">再スタートチケット</div><div id="bcount"></div><div id="bstat"></div><button id="bclaim"></button><div id="bmsg"></div><p id="bnote">ゲームオーバーのとき、セーブポイントの惑星からやり直せます（1回につき1枚つかいます）。</p></div></div>
+<div id="help" class="scr hide"><div id="hhead"><button id="hback">‹ もどる</button><div id="htitle">あそびかた</div></div><div id="hbody">
+<h3>あそびかた</h3><p>画面をタップすると、いま回っている惑星からまっすぐ飛び出します。次の惑星の近くを通ると着地して、その惑星のまわりを回ります。ゴールの惑星に着地するとステージクリアです。</p>
+<h3>画面の動き</h3><p>最初の1回を飛ぶと、画面が自動で流れ始めます。ルートの曲がり角では、画面がなめらかに向きを変えます（「方向転換！」と表示）。画面の後ろ側に取り残されたり、画面の外へ出ると失敗です。流れ星と隕石にも注意しましょう。</p>
+<h3>★の数</h3><p>少ないジャンプ回数でクリアするほど★が増えます。★3の目安はステージ中に表示されます。</p>
+<h3>仲間</h3><p>惑星にいる仲間に着地すると、その場で仮救出。ステージをクリアすると正式な仲間になります（失敗すると取り消し）。ボーナスステージでも、得点で仲間をゲットできます。「なかまずかん」で確認できます。</p>
+<h3>セーブポイントと再スタート</h3><p>「保」の惑星に着地すると、そこが再スタート地点に記録されます。ゲームオーバーのとき、再スタートチケット1枚でそこからやり直せます。チケットは「ログインボーナス」で1日1枚もらえます（データごと）。</p>
+<h3>ボーナスステージ</h3><p>ステージ選択の「B」。惑星の間や空いた場所に出るターゲットに触れて得点を集めます（場外に出ると −5点）。目標点・＋5点・＋10点でそれぞれ仲間をゲット。ランキングTOP3も記録されます。</p>
+<h3>わくせいずかん</h3><p>着地した惑星の説明が見られます。</p>
+<h3>セーブデータ</h3><p>セーブデータは3つ。ステージの進み具合・仲間・図鑑・チケットをデータごとに記録します。</p>
+</div></div>
 <div id="binfo" class="scr hide"><div id="bihead"><button id="biback">‹ もどる</button><div id="bititle">ボーナスステージ</div></div><div id="bibody"></div></div>
 <div id="congrats" class="scr hide"><div id="cgbody"></div></div>
 <script>
@@ -162,7 +224,7 @@ function resize(){
   cv.width=Math.round(bw*dpr);cv.height=Math.round(bh*dpr);ctx.setTransform(dpr*s,0,0,dpr*s,0,0);
   cv.style.width=bw+'px';cv.style.height=bh+'px';cv.style.left=l+'px';cv.style.top=t+'px';
   document.documentElement.style.setProperty('--u',(H/100)+'px');
-  for(const id of['ov','hud','logo','title','collect','dex','slots','admin','bonus','binfo','congrats']){const e=document.getElementById(id);
+  for(const id of['ov','hud','logo','title','collect','dex','slots','admin','bonus','binfo','congrats','help']){const e=document.getElementById(id);
     e.style.left=l+'px';e.style.top=t+'px';e.style.right='auto';e.style.bottom='auto';
     e.style.width=W+'px';e.style.transformOrigin='0 0';e.style.transform=s===1?'':'scale('+s+')';
     if(id!=='hud')e.style.height=H+'px'}}
@@ -180,8 +242,8 @@ addEventListener('resize',resize);resize();
      start     : 最初の惑星のワールド座標 {x,y}（既定 {0,0}）
      seed      : 惑星配置の乱数の種
      speed     : スクロール速度の倍率（既定1）
-     zoom      : 表示倍率（既定は難易度から自動）
-     lane      : ジグザグの振れ幅（既定は難易度から自動）
+     zoom      : 表示倍率（既定1＝1面と同じ近い画面）
+     lane/laneH: ジグザグの振れ幅（縦の区間/横の区間。既定は画面の大きさから自動）
      startFrac : 開始惑星を「後ろ側の画面端」から何割の位置に置くか
      corner    : 曲がり角でカメラが描く円弧の半径（既定 280）
      place     : 特別な惑星の指定 {惑星番号:'save'|'ultra'}（乱数は消費しないので、他の惑星の配置は変わらない）
@@ -197,16 +259,16 @@ const ROUTE={
   S:(d,n1,m1,n2,m2,n3,t)=>[{d,n:n1},{d:t,n:m1},{d:OPP[d],n:n2},{d:t,n:m2},{d,n:n3}] // S字：U字を2回つなぐ
 };
 const STAGES=[
-  {name:'直線・上',legs:ROUTE.line('up',8),place:{6:'save'}},
-  {name:'直線・右',legs:ROUTE.line('right',10),place:{6:'save'}},
-  {name:'直線・下',legs:ROUTE.line('down',12),place:{6:'save'}},
-  {name:'直線・左',legs:ROUTE.line('left',14),place:{5:'save',10:'save'}},
-  {name:'U字（上→左→下）',legs:ROUTE.U('up',5,5,5,'left'),place:{5:'save',10:'save'}},
-  {name:'Z字（右→下→右）',legs:ROUTE.Z('right',4,5,5,'down'),place:{5:'save',10:'save'}},
-  {name:'S字（上→左→下→左→上）',legs:ROUTE.S('up',3,5,3,5,3,'left'),place:{4:'ultra',7:'save',11:'ultra',13:'save',17:'ultra'}},
-  {name:'U字（右→上→左）',legs:ROUTE.U('right',6,5,6,'up'),place:{3:'ultra',6:'save',9:'ultra',12:'save',14:'ultra'}},
-  {name:'S字（右→下→左→下→右）',legs:ROUTE.S('right',4,5,4,5,4,'down'),place:{4:'ultra',8:'save',13:'ultra',15:'save',20:'ultra'}},
-  {name:'長い蛇行（下→右→上→右→下→右）',legs:[{d:'down',n:4},{d:'right',n:5},{d:'up',n:4},{d:'right',n:5},{d:'down',n:4},{d:'right',n:4}],place:{5:'ultra',9:'save',14:'ultra',18:'save',22:'ultra'}}
+  {name:'直線・上',legs:ROUTE.line('up',16),place:{8:'save'}},
+  {name:'直線・右',legs:ROUTE.line('right',20),place:{10:'save'}},
+  {name:'直線・下',legs:ROUTE.line('down',24),place:{12:'save'}},
+  {name:'直線・左',legs:ROUTE.line('left',28),place:{14:'save'}},
+  {name:'U字（上→左→下）',legs:ROUTE.U('up',12,6,12,'left'),place:{15:'save'}},
+  {name:'Z字（右→下→右）',legs:ROUTE.Z('right',10,6,12,'down'),place:{14:'save'}},
+  {name:'S字（上→左→下→左→上）',legs:ROUTE.S('up',8,5,9,5,11,'left'),place:{5:'ultra',14:'ultra',19:'save',24:'ultra',33:'ultra'}},
+  {name:'U字（右→上→左）',legs:ROUTE.U('right',14,6,14,'up'),place:{4:'ultra',13:'ultra',17:'save',21:'ultra',30:'ultra'}},
+  {name:'S字（右→下→左→下→右）',legs:ROUTE.S('right',10,6,10,6,12,'down'),place:{4:'ultra',13:'ultra',22:'save',23:'ultra',31:'ultra',41:'ultra'}},
+  {name:'長い蛇行（下→右→上→右→下→右）',legs:[{d:'down',n:10},{d:'right',n:6},{d:'up',n:10},{d:'right',n:6},{d:'down',n:10},{d:'right',n:10}],place:{4:'ultra',13:'ultra',22:'ultra',26:'save',30:'ultra',39:'ultra',48:'ultra'}}
 ];
 const NS=STAGES.length;
 // 画像スロット: 各キーにdata URI(base64)を入れると、その画像が使われます。空なら標準の描画。
@@ -214,7 +276,7 @@ const IMG={};
 const ASSETS={player:'Gplayer.png',bg:'Gbg.png',goal:'Ggoal.png',normal:'Gnormal.png',fast:'Gfast.png',slow:'Gslow.png',pulse:'Gpulse.png',mover:'Gmover.png',boost:'Gboost.png',reverse:'Greverse.png',small:'Gsmall.png',rock:'Grock.png',normal2:'Gnormal2.png',normal3:'Gnormal3.png',bomb:'Gbom.png',ghost:'Gsuru.png',ultra:'Gultra.png',save:'Gsave.png'};
 for(const k in ASSETS)if(ASSETS[k]){const i=new Image();i.onload=()=>{IMG[k]=i};i.src=ASSETS[k]}
 const TY={normal:{},fast:{h:5,g:'≫'},slow:{h:210,g:'…'},pulse:{h:280,g:'〜'},mover:{h:150,g:'↔'},boost:{h:50,g:'⚡'},reverse:{h:320,g:'⇄'},small:{h:190,g:'小'},normal2:{},normal3:{},ghost:{h:260,g:'透'},bomb:{h:0,g:'爆'},ultra:{h:90,g:'⋙'},save:{h:125,g:'保'}};
-function pickNormal(i){const w3=Math.max(0,6-.7*(i-1)),w2=Math.max(1,5-.4*(i-1)),w1=1+(i-1)*.8,x=rng()*(w1+w2+w3);return x<w3?'normal3':x<w3+w2?'normal2':'normal'}
+function pickNormal(i){const w3=Math.max(.6,3-.3*(i-1)),w2=Math.max(1,3-.2*(i-1)),w1=3+(i-1)*.9,x=rng()*(w1+w2+w3);return x<w3?'normal3':x<w3+w2?'normal2':'normal'}
 function pick(i){
   if(i<2||rng()>=.6)return pickNormal(i);
   const a=['fast','slow'];if(i>=3)a.push('pulse','reverse','ghost');if(i>=4)a.push('mover','bomb');if(i>=5)a.push('boost');if(i>=6)a.push('small');
@@ -224,8 +286,18 @@ function pulseScale(t){const u=t%.5;return u<.25?1-.4*u:u<.4?.9+(u-.25)/.15*.2:1
 function spd(q){const t=q.type;return t==='ultra'?2.8:t==='fast'?1.8:t==='slow'?.55:t==='pulse'?1+.6*Math.sin(clock*2.2):1}
 function drawBg(){const im=IMG.bg,th=W*im.naturalHeight/im.naturalWidth,off=((-camY*.15)%th+th)%th,ox=((-camX*.15)%W+W)%W;for(let x=ox-W;x<W;x+=W)for(let y=off-th;y<H;y+=th)ctx.drawImage(im,x,y,W+1,th+1)}
 function isDark(q){return q.hold?q.hold==='dark':Math.floor(clock+q.ph)%2===1}
-function drawPlanet(q){
+const TINT={};   // ふつうの惑星の色違い画像（最初に使うときに作って使い回す）
+function tintOf(q){
   const im=IMG[q.type];
+  if(!im||!(q.type==='normal'||q.type==='normal2'||q.type==='normal3')||!im.complete||!im.naturalWidth||q.h===undefined)return im;
+  const b=Math.floor(((q.h%360)+360)%360/60);if(b===2)return im;       // 6色のうち1つは元の色のまま
+  const key=q.type+b;let c=TINT[key];
+  if(!c){const n=Math.min(256,im.naturalWidth);c=document.createElement('canvas');c.width=c.height=n;const g=c.getContext('2d');g.drawImage(im,0,0,n,n);
+    g.globalCompositeOperation='source-atop';g.fillStyle='hsla('+(b*60+20)+',85%,55%,.32)';g.fillRect(0,0,n,n);TINT[key]=c}
+  return c;
+}
+function drawPlanet(q){
+  const im=tintOf(q);
   if(q.amp){ctx.beginPath();ctx.moveTo(q.bx-q.cx*q.amp,q.by-q.cy*q.amp);ctx.lineTo(q.bx+q.cx*q.amp,q.by+q.cy*q.amp);ctx.strokeStyle='rgba(154,160,189,.25)';ctx.lineWidth=1;ctx.stroke()}
   if(im){ctx.shadowColor='rgba(255,255,255,.95)';ctx.shadowBlur=7;ctx.drawImage(im,q.x-q.r,q.y-q.r,q.r*2,q.r*2);ctx.drawImage(im,q.x-q.r,q.y-q.r,q.r*2,q.r*2);ctx.shadowBlur=0}
   else{
@@ -295,46 +367,46 @@ const rnd=(a,b)=>a+rng()*(b-a);
      画像は GK_01.png 〜 GK_40.png（id の数字と同じ番号）
    ============================================================ */
 const ALLY_DATA=[
-  {id:'a01',name:'ポポ',img:'GK_01.png',stage:1,planet:3},
-  {id:'a02',name:'ルナ',img:'GK_02.png',stage:1,planet:4},
-  {id:'a03',name:'ミルク',img:'GK_03.png',stage:1,planet:5},
-  {id:'a04',name:'ノヴァ',img:'GK_04.png',stage:2,planet:2},
-  {id:'a05',name:'コスモ',img:'GK_05.png',stage:2,planet:5},
-  {id:'a06',name:'ピコ',img:'GK_06.png',stage:2,planet:8},
-  {id:'a07',name:'モチ',img:'GK_07.png',stage:3,planet:3},
-  {id:'a08',name:'ララ',img:'GK_08.png',stage:3,planet:7},
-  {id:'a09',name:'チャム',img:'GK_09.png',stage:3,planet:9},
-  {id:'a10',name:'ナナ',img:'GK_10.png',stage:4,planet:2},
-  {id:'a11',name:'プル',img:'GK_11.png',stage:4,planet:7},
-  {id:'a12',name:'リコ',img:'GK_12.png',stage:4,planet:12},
-  {id:'a13',name:'ペペ',img:'GK_13.png',stage:5,planet:3},
-  {id:'a14',name:'ニコ',img:'GK_14.png',stage:5,planet:7},
-  {id:'a15',name:'ユラ',img:'GK_15.png',stage:5,planet:12},
-  {id:'a16',name:'タマ',img:'GK_16.png',stage:6,planet:2},
-  {id:'a17',name:'ソラ',img:'GK_17.png',stage:6,planet:8},
-  {id:'a18',name:'ヒカリ',img:'GK_18.png',stage:6,planet:12},
-  {id:'a19',name:'クルミ',img:'GK_19.png',stage:7,planet:3},
-  {id:'a20',name:'ロッコ',img:'GK_20.png',stage:7,planet:9},
-  {id:'a21',name:'メルル',img:'GK_21.png',stage:7,planet:16},
-  {id:'a22',name:'フウ',img:'GK_22.png',stage:8,planet:2},
-  {id:'a23',name:'ヌヌ',img:'GK_23.png',stage:8,planet:8},
-  {id:'a24',name:'ケイ',img:'GK_24.png',stage:8,planet:15},
-  {id:'a25',name:'ジジ',img:'GK_25.png',stage:9,planet:3},
-  {id:'a26',name:'ズズ',img:'GK_26.png',stage:9,planet:12},
-  {id:'a27',name:'ボン',img:'GK_27.png',stage:9,planet:19},
-  {id:'a28',name:'ガブ',img:'GK_28.png',stage:10,planet:2},
-  {id:'a29',name:'ダイ',img:'GK_29.png',stage:10,planet:13},
-  {id:'a30',name:'ホシ',img:'GK_30.png',stage:10,planet:24},
-  {id:'a31',name:'モコ',img:'GK_31.png',bonus:3,tier:0},
-  {id:'a32',name:'リン',img:'GK_32.png',bonus:3,tier:1},
-  {id:'a33',name:'ポム',img:'GK_33.png',bonus:3,tier:2},
-  {id:'a34',name:'ルチ',img:'GK_34.png',bonus:6,tier:0},
-  {id:'a35',name:'ミケ',img:'GK_35.png',bonus:6,tier:1},
-  {id:'a36',name:'ハナ',img:'GK_36.png',bonus:6,tier:2},
-  {id:'a37',name:'ソウ',img:'GK_37.png',bonus:9,tier:0},
-  {id:'a38',name:'ネネ',img:'GK_38.png',bonus:9,tier:1},
-  {id:'a39',name:'ラム',img:'GK_39.png',bonus:9,tier:2},
-  {id:'a40',name:'ステラ',img:'GK_40.png',special:true}
+  {id:'a01',name:'ウサホッピー',img:'GK_01.png',stage:1,planet:3},
+  {id:'a02',name:'クマホッピー',img:'GK_02.png',stage:1,planet:12},
+  {id:'a03',name:'ネコホッピー',img:'GK_03.png',stage:1,planet:13},
+  {id:'a04',name:'イヌホッピー',img:'GK_04.png',stage:2,planet:4},
+  {id:'a05',name:'キツネホッピー',img:'GK_05.png',stage:2,planet:14},
+  {id:'a06',name:'タヌホッピー',img:'GK_06.png',stage:2,planet:17},
+  {id:'a07',name:'リスホッピー',img:'GK_07.png',stage:3,planet:5},
+  {id:'a08',name:'シカホッピー',img:'GK_08.png',stage:3,planet:17},
+  {id:'a09',name:'ウシホッピー',img:'GK_09.png',stage:3,planet:20},
+  {id:'a10',name:'ヤギホッピー',img:'GK_10.png',stage:4,planet:6},
+  {id:'a11',name:'ヒツジホッピー',img:'GK_11.png',stage:4,planet:20},
+  {id:'a12',name:'ゾウホッピー',img:'GK_12.png',stage:4,planet:25},
+  {id:'a13',name:'トリホッピー',img:'GK_13.png',stage:5,planet:6},
+  {id:'a14',name:'ペンホッピー',img:'GK_14.png',stage:5,planet:22},
+  {id:'a15',name:'シクマホッピー',img:'GK_15.png',stage:5,planet:26},
+  {id:'a16',name:'クマノホッピー',img:'GK_16.png',stage:6,planet:6},
+  {id:'a17',name:'サメホッピー',img:'GK_17.png',stage:6,planet:20},
+  {id:'a18',name:'タコホッピー',img:'GK_18.png',stage:6,planet:25},
+  {id:'a19',name:'イカホッピー',img:'GK_19.png',stage:7,planet:8},
+  {id:'a20',name:'カニホッピー',img:'GK_20.png',stage:7,planet:27},
+  {id:'a21',name:'カメホッピー',img:'GK_21.png',stage:7,planet:34},
+  {id:'a22',name:'ヘビホッピー',img:'GK_22.png',stage:8,planet:7},
+  {id:'a23',name:'イノホッピー',img:'GK_23.png',stage:8,planet:24},
+  {id:'a24',name:'ウシシホッピー',img:'GK_24.png',stage:8,planet:31},
+  {id:'a25',name:'トナホッピー',img:'GK_25.png',stage:9,planet:9},
+  {id:'a26',name:'ロップホッピー',img:'GK_26.png',stage:9,planet:32},
+  {id:'a27',name:'ラオンホッピー',img:'GK_27.png',stage:9,planet:40},
+  {id:'a28',name:'チタホッピー',img:'GK_28.png',stage:10,planet:10},
+  {id:'a29',name:'ハリネホッピー',img:'GK_29.png',stage:10,planet:37},
+  {id:'a30',name:'フクロホッピー',img:'GK_30.png',stage:10,planet:49},
+  {id:'a31',name:'シプホッピー',img:'GK_31.png',bonus:3,tier:0},
+  {id:'a32',name:'ヒドラホッピー',img:'GK_32.png',bonus:3,tier:1},
+  {id:'a33',name:'アクマホッピー',img:'GK_33.png',bonus:3,tier:2},
+  {id:'a34',name:'パンプホッピー',img:'GK_34.png',bonus:6,tier:0},
+  {id:'a35',name:'ペガサホッピー',img:'GK_35.png',bonus:6,tier:1},
+  {id:'a36',name:'ロボホッピー',img:'GK_36.png',bonus:6,tier:2},
+  {id:'a37',name:'カモメホッピー',img:'GK_37.png',bonus:9,tier:0},
+  {id:'a38',name:'テンシホッピー',img:'GK_38.png',bonus:9,tier:1},
+  {id:'a39',name:'ユニコホッピー',img:'GK_39.png',bonus:9,tier:2},
+  {id:'a40',name:'ドラゴホッピー',img:'GK_40.png',special:true}
 ];
 const Ally=(()=>{
   const has=(o,k)=>Object.prototype.hasOwnProperty.call(o,k);
@@ -647,6 +719,7 @@ $('apw').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();A
 let meteors=[],spawnT=2,scrollV=30,scrolling=false,Z=1,relAng=0,rings=[],parts=[],texts=[],par=1,P={x:0,y:0},pl,items,cur,ang,dir,orbR,state='menu',camY=0,camX=0,tgX=0,tgY=0,cvx=0,cvy=0,scrollDir=DIRS.up,legs=[],curLeg=0,baseV=30,curSv=0,camU=0,camPath=null,camLeg=0,lastPiece=-1,passedLeg=-1,turnToast=null,tan={x:0,y:-1},score,trail=[],ignore,shake=0,energy,got,total,N,stage=1,clock=0,goAct;
 
 function zone(q){return q.r+Math.max(36,56-stage*2)}
+const ROWS2=[1,-1],ROWS3=[0,1,0,-1],MIN_SHOTS=3;   // MIN_SHOTS: 各ジャンプで岩をよけて届く発射角（回転方向ごと・2度刻み）の最低数
 const HSPD=.85,TURN_GAP=60,TURN_RAMP=2.4,FRAC={up:.22,down:.26,left:.30,right:.30};
 const TRAIL_MSG={up:'画面の下に取り残された',down:'画面の上に取り残された',right:'画面の左に取り残された',left:'画面の右に取り残された'};
 /* ---- 画面座標・判定（スクロール方向に応じて前/後ろの端を入れ替える） ---- */
@@ -672,10 +745,14 @@ function behindWhy(s,t){t=t||tan;const k=.5;   // 軸に沿って進む間は後
   if(t.x<-k&&s.x>W-8)return TRAIL_MSG.left;if(t.x>k&&s.x<8)return TRAIL_MSG.right;return null}
 function behind(s){return behindWhy(s)!==null}
 /* ---- 流れ星：進行方向の前の端から、こちらへ向かって飛んでくる ---- */
+// 流れ星：進行方向の前の端から出て、プレイヤーが動き回る範囲（いまの区間の惑星が並ぶ帯）を、後ろ側へほぼまっすぐ通り抜ける。
+// プレイヤーを狙わない（プレイヤーの位置は見ない）。横方向の速さはごくわずかなので、帯から大きく外れていかない
 function spawnMeteor(){
-  const a=scrollDir,sp=130+stage*6+Math.random()*40,lat=(Math.random()-.5)*100;let x,y;
-  if(a.y!==0){x=camX+W/(2*Z)+(Math.random()-.5)*(W/Z-80);y=a.y<0?camY:camY+H/Z}
-  else{y=camY+H/(2*Z)+(Math.random()-.5)*(H/Z-80);x=a.x<0?camX:camX+W/Z}
+  const a=scrollDir,R=Math.random,sp=130+stage*6+R()*40,L=legs[Math.min(camLeg,legs.length-1)],half=L.sx+40;
+  const cross=L.lc+(R()*2-1)*half,lat=(R()-.5)*24;                      // 帯の中のランダムな位置(区間の横方向座標)、横方向の速さは±12
+  let x,y;
+  if(a.y!==0){x=Math.max(camX+24/Z,Math.min(camX+W/Z-24/Z,L.c.x*cross));y=a.y<0?camY:camY+H/Z}
+  else{y=Math.max(camY+24/Z,Math.min(camY+H/Z-24/Z,L.c.y*cross));x=a.x<0?camX:camX+W/Z}
   meteors.push({x,y,vx:-a.x*sp-a.y*lat,vy:-a.y*sp+a.x*lat,w:1,aim:false});
 }
 function pinMeteor(m){const a=scrollDir;if(a.y<0)m.y=camY+10/Z;else if(a.y>0)m.y=camY+H/Z-10/Z;else if(a.x>0)m.x=camX+W/Z-10/Z;else m.x=camX+10/Z}
@@ -734,9 +811,16 @@ function camAdvance(dt){
   if(turnToast){turnToast.life-=dt;if(turnToast.life<=0)turnToast=null}
 }
 // 惑星 k が画面の定位置に来るときのカメラ位置(u)。再スタート用
+// 区間の直線部分で定位置に来ない惑星（曲がり角の円弧の途中に当たるもの）は、画面内で着地でき、後ろ端から離れる位置を軌道上から探す
 function uForPlanet(k){
   const q=pl[k],j=Math.min(q.leg,legs.length-1),f=frame(legs[j],q),c=camPath.pcs[camPath.lineOf[j]];
-  return c.u0+Math.max(0,Math.min(c.len,(f.x-c.x)*c.ax+(f.y-c.y)*c.ay));
+  const ideal=c.u0+Math.max(0,Math.min(c.len,(f.x-c.x)*c.ax+(f.y-c.y)*c.ay));
+  const good=u=>{const m=camAt(u),t={x:m.tx,y:m.ty};if(!landableAt(q.x,q.y,m.x,m.y,t))return false;
+    const S={x:(q.x-m.x)*Z,y:(q.y-m.y)*Z};return ![[-90,0],[90,0],[0,-90],[0,90]].some(o=>behindWhy({x:S.x+o[0],y:S.y+o[1]},t))};
+  if(good(ideal))return ideal;
+  let best=ideal,bd=1e18;
+  for(let u=Math.max(0,ideal-1500);u<=ideal+1500;u+=6){if(!good(u))continue;const d=Math.abs(u-ideal);if(d<bd){bd=d;best=u}}
+  return best;
 }
 function drawTurnToast(){
   if(!turnToast||state!=='play')return;
@@ -746,31 +830,61 @@ function drawTurnToast(){
   ctx.strokeStyle='#8fe3ff';ctx.lineWidth=2;ctx.stroke();ctx.fillStyle='#fff';ctx.fillText(t.t,W/2,y+28);ctx.restore();
 }
 /* ---- ルート生成 ---- */
-function genRoute(S,i,sx,jit,rp){
+function genRoute(S,i,sx,sxH,jit,rp){
   const st=S.start||{x:0,y:0};
   pl=[{type:'normal',bx:st.x,by:st.y,x:st.x,y:st.y,amp:0,ph:0,r:24,h:35,leg:0,cx:0,cy:0}];items=[];legs=[];
   let lp=pl[0],idx=0;
   S.legs.forEach((def,j)=>{
     const a=DIRS[def.d],c={x:-a.y,y:a.x},pa=j?DIRS[S.legs[j-1].d]:null;
     const sd=j?(c.x*pa.x+c.y*pa.y>0?1:-1):1;               // レーン中心を、直前の区間の先側へ置く＝別の位置に新ルート
-    const lc=lp.x*c.x+lp.y*c.y+sd*(sx+(j?TURN_GAP:0));
-    const L={d:def.d,a,c,lc,n:def.n,horiz:a.y===0,f:def.f||S.startFrac||FRAC[def.d]};legs.push(L);
+    const sxl=a.y===0?sxH:sx,lc=lp.x*c.x+lp.y*c.y+sd*(sxl+(j?TURN_GAP:0));   // 横スクロールの区間は画面の縦幅を使って広めに配置
+    const L={d:def.d,a,c,lc,sx:sxl,n:def.n,horiz:a.y===0,f:def.f||S.startFrac||FRAC[def.d]};legs.push(L);
     const Vc=a.y!==0?W/Z:H/Z;
     for(let h=1;h<=def.n;h++){
-      idx++;const p0=pl[idx-1],side=h%2?sd:-sd;
+      idx++;const p0=pl[idx-1],rows=a.y===0?ROWS3:ROWS2,side=rows[(h-1)%rows.length]*sd;   // 縦の区間は左右にジグザグ、横の区間は上・中・下・中…の3段
       const ty=pick(i),amp=ty==='mover'?rnd(30,55):0;
-      const cross=Math.max(lc-Vc/2+50+amp,Math.min(lc+Vc/2-50-amp,lc+side*sx+rnd(-jit,jit)));
+      const cross=Math.max(lc-Vc/2+50+amp,Math.min(lc+Vc/2-50-amp,lc+side*sxl+rnd(-jit,jit)));
       const along=p0.x*a.x+p0.y*a.y+rnd(120,170);
       const x=a.x*along+c.x*cross,y=a.y*along+c.y*cross;
       pl.push({type:ty,bx:x,by:y,x,y,amp,ph:rnd(0,6),leg:j,cx:c.x,cy:c.y,r:(ty==='small'?rnd(10,13):rnd(16,28))*(ty==='normal2'?1.5:ty==='normal3'?2:1),h:TY[ty].h===undefined?rnd(0,360):TY[ty].h});
-      if(rng()<rp){const t=rnd(.4,.6),j2=rnd(-30,30),ix=p0.x+(x-p0.x)*t+c.x*j2,iy=p0.y+(y-p0.y)*t+c.y*j2;
-        items.push({t:'r',bx:ix,by:iy,x:ix,y:iy,r:rnd(24,36),amp:i>=3&&rng()<.4?rnd(30,60):0,ph:rnd(0,6),cx:c.x,cy:c.y})}
+      if(rng()<rp){   // 岩はジャンプの線の脇（片側）に置く：すぐ近くを通るので油断はできないが、道そのものは塞がない
+        const t=rnd(.4,.6),rr=rnd(24,36),hx=x-p0.x,hy=y-p0.y,hl=Math.hypot(hx,hy)||1,off=(rng()<.5?-1:1)*(rr+14+rnd(0,26)),ix=p0.x+hx*t-hy/hl*off,iy=p0.y+hy*t+hx/hl*off;
+        items.push({t:'r',hop:idx-1,bx:ix,by:iy,x:ix,y:iy,r:rr,amp:i>=3&&rng()<.4?rnd(30,60):0,ph:rnd(0,6),cx:c.x,cy:c.y})}
       lp=pl[idx];
     }
   });
   if(S.place)for(const k in S.place){const idx=+k,q=pl[idx],ty=S.place[k];   // 特別な惑星（ゴール/スタートは対象外）
     if(!q||idx<1||idx>=pl.length-1||!TY[ty])continue;
     q.type=ty;q.amp=0;q.x=q.bx;q.y=q.by;q.h=TY[ty].h;q.r=Math.max(20,Math.min(34,q.r))}
+}
+// 惑星 k の周回軌道から、岩に当たらず「すぐ次の惑星(k+1)」の着地範囲の85%以内に届く発射角の数（2度刻み）。
+// 回転方向（時計まわり／反時計まわり）ごとに数えて少ない方を返す。最初の惑星だけは回転方向が決まっているので、その方向だけ数える
+function shotCount(k){
+  const A=pl[k],B=pl[k+1],orb=A.r+30,dAB=Math.hypot(B.x-A.x,B.y-A.y),R2=(dAB+180)*(dAB+180),near=(o)=>(o.x-A.x)*(o.x-A.x)+(o.y-A.y)*(o.y-A.y)<R2;
+  const maxSt=Math.min(65,Math.ceil((dAB+zone(B)+40)/(400/30)));   // 次の惑星に届くまでの範囲だけ調べる
+  const ps=[];for(let i=0;i<pl.length;i++)if(near(pl[i]))ps.push(i);
+  const rs=items.filter(near).map(m=>({x:m.x,y:m.y,rr:(m.r+6+(m.amp?25:0))*(m.r+6+(m.amp?25:0))}));
+  const cnt=[0,0];
+  for(let a=0;a<360;a+=2){const an=a*Math.PI/180;
+    for(let di=0;di<2;di++){
+      const dd=di?-1:1,ux=-Math.sin(an)*dd,uy=Math.cos(an)*dd,vx=ux*400/30,vy=uy*400/30,sx0=A.x+Math.cos(an)*orb,sy0=A.y+Math.sin(an)*orb;let x=sx0,y=sy0;
+      for(let st=1;st<=maxSt;st++){x+=vx;y+=vy;
+        let blocked=false;for(const m of rs){const dx=x-m.x,dy=y-m.y;if(dx*dx+dy*dy<m.rr){blocked=true;break}}if(blocked)break;
+        let hit=-1;for(const i of ps){if(i===k&&st<8)continue;const q=pl[i],dx=x-q.x,dy=y-q.y,z=zone(q);if(dx*dx+dy*dy<z*z){hit=i;break}}
+        if(hit>=0){if(hit===k+1){const q=pl[hit],miss=Math.abs((q.x-sx0)*uy-(q.y-sy0)*ux);if(miss<=zone(q)*.85)cnt[di]++}break}
+      }}}
+  return k===0?cnt[0]:Math.min(cnt[0],cnt[1]);     // 最初の惑星は回転方向が決まっている（1方向）
+}
+// 岩のせいで、次の惑星に届く発射角が「岩が無いときの45%」未満（または最低本数未満）になるジャンプができる岩は外す。
+// その岩が属するジャンプだけでなく、前後のジャンプ（岩が隣の道の脇をふさぐことがある）も見る。
+// これで、岩が着地範囲をほぼ塞いで詰みに近くなるジャンプだけをなくし、岩そのものは残す
+function pruneRocks(){
+  for(let k=0;k<pl.length-1;k++){
+    if(!items.some(m=>m.hop===k))continue;
+    const hops=[k-1,k,k+1].filter(j=>j>=0&&j<pl.length-1);
+    const withR=hops.map(shotCount),all=items;items=items.filter(m=>m.hop!==k);const base=hops.map(shotCount);items=all;
+    if(hops.some((j,n)=>withR[n]<Math.max(MIN_SHOTS,Math.round(base[n]*.45))))items=items.filter(m=>m.hop!==k);
+  }
 }
 function segX(p,q,r,t){const o=(a,b,c)=>(b.x-a.x)*(c.y-a.y)-(b.y-a.y)*(c.x-a.x);return o(p,q,r)*o(p,q,t)<0&&o(r,t,p)*o(r,t,q)<0}
 // 惑星どうしが重ならない／ルートが自分自身と交差しない（＝通過済みの道を戻らない）ことを確認
@@ -786,20 +900,20 @@ function routeOK(){
 function prep(i){
   stage=i;const S=STAGES[i-1];
   N=S.legs.reduce((t,l)=>t+l.n,0);par=Math.ceil(N/2);
-  const Z0=Math.max(.65,1-(i-1)*.035),hz=S.legs.some(l=>l.d==='left'||l.d==='right');
-  Z=S.zoom||(hz?Math.min(Z0,.68):Z0);                                  // 横スクロールを含む面は少し引いて先を見せる
+  Z=S.zoom||1;                                                          // 全ステージ、1面と同じ近い画面（拡大率1.0）
   baseV=(24+4*i)*1.2*(S.speed||1);scrolling=false;meteors=[];spawnT=2.5;
-  const sx=S.lane||Math.min(W/Z0/2-85,W/2-25),jit=25+i*3,rp=i<2?0:Math.min(.12*(i-1),.7);
+  const sx=S.lane||Math.min(W/Z/2-85,W/2-25),sxH=S.laneH||Math.min(H/Z/2-85,200),jit=25+i*3,rp=i<2?0:Math.min(.12*(i-1),.7);
   const base=S.seed||i*104729+57;
-  for(let t=0;t<60;t++){seed=base+t*977;genRoute(S,i,sx,jit,rp);if(routeOK())break}   // 重なる配置になったら種をずらして作り直す
+  for(let t=0;t<60;t++){seed=base+t*977;genRoute(S,i,sx,sxH,jit,rp);if(routeOK())break}   // 重なる配置になったら種をずらして作り直す
   items=items.filter(m=>pl.every(q=>Math.hypot(m.x-q.x,m.y-q.y)>=m.r+(m.amp||0)+q.r+(q.amp||0)+36));
+  pruneRocks();
   pl[N].goal=true;pl[N].type='goal';pl[N].amp=0;pl[N].x=pl[N].bx;pl[N].y=pl[N].by;pl[N].r=30;pl[N].h=48;
   cur=0;ang=Math.PI/2;dir=1;orbR=pl[0].r+30;score=0;trail=[];ignore=0;
   P={x:pl[0].x,y:pl[0].y+orbR,vx:0,vy:0,orbit:true};
   buildCam(S);lastPiece=0;passedLeg=-1;turnToast=null;camSetU(0);   // カメラの軌道を作り、開始位置に置く
   Ally.begin(i);
 }
-const BGM_SRC='ginganoren.mp3'; // HTMLと同じフォルダに置く
+const BGM_SRC='bgm1.mp3'; // HTMLと同じフォルダに置く
 let bgm=null,bgmOn=true;
 if(BGM_SRC){bgm=new Audio(BGM_SRC);bgm.loop=true;bgm.volume=.4;bgm.preload='auto';bgm.addEventListener('canplay',()=>$('snd').classList.remove('hide'));$('snd').onclick=e=>{e.stopPropagation();bgmOn=!bgmOn;$('snd').textContent='♪ BGM '+(bgmOn?'ON':'OFF');bgmOn?bgmPlay():bgm.pause()}}
 function bgmPlay(){if(bgm&&bgmOn)bgm.play().catch(()=>{})}
@@ -808,7 +922,8 @@ function hud(){
   $('score').textContent='ステージ '+stage;
   $('combo').textContent='ジャンプ '+score+'　★3は'+(par+1)+'回以内　進行'+ARW[legs[curLeg].d];
 }
-function omega(){return 2.2+stage*0.12}
+const ROT_MUL=1.1;   // 全惑星の回転速度の倍率
+function omega(){return (2.2+stage*0.12)*ROT_MUL}
 const SEA={},SEOK={};
 for(const f of['SE_jump.mp3','SE_stop.mp3','SE_start.mp3','SE_gole.mp3','SE_out.mp3']){const a=new Audio(f);a.preload='auto';for(const ev of['canplay','canplaythrough','loadedmetadata'])a.addEventListener(ev,()=>{SEOK[f]=true});SEA[f]=a}
 function playSE(f,fb){if(SEOK[f]){try{const a=SEA[f].cloneNode();a.volume=.9;a.play().catch(()=>{})}catch(e){}}else fb()}
@@ -841,28 +956,40 @@ function release(){
   P.vx=-Math.sin(ang)*dir*sp;P.vy=Math.cos(ang)*dir*sp;
   if(pl[cur].type==='ghost')pl[cur].hold=null;P.orbit=false;ignore=0.25;score++;scrolling=true;relAng=Math.atan2(P.vy,P.vx);playSE(score===1?'SE_start.mp3':'SE_jump.mp3',()=>blip(520,.06));vib(8);
 }
+// ★の表示（星の画像 Gstar_on.png / Gstar_off.png があれば画像に、無ければ文字の★☆）
+function starsHtml(n,total,cls){let h='';for(let i=0;i<total;i++)h+='<i class="sg '+(i<n?'on':'off')+(cls?' '+cls:'')+'">'+(i<n?'★':'☆')+'</i>';return h}
+// 数字の表示（ステージ: Gnum_0〜9.png、ボーナス: Gnum_B1〜B3.png があれば画像、無ければ文字）
+function numHtml(n,bonus){if(bonus)return '<i class="nd nb'+n+'">B'+n+'</i>';let h='';for(const c of String(n))h+='<i class="nd d'+c+'">'+c+'</i>';return h}
 function showMenu(){
   state='menu';Restart.clear();$('rsbtn').classList.add('hide');
   $('t').textContent='オービット・ホップ2';
-  $('d').textContent='ゴールの方向はステージごとに違います。最初の1回を飛ぶと画面が自動で流れ始め、ルートの曲がり角では画面が滑らかに向きを変えます。ステージのあいだの「B」はボーナスステージ（前のステージをクリアすると挑戦できます）。取り残される、または画面外へ出ると失敗。流れ星と隕石をよけ、少ないジャンプ回数を目指そう。';
+  $('d').textContent='ステージをえらんでスタート！（くわしくは「あそびかた」）';
   $('go').classList.add('hide');$('menu').classList.add('hide');
   const g=$('grid');g.classList.remove('hide');g.innerHTML='';
   let un=1;for(let i=1;i<=NS;i++)if(prog[i])un=i+1;
   for(let i=1;i<=NS;i++){
     const ok=i<=un,n=prog[i]||0,b=document.createElement('button');
     b.className='st'+(ok?'':' lock');
-    b.innerHTML=i+'<small>'+(ok?'★'.repeat(n)+'☆'.repeat(3-n):'🔒')+'</small>';
+    b.className+=n>0?' cl':'';
+    // 上から：ステージ番号／ホッピー救出数アイコン（未救出は暗転）／クリアマーク。ロック中は暗転＋鍵アイコン
+    const hp=ALLY_DATA.filter(a=>a.stage===i&&!a.bonus&&!a.special).slice(0,3);
+    b.innerHTML='<span class="sn">'+numHtml(i)+'</span>'+(ok
+      ?'<span class="rs">'+hp.map(a=>'<img class="hp '+(Ally.rescued[a.id]?'on':'off')+'" src="'+a.img+'" alt="" decoding="async" onerror="this.style.visibility=\'hidden\'">').join('')+'</span><span class="cr">'+(n>0?'<i class="cm">CLEAR</i>':'')+'</span>'
+      :'<span class="lc"><i class="lk">🔒</i></span>');
     if(ok)b.onclick=e=>{e.stopPropagation();start(i)};
     g.appendChild(b);
     if(BONUS_STAGES[i]){                                  // ステージ i と i+1 のあいだに、ボーナスステージのタイルを置く
       const k=i,open=(prog[i]||0)>0,rec=Slot.bonus[k]||{},n=Object.keys(BONUS_STAGES).indexOf(String(k))+1,bb=document.createElement('button');
-      bb.className='st bn'+(open?'':' lock');
-      bb.innerHTML='B'+n+'<small>'+(open?(rec.clear?'CLEAR':'BONUS'):'🔒')+'</small>';
+      bb.className='st bn'+(open?'':' lock')+(rec.clear?' cl':'');
+      const bh=ALLY_DATA.filter(a=>String(a.bonus)===String(k)).slice(0,3);
+      bb.innerHTML='<span class="sn">'+numHtml(n,true)+'</span>'+(open
+        ?'<span class="rs">'+bh.map(a=>'<img class="hp '+(Ally.rescued[a.id]?'on':'off')+'" src="'+a.img+'" alt="" decoding="async" onerror="this.style.visibility=\'hidden\'">').join('')+'</span><span class="cr">'+(rec.clear?'<i class="cm">CLEAR</i>':'')+'</span>'
+        :'<span class="lc"><i class="lk">🔒</i></span>');
       if(open)bb.onclick=e=>{e.stopPropagation();Bonus.info(k)};
       g.appendChild(bb);
     }
   }
-  $('colbtn').classList.remove('hide');$('dexbtn').classList.remove('hide');$('bonusbtn').classList.remove('hide');LoginBonus.refresh();$('slotbtn').classList.remove('hide');$('slotbtn').textContent='データ'+Slot.cur+'（データ選択へ）';Ally.labels();Dex.labels();
+  $('colbtn').classList.remove('hide');$('dexbtn').classList.remove('hide');$('bonusbtn').classList.remove('hide');LoginBonus.refresh();$('slotbtn').classList.remove('hide');$('helpbtn').classList.remove('hide');$('titlebtn').classList.remove('hide');$('slotbtn').textContent='データ'+Slot.cur+'（データ選択へ）';Ally.labels();Dex.labels();
   $('hud').classList.add('hide');$('ov').classList.remove('hide');
   Congrats.check();
 }
@@ -874,11 +1001,11 @@ function finish(win,msg){
   let st=0;
   if(win){st=score<=par+1?3:score<=Math.max(par+3,Math.round(N*.8))?2:1;if(st>(prog[stage]||0)){prog[stage]=st;save()}}
   $('t').textContent=win?(stage<NS?'ステージ '+stage+' クリア！':'全ステージ制覇！'):'失敗';
-  $('d').innerHTML=win?'★'.repeat(st)+'☆'.repeat(3-st)+'<br>'+score+'回のジャンプ（★3は'+(par+1)+'回以内）'+(st<3?'<br>惑星を飛ばして進めると回数を減らせます':'')+allyHtml:msg+'<br>配置は毎回同じ。覚えて再挑戦！'+allyHtml;
+  $('d').innerHTML=win?starsHtml(st,3,'lg')+'<br>'+score+'回のジャンプ（★3は'+(par+1)+'回以内）'+(st<3?'<br>惑星を飛ばして進めると回数を減らせます':'')+allyHtml:msg+'<br>配置は毎回同じ。覚えて再挑戦！'+allyHtml;
   $('go').textContent=win?(stage<NS?'次のステージ':'ステージ選択'):'リトライ';
   goAct=win?(stage<NS?()=>start(stage+1):showMenu):()=>start(stage);
   Restart.showButton(!win);
-  $('grid').classList.add('hide');$('colbtn').classList.add('hide');$('dexbtn').classList.add('hide');$('slotbtn').classList.add('hide');$('bonusbtn').classList.add('hide');$('go').classList.remove('hide');$('menu').classList.remove('hide');
+  $('grid').classList.add('hide');$('colbtn').classList.add('hide');$('dexbtn').classList.add('hide');$('slotbtn').classList.add('hide');$('bonusbtn').classList.add('hide');$('helpbtn').classList.add('hide');$('titlebtn').classList.add('hide');$('go').classList.remove('hide');$('menu').classList.remove('hide');
   $('ov').classList.remove('hide');
 }
 $('go').addEventListener('click',e=>{e.stopPropagation();goAct()});
@@ -1064,7 +1191,7 @@ const Bonus=(()=>{
           return '<div class="rw'+(own?' ok':'')+'"><span>'+th[i]+'点</span><b>'+(own?a.name:'？？？')+'</b><small'+(now?' class="nw"':'')+'>'+(now?'NEW! 仲間になった':own?'獲得済み':'')+'</small></div>'}).join('')+'</div>'
         +B.rankHtml(B.st,hi)+'<small>通常ステージのクリア記録には影響しません</small>';
       $('go').textContent='もう一度あそぶ';goAct=()=>Bonus.start(B.st);
-      $('grid').classList.add('hide');$('colbtn').classList.add('hide');$('dexbtn').classList.add('hide');$('slotbtn').classList.add('hide');$('bonusbtn').classList.add('hide');$('rsbtn').classList.add('hide');
+      $('grid').classList.add('hide');$('colbtn').classList.add('hide');$('dexbtn').classList.add('hide');$('slotbtn').classList.add('hide');$('bonusbtn').classList.add('hide');$('helpbtn').classList.add('hide');$('titlebtn').classList.add('hide');$('rsbtn').classList.add('hide');
       $('go').classList.remove('hide');$('menu').classList.remove('hide');$('ov').classList.remove('hide');$('hud').classList.add('hide');
       if(B.win)playSE('SE_gole.mp3',()=>blip(784,.2));else blip(200,.25);vib(B.win?[20,40,20]:50)},
     drawWorld(){
@@ -1115,7 +1242,21 @@ const Congrats=(()=>{
   return C;
 })();
 $('biback').addEventListener('click',e=>{e.stopPropagation();$('binfo').classList.add('hide')});
+$('helpbtn').addEventListener('click',e=>{e.stopPropagation();$('hbody').scrollTop=0;$('help').classList.remove('hide')});
+$('hback').addEventListener('click',e=>{e.stopPropagation();$('help').classList.add('hide')});
+// ステージ選択からタイトル画面へ戻る
+function goTitle(){
+  Restart.clear();$('ov').classList.add('hide');$('hud').classList.add('hide');$('help').classList.add('hide');$('title').classList.remove('hide');state='title';
+  try{if(bgm)bgm.pause();TBGM.currentTime=0;TBGM.play().catch(()=>{})}catch(e){}
+}
+$('titlebtn').addEventListener('click',e=>{e.stopPropagation();goTitle()});
 
+/* ============================================================
+   メニュー画面の画像（すべて任意。ファイルが無ければ今のデザインのまま）
+   読み込めた画像だけ <html> に im-○○ クラスと CSS変数 --im-○○ を付けて、CSS側で差し替える
+   ============================================================ */
+const MENU_ASSETS={menubg:'Gmenu_bg.png',panel:'Gpanel.png',bn1:'Gnum_B1.png',bn2:'Gnum_B2.png',bn3:'Gnum_B3.png',num0:'Gnum_0.png',num1:'Gnum_1.png',num2:'Gnum_2.png',num3:'Gnum_3.png',num4:'Gnum_4.png',num5:'Gnum_5.png',num6:'Gnum_6.png',num7:'Gnum_7.png',num8:'Gnum_8.png',num9:'Gnum_9.png',tile:'Gtile.png',bonus:'Gbonus.png',staron:'Gstar_on.png',staroff:'Gstar_off.png',lock:'Glock.png',clearmark:'Gclear.png'};
+for(const k in MENU_ASSETS){const im=new Image();im.onload=()=>{document.documentElement.classList.add('im-'+k);document.documentElement.style.setProperty('--im-'+k,'url('+MENU_ASSETS[k]+')')};im.src=MENU_ASSETS[k]}
 let last=performance.now();
 function loop(now){
   const dt=Math.min((now-last)/1000,0.033);last=now;
@@ -1134,7 +1275,7 @@ function update(dt){
       spawnMeteor();
     }
     for(const m of meteors){
-      if(m.w>0){m.w-=dt;pinMeteor(m);if(m.aim){const t=Math.max(.3,(P.y-m.y)/m.vy);m.vx=Math.max(-220,Math.min(220,(P.x-m.x)/t))}}
+      if(m.w>0){m.w-=dt;pinMeteor(m);if(m.aim){}}
       else{m.x+=m.vx*dt;m.y+=m.vy*dt;if(Math.hypot(P.x-m.x,P.y-m.y)<13)finish(false,'流れ星に衝突')}
     }
     meteors=meteors.filter(keepMeteor);
@@ -1181,6 +1322,16 @@ function update(dt){
   hud();
   if(shake>0)shake-=dt;
 }
+// 遠景：ゆっくり動く、淡くやわらかい大きな光の玉（惑星とは区別できる淡さ）
+function drawDecor(){
+  const FW=W*1.5,FH=H*1.5;
+  for(let k=0;k<9;k++){
+    const px=((k*97.13+13)%1)*FW,py=((k*61.7+29)%1)*FH,r=52+((k*37)%62);
+    const x=(((px-camX*.22)%FW)+FW)%FW-FW*.15,y=(((py-camY*.22)%FH)+FH)%FH-FH*.15,hue=(k*47+200)%360;
+    const g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,'hsla('+hue+',65%,55%,.15)');g.addColorStop(1,'hsla('+hue+',65%,55%,0)');
+    ctx.fillStyle=g;ctx.fillRect(x-r,y-r,r*2,r*2);
+  }
+}
 function draw(){
   const g=ctx.createLinearGradient(0,0,0,H);
   g.addColorStop(0,'#141a3d');g.addColorStop(1,'#0a0c1a');
@@ -1192,6 +1343,7 @@ function draw(){
     const sy=(((i*91.3)-camY*k)%H+H)%H;
     ctx.fillRect(sx,sy,1.5,1.5);
   }
+  drawDecor();
   ctx.save();
   const sh=shake>0?(Math.random()-.5)*10:0;
   ctx.translate(sh,0);ctx.scale(Z,Z);ctx.translate(-camX,-camY);

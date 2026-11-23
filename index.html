@@ -196,7 +196,7 @@ canvas{position:fixed;top:0;display:block;box-shadow:0 0 40px rgba(0,0,0,.6)}
 <canvas id="c"></canvas>
 <div id="hud" class="hide"><button id="bkbtn" class="hide">‹ もどる</button><div id="dir" class="hide"><img id="dimg" src="Ghoukou.png" alt="" onerror="this.replaceWith(Object.assign(document.createElement('span'),{id:'dimg',textContent:'↑'}))"><span>にすすむ</span></div><div id="score"></div><div id="combo"></div></div>
 <div id="logo" class="scr"><img id="lg" src="Glogo.png" alt="" style="visibility:hidden;width:100%;max-height:50%;object-fit:contain" onload="this.style.visibility='visible'" onerror="this.remove();document.getElementById('lgt').classList.remove('hide')"><div id="lgt" class="hide">ORBIT HOP</div><div id="tap" class="hide">タップして進む</div></div>
-<div id="title" class="scr hide"><div id="ver">ver109</div><img id="ti" src="Gtitle.png" alt="" onload="this.style.visibility='visible'" onerror="this.remove();document.getElementById('tit').classList.remove('hide')"><button id="lockbtn" aria-label="管理者"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10" rx="2.2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/><circle cx="12" cy="15.5" r="1.2" fill="currentColor"/></svg></button><div id="titw"><div id="tit" class="hide"><h1>オービット・ホップ2</h1><p>惑星をわたって、ゴールをめざせ</p></div></div><button id="startbtn">スタート</button></div>
+<div id="title" class="scr hide"><div id="ver">ver110</div><img id="ti" src="Gtitle.png" alt="" onload="this.style.visibility='visible'" onerror="this.remove();document.getElementById('tit').classList.remove('hide')"><button id="lockbtn" aria-label="管理者"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10" rx="2.2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/><circle cx="12" cy="15.5" r="1.2" fill="currentColor"/></svg></button><div id="titw"><div id="tit" class="hide"><h1>オービット・ホップ2</h1><p>惑星をわたって、ゴールをめざせ</p></div></div><button id="startbtn">スタート</button></div>
 <div id="ov">
   <h1 id="t"></h1>
   <p id="d"></p>
@@ -229,7 +229,7 @@ canvas{position:fixed;top:0;display:block;box-shadow:0 0 40px rgba(0,0,0,.6)}
 <div class="hb"><h3>あそびかた</h3><p>画面をタップすると、いま回っている惑星からまっすぐ飛び出します。次の惑星の近くを通ると着地して、その惑星のまわりを回ります。ゴールの惑星に着地するとステージクリアです。</p></div>
 <div class="hb"><h3>画面の動き</h3><p>最初の1回を飛ぶと、画面が自動で流れ始めます。ルートの曲がり角では、画面がなめらかに向きを変えます（「方向転換！」と表示）。画面の後ろ側に取り残されたり、画面の外へ出ると失敗です。流れ星と隕石にも注意しましょう。</p></div>
 <div class="hb"><h3>仲間</h3><p>惑星にいる仲間に着地すると、その場で仮救出。ステージをクリアすると正式な仲間になります（失敗すると取り消し）。ボーナスステージでも、得点で仲間をゲットできます。「なかまずかん」で確認できます。</p></div>
-<div class="hb"><h3>セーブポイントと再スタート</h3><p>「S」の惑星に着地すると、そこが再スタート地点に記録されます。ゲームオーバーのとき、そのステージで1回だけ無料でそこからやり直せます。2回目からは再スタートチケット1枚が必要です。チケットは「ログインボーナス」で1日3枚もらえます（データごと）。</p></div>
+<div class="hb"><h3>セーブポイントと再スタート</h3><p>「S」の惑星に着地すると、そこが再スタート地点に記録されます。ゲームオーバーのとき、そのステージで1回だけ無料でそこからやり直せます。2回目からは再スタートチケット1枚が必要です。チケットは「ログインボーナス」で1日3枚もらえます（データごと・所持は最大10枚）。</p></div>
 <div class="hb"><h3>ボーナスステージ</h3><p>ステージ選択の「B」。惑星の間や空いた場所に出るターゲットに触れて得点を集めます（場外に出ると −5点）。目標点・＋5点・＋10点でそれぞれ仲間をゲット。ランキングTOP3も記録されます。</p></div>
 <div class="hb"><h3>わくせいずかん</h3><p>着地した惑星の説明が見られます。</p></div>
 <div class="hb"><h3>セーブデータ</h3><p>セーブデータは3つ。ステージの進み具合・仲間・図鑑・チケットをデータごとに記録します。</p></div>
@@ -1062,13 +1062,15 @@ addEventListener('pointerdown',e=>{if(e.target.tagName!=='BUTTON')release()});
    記録先: 選択中のセーブスロット内の tk = {n:所持数, last:最後に受け取った日 'YYYY-MM-DD'}
    ============================================================ */
 const LOGIN_TICKETS=3;   // ログインボーナスで1日にもらえるチケット枚数
+const TICKET_MAX=10;     // チケットの所持上限
 const Ticket=(()=>{
   const pad=n=>String(n).padStart(2,'0');
   const T={now:()=>new Date(),
     today(){const d=T.now();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())},
     count(){return Slot.cur?Slot.tk.n:0},
     canClaim(){return !!Slot.cur&&T.today()>Slot.tk.last},               // 日付が進んだときだけ受け取れる（同じ日・日付を戻した場合は不可）
-    claim(){if(!T.canClaim())return false;Slot.tk.n+=LOGIN_TICKETS;Slot.tk.last=T.today();Slot.save();return true},
+    claim(){if(!T.canClaim()||Slot.tk.n>=TICKET_MAX)return 0;       // 上限いっぱいの時は受け取れない（その日の分は消費しない）
+      const g=Math.min(LOGIN_TICKETS,TICKET_MAX-Slot.tk.n);Slot.tk.n+=g;Slot.tk.last=T.today();Slot.save();return g},   // 実際に増えた枚数を返す
     use(){if(!Slot.cur||Slot.tk.n<1)return false;Slot.tk.n-=1;Slot.save();return true}
   };
   return T;
@@ -1077,12 +1079,14 @@ const LoginBonus=(()=>{
   const U={msg:'',
     refresh(){const c=Ticket.canClaim(),n=Ticket.count(),b=$('bonusbtn');b.className=c?'new':'';
       b.innerHTML='ログインボーナス<small>'+(c?'● 今日の分を受け取れます':'✓ 今日は受け取り済み')+'　チケット '+n+'枚</small>';
-      $('bcount').innerHTML=n+'<small> 枚</small>';
+      $('bcount').innerHTML=n+'<small> 枚（上限'+TICKET_MAX+'枚）</small>';
       $('bstat').textContent=c?'今日の再スタートチケットを受け取れます':'今日の分は受け取り済みです。次は日付が変わってから。';
-      $('bclaim').disabled=!c;$('bclaim').textContent=c?'今日の'+LOGIN_TICKETS+'枚を受け取る':'受け取り済み';$('bmsg').textContent=U.msg},
+      const full=n>=TICKET_MAX;$('bclaim').disabled=!c||full;$('bclaim').textContent=c?(full?'チケットがいっぱいです':'今日の'+LOGIN_TICKETS+'枚を受け取る'):'受け取り済み';$('bmsg').textContent=U.msg},
     open(){U.msg='';U.refresh();$('bonus').classList.remove('hide')},
     close(){$('bonus').classList.add('hide')},
-    claim(){if(Ticket.claim()){U.msg='再スタートチケットを'+LOGIN_TICKETS+'枚獲得しました！';blip(880,.08);setTimeout(()=>blip(1175,.14),90);vib([15,30,15])}else U.msg='今日の分は受け取り済みです';U.refresh()}
+    claim(){const g=Ticket.claim();
+      if(g){U.msg='再スタートチケットを'+g+'枚獲得しました！'+(g<LOGIN_TICKETS?'（上限'+TICKET_MAX+'枚）':'');blip(880,.08);setTimeout(()=>blip(1175,.14),90);vib([15,30,15])}
+      else U.msg=Ticket.canClaim()?'チケットは上限（'+TICKET_MAX+'枚）です。使ってから受け取れます':'今日の分は受け取り済みです';U.refresh()}
   };
   return U;
 })();

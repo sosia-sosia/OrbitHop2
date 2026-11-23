@@ -196,7 +196,7 @@ canvas{position:fixed;top:0;display:block;box-shadow:0 0 40px rgba(0,0,0,.6)}
 <canvas id="c"></canvas>
 <div id="hud" class="hide"><button id="bkbtn" class="hide">‹ もどる</button><div id="dir" class="hide"><img id="dimg" src="Ghoukou.png" alt="" onerror="this.replaceWith(Object.assign(document.createElement('span'),{id:'dimg',textContent:'↑'}))"><span>にすすむ</span></div><div id="score"></div><div id="combo"></div></div>
 <div id="logo" class="scr"><img id="lg" src="Glogo.png" alt="" style="visibility:hidden;width:100%;max-height:50%;object-fit:contain" onload="this.style.visibility='visible'" onerror="this.remove();document.getElementById('lgt').classList.remove('hide')"><div id="lgt" class="hide">ORBIT HOP</div><div id="tap" class="hide">タップして進む</div></div>
-<div id="title" class="scr hide"><div id="ver">ver107</div><img id="ti" src="Gtitle.png" alt="" onload="this.style.visibility='visible'" onerror="this.remove();document.getElementById('tit').classList.remove('hide')"><button id="lockbtn" aria-label="管理者"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10" rx="2.2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/><circle cx="12" cy="15.5" r="1.2" fill="currentColor"/></svg></button><div id="titw"><div id="tit" class="hide"><h1>オービット・ホップ2</h1><p>惑星をわたって、ゴールをめざせ</p></div></div><button id="startbtn">スタート</button></div>
+<div id="title" class="scr hide"><div id="ver">ver109</div><img id="ti" src="Gtitle.png" alt="" onload="this.style.visibility='visible'" onerror="this.remove();document.getElementById('tit').classList.remove('hide')"><button id="lockbtn" aria-label="管理者"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10" rx="2.2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/><circle cx="12" cy="15.5" r="1.2" fill="currentColor"/></svg></button><div id="titw"><div id="tit" class="hide"><h1>オービット・ホップ2</h1><p>惑星をわたって、ゴールをめざせ</p></div></div><button id="startbtn">スタート</button></div>
 <div id="ov">
   <h1 id="t"></h1>
   <p id="d"></p>
@@ -229,7 +229,7 @@ canvas{position:fixed;top:0;display:block;box-shadow:0 0 40px rgba(0,0,0,.6)}
 <div class="hb"><h3>あそびかた</h3><p>画面をタップすると、いま回っている惑星からまっすぐ飛び出します。次の惑星の近くを通ると着地して、その惑星のまわりを回ります。ゴールの惑星に着地するとステージクリアです。</p></div>
 <div class="hb"><h3>画面の動き</h3><p>最初の1回を飛ぶと、画面が自動で流れ始めます。ルートの曲がり角では、画面がなめらかに向きを変えます（「方向転換！」と表示）。画面の後ろ側に取り残されたり、画面の外へ出ると失敗です。流れ星と隕石にも注意しましょう。</p></div>
 <div class="hb"><h3>仲間</h3><p>惑星にいる仲間に着地すると、その場で仮救出。ステージをクリアすると正式な仲間になります（失敗すると取り消し）。ボーナスステージでも、得点で仲間をゲットできます。「なかまずかん」で確認できます。</p></div>
-<div class="hb"><h3>セーブポイントと再スタート</h3><p>「S」の惑星に着地すると、そこが再スタート地点に記録されます。ゲームオーバーのとき、再スタートチケット1枚でそこからやり直せます。チケットは「ログインボーナス」で1日1枚もらえます（データごと）。</p></div>
+<div class="hb"><h3>セーブポイントと再スタート</h3><p>「S」の惑星に着地すると、そこが再スタート地点に記録されます。ゲームオーバーのとき、そのステージで1回だけ無料でそこからやり直せます。2回目からは再スタートチケット1枚が必要です。チケットは「ログインボーナス」で1日3枚もらえます（データごと）。</p></div>
 <div class="hb"><h3>ボーナスステージ</h3><p>ステージ選択の「B」。惑星の間や空いた場所に出るターゲットに触れて得点を集めます（場外に出ると −5点）。目標点・＋5点・＋10点でそれぞれ仲間をゲット。ランキングTOP3も記録されます。</p></div>
 <div class="hb"><h3>わくせいずかん</h3><p>着地した惑星の説明が見られます。</p></div>
 <div class="hb"><h3>セーブデータ</h3><p>セーブデータは3つ。ステージの進み具合・仲間・図鑑・チケットをデータごとに記録します。</p></div>
@@ -618,7 +618,7 @@ const DEX_DATA=[
   {id:'normal', name:'ふつうの惑星',  h:215, desc:'いちばん基本の惑星。大きさは小・中・大の3種類で、大きいほど着地しやすい。'},
   {id:'fast',   name:'高速の惑星',    h:5,   desc:'まわるスピードが速い（約1.8倍）。飛び出すタイミングに注意。'},
   {id:'ultra',  name:'超高速の惑星',  h:90,  desc:'まわるスピードが「高速の惑星」よりさらに速い（約2.8倍）。ねらうのがとてもむずかしい。'},
-  {id:'save',   name:'セーブポイントの惑星', h:125, desc:'着地すると、ここを再スタート地点として記録する。ゲームオーバーのとき、再スタートチケット1枚でここからやり直せる。'},
+  {id:'save',   name:'セーブポイントの惑星', h:125, desc:'着地すると、ここを再スタート地点として記録する。ゲームオーバーのとき、1回だけ無料で、2回目からは再スタートチケット1枚でここからやり直せる。'},
   {id:'slow',   name:'低速の惑星',    h:210, desc:'まわるスピードがゆっくり（約0.55倍）。じっくり狙える。'},
   {id:'pulse',  name:'変速の惑星',    h:280, desc:'まわるスピードが速くなったり遅くなったりする。'},
   {id:'reverse',name:'逆回転の惑星',  h:320, desc:'着地したときに、まわる向きが逆になる。'},
@@ -1061,13 +1061,14 @@ addEventListener('pointerdown',e=>{if(e.target.tagName!=='BUTTON')release()});
    再スタートチケット／ログインボーナス（セーブデータごとに記録）
    記録先: 選択中のセーブスロット内の tk = {n:所持数, last:最後に受け取った日 'YYYY-MM-DD'}
    ============================================================ */
+const LOGIN_TICKETS=3;   // ログインボーナスで1日にもらえるチケット枚数
 const Ticket=(()=>{
   const pad=n=>String(n).padStart(2,'0');
   const T={now:()=>new Date(),
     today(){const d=T.now();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())},
     count(){return Slot.cur?Slot.tk.n:0},
     canClaim(){return !!Slot.cur&&T.today()>Slot.tk.last},               // 日付が進んだときだけ受け取れる（同じ日・日付を戻した場合は不可）
-    claim(){if(!T.canClaim())return false;Slot.tk.n+=1;Slot.tk.last=T.today();Slot.save();return true},
+    claim(){if(!T.canClaim())return false;Slot.tk.n+=LOGIN_TICKETS;Slot.tk.last=T.today();Slot.save();return true},
     use(){if(!Slot.cur||Slot.tk.n<1)return false;Slot.tk.n-=1;Slot.save();return true}
   };
   return T;
@@ -1078,10 +1079,10 @@ const LoginBonus=(()=>{
       b.innerHTML='ログインボーナス<small>'+(c?'● 今日の分を受け取れます':'✓ 今日は受け取り済み')+'　チケット '+n+'枚</small>';
       $('bcount').innerHTML=n+'<small> 枚</small>';
       $('bstat').textContent=c?'今日の再スタートチケットを受け取れます':'今日の分は受け取り済みです。次は日付が変わってから。';
-      $('bclaim').disabled=!c;$('bclaim').textContent=c?'今日の1枚を受け取る':'受け取り済み';$('bmsg').textContent=U.msg},
+      $('bclaim').disabled=!c;$('bclaim').textContent=c?'今日の'+LOGIN_TICKETS+'枚を受け取る':'受け取り済み';$('bmsg').textContent=U.msg},
     open(){U.msg='';U.refresh();$('bonus').classList.remove('hide')},
     close(){$('bonus').classList.add('hide')},
-    claim(){if(Ticket.claim()){U.msg='再スタートチケットを1枚獲得しました！';blip(880,.08);setTimeout(()=>blip(1175,.14),90);vib([15,30,15])}else U.msg='今日の分は受け取り済みです';U.refresh()}
+    claim(){if(Ticket.claim()){U.msg='再スタートチケットを'+LOGIN_TICKETS+'枚獲得しました！';blip(880,.08);setTimeout(()=>blip(1175,.14),90);vib([15,30,15])}else U.msg='今日の分は受け取り済みです';U.refresh()}
   };
   return U;
 })();
@@ -1096,16 +1097,19 @@ LoginBonus.refresh();
    再スタート地点は「プレイ中だけの一時記録」。チケットや進行データとは別にメモリ上だけで持ち、保存しない。
    ============================================================ */
 const Restart=(()=>{
-  const R={point:null,
-    clear(){R.point=null},
+  const R={point:null,free:true,        // free: このステージ挑戦中の「無料の再スタート」が残っているか（1回だけ。2回目からはチケット）
+    clear(){R.point=null;R.free=true},
     onLand(q){if(state!=='play'||q.type!=='save'||cur>=N)return;
       R.point={stage,idx:cur,score,temp:[...Ally.temp]};                  // 最後に着地したセーブポイントで更新（仮救出した仲間も一緒に記録）
       rings.push({x:q.x,y:q.y,r:q.r,life:1});texts.push({t:'セーブ！ ここから再スタートできる',x:q.x,y:q.y-q.r-128,life:2});
       blip(988,.08);setTimeout(()=>blip(1319,.12),80);vib(12)},
     can(){return !!R.point&&R.point.stage===stage&&state==='over'},
     showButton(over){const b=$('rsbtn'),ok=over&&R.can();b.classList.toggle('hide',!ok);
-      if(ok){const n=Ticket.count();b.disabled=n<1;b.textContent=n>0?'チケット1枚で再スタート（所持'+n+'枚）':'再スタートチケットなし（所持0枚）'}},
-    go(){const p=R.point;if(!R.can()||!Ticket.use())return false;       // チケットが無ければ再スタート不可
+      if(ok){const n=Ticket.count();
+        if(R.free){b.disabled=false;b.textContent='無料で再スタート（1回だけ）'}
+        else{b.disabled=n<1;b.textContent=n>0?'2回目：チケット1枚で再スタート（所持'+n+'枚）':'2回目はチケットが必要です（所持0枚）'}}},
+    go(){const p=R.point;if(!R.can())return false;
+      if(R.free)R.free=false;else if(!Ticket.use())return false;          // 1回目は無料、2回目からチケット（無ければ再スタート不可）
       prep(p.stage);                                                       // 同じ配置のステージを作り直し、記録した惑星から再開
       const idx=p.idx;cur=idx;scrolling=false;
       ang=Math.PI/2;dir=1;orbR=pl[idx].r+30;score=p.score;trail=[];ignore=0;

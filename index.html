@@ -205,7 +205,7 @@ canvas{position:fixed;top:0;display:block;box-shadow:0 0 40px rgba(0,0,0,.6)}
 <canvas id="c"></canvas>
 <div id="hud" class="hide"><button id="bkbtn" class="hide">‹ もどる</button><div id="dir" class="hide"><img id="dimg" src="Ghoukou.png" alt="" onerror="this.replaceWith(Object.assign(document.createElement('span'),{id:'dimg',textContent:'↑'}))"><span>にすすむ</span></div><div id="score"></div><div id="combo"></div></div>
 <div id="logo" class="scr"><img id="lg" src="Glogo.png" alt="" style="visibility:hidden;width:100%;max-height:50%;object-fit:contain" onload="this.style.visibility='visible'" onerror="this.remove();document.getElementById('lgt').classList.remove('hide')"><div id="lgt" class="hide">ORBIT HOP</div><div id="tap" class="hide">タップして進む</div></div>
-<div id="title" class="scr hide"><div id="ver">ver113</div><img id="ti" src="Gtitle.png" alt="" onload="this.style.visibility='visible'" onerror="this.remove();document.getElementById('tit').classList.remove('hide')"><button id="lockbtn" aria-label="管理者"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10" rx="2.2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/><circle cx="12" cy="15.5" r="1.2" fill="currentColor"/></svg></button><div id="titw"><div id="tit" class="hide"><h1>オービット・ホップ2</h1><p>惑星をわたって、ゴールをめざせ</p></div></div><button id="startbtn">スタート</button></div>
+<div id="title" class="scr hide"><div id="ver">ver114</div><img id="ti" src="Gtitle.png" alt="" onload="this.style.visibility='visible'" onerror="this.remove();document.getElementById('tit').classList.remove('hide')"><button id="lockbtn" aria-label="管理者"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10" rx="2.2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/><circle cx="12" cy="15.5" r="1.2" fill="currentColor"/></svg></button><div id="titw"><div id="tit" class="hide"><h1>オービット・ホップ2</h1><p>惑星をわたって、ゴールをめざせ</p></div></div><button id="startbtn">スタート</button></div>
 <div id="ov">
   <h1 id="t"></h1>
   <p id="d"></p>
@@ -319,7 +319,9 @@ function pick(i){
 }
 function pulseScale(t){const u=t%.5;return u<.25?1-.4*u:u<.4?.9+(u-.25)/.15*.2:1.1-(u-.4)/.1*.1}
 function spd(q){const t=q.type;return t==='ultra'?2.8:t==='fast'?1.8:t==='slow'?.55:t==='pulse'?1+.6*Math.sin(clock*2.2):1}
-function drawBg(){const im=IMG.bg,th=W*im.naturalHeight/im.naturalWidth,off=((-camY*.15)%th+th)%th,ox=((-camX*.15)%W+W)%W;for(let x=ox-W;x<W;x+=W)for(let y=off-th;y<H;y+=th)ctx.drawImage(im,x,y,W+1,th+1)}
+const BG_ZOOM=1;   // ゲーム中の背景（1枚絵）の拡大率。1=画面いっぱい(はみ出し分は中央を残して切る)、1.2などで更に拡大
+function drawBg(){const im=IMG.bg,k=Math.max(W/im.naturalWidth,H/im.naturalHeight)*BG_ZOOM,dw=im.naturalWidth*k,dh=im.naturalHeight*k;
+  ctx.drawImage(im,(W-dw)/2,(H-dh)/2,dw,dh)}   // 動かない1枚絵を画面全体に拡大表示
 function isDark(q){return q.hold?q.hold==='dark':Math.floor(clock+q.ph)%2===1}
 const PLANET_TINT=false;   // true にすると、ふつうの惑星に色違い（色味）をつける
 const TINT={};   // ふつうの惑星の色違い画像（最初に使うときに作って使い回す）

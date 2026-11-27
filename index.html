@@ -205,7 +205,7 @@ canvas{position:fixed;top:0;display:block;box-shadow:0 0 40px rgba(0,0,0,.6)}
 <canvas id="c"></canvas>
 <div id="hud" class="hide"><button id="bkbtn" class="hide">‹ もどる</button><div id="dir" class="hide"><img id="dimg" src="Ghoukou.png" alt="" onerror="this.replaceWith(Object.assign(document.createElement('span'),{id:'dimg',textContent:'↑'}))"><span>にすすむ</span></div><div id="score"></div><div id="combo"></div></div>
 <div id="logo" class="scr"><img id="lg" src="Glogo.png" alt="" style="visibility:hidden;width:100%;max-height:50%;object-fit:contain" onload="this.style.visibility='visible'" onerror="this.remove();document.getElementById('lgt').classList.remove('hide')"><div id="lgt" class="hide">ORBIT HOP</div><div id="tap" class="hide">タップして進む</div></div>
-<div id="title" class="scr hide"><div id="ver">ver114</div><img id="ti" src="Gtitle.png" alt="" onload="this.style.visibility='visible'" onerror="this.remove();document.getElementById('tit').classList.remove('hide')"><button id="lockbtn" aria-label="管理者"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10" rx="2.2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/><circle cx="12" cy="15.5" r="1.2" fill="currentColor"/></svg></button><div id="titw"><div id="tit" class="hide"><h1>オービット・ホップ2</h1><p>惑星をわたって、ゴールをめざせ</p></div></div><button id="startbtn">スタート</button></div>
+<div id="title" class="scr hide"><div id="ver">ver115</div><img id="ti" src="Gtitle.png" alt="" onload="this.style.visibility='visible'" onerror="this.remove();document.getElementById('tit').classList.remove('hide')"><button id="lockbtn" aria-label="管理者"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10" rx="2.2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/><circle cx="12" cy="15.5" r="1.2" fill="currentColor"/></svg></button><div id="titw"><div id="tit" class="hide"><h1>オービット・ホップ2</h1><p>惑星をわたって、ゴールをめざせ</p></div></div><button id="startbtn">スタート</button></div>
 <div id="ov">
   <h1 id="t"></h1>
   <p id="d"></p>
@@ -239,7 +239,7 @@ canvas{position:fixed;top:0;display:block;box-shadow:0 0 40px rgba(0,0,0,.6)}
 <div class="hb"><h3>画面の動き</h3><p>最初の1回を飛ぶと、画面が自動で流れ始めます。ルートの曲がり角では、画面がなめらかに向きを変えます（「方向転換！」と表示）。画面の後ろ側に取り残されたり、画面の外へ出ると失敗です。流れ星と隕石にも注意しましょう。</p></div>
 <div class="hb"><h3>仲間</h3><p>惑星にいる仲間に着地すると、その場で仮救出。ステージをクリアすると正式な仲間になります（失敗すると取り消し）。ボーナスステージでも、得点で仲間をゲットできます。「なかまずかん」で確認できます。</p></div>
 <div class="hb"><h3>セーブポイントと再スタート</h3><p>「S」の惑星に着地すると、そこが再スタート地点に記録されます。ゲームオーバーのとき、そのステージで1回だけ無料でそこからやり直せます。2回目からは再スタートチケット1枚が必要です。チケットは「ログインボーナス」で1日3枚もらえます（データごと・所持は最大10枚）。</p></div>
-<div class="hb"><h3>ボーナスステージ</h3><p>ステージ選択の「B」。惑星の間や空いた場所に出るターゲットに触れて得点を集めます（場外に出ると −5点）。目標点・＋5点・＋10点でそれぞれ仲間をゲット。ランキングTOP3も記録されます。</p></div>
+<div class="hb"><h3>ボーナスステージ</h3><p>ステージ選択の「B」。惑星の間や空いた場所に出るターゲットに触れて得点を集めます（場外に出ると −5点。0点より下がりません）。目標点・＋2点・＋4点でそれぞれ仲間をゲット。ランキングTOP3も記録されます。</p></div>
 <div class="hb"><h3>わくせいずかん</h3><p>着地した惑星の説明が見られます。</p></div>
 <div class="hb"><h3>セーブデータ</h3><p>セーブデータは3つ。ステージの進み具合・仲間・図鑑・チケットをデータごとに記録します。</p></div>
 </div></div>
@@ -401,7 +401,7 @@ const rnd=(a,b)=>a+rng()*(b-a);
      img    : 画像ファイル（無い/未設定ならプログラム描画の仮キャラ）
      stage  : 配置するステージ番号 (1〜NS)
      planet : 配置する惑星番号（1=スタートの次の惑星。ゴールとスタート惑星は不可）
-     bonus/tier : ボーナスステージの報酬（bonus=ボーナス番号3/6/9、tier=0,1,2 → 目標点 / +5点 / +10点で獲得）
+     bonus/tier : ボーナスステージの報酬（bonus=ボーナス番号3/6/9、tier=0,1,2 → 目標点 / +2点 / +4点で獲得）
      special: 39体すべて救出するとステージ選択画面で獲得できる40体目
      画像は GK_01.png 〜 GK_40.png（id の数字と同じ番号）
    ============================================================ */
@@ -1144,9 +1144,9 @@ $('rsbtn').addEventListener('click',e=>{e.stopPropagation();Restart.go()});
    制限時間・目標点数・出現間隔などは下の設定値で調整できる。通常ステージの進行データ(prog)には一切触れない。
    ============================================================ */
 const BONUS_STAGES={          // キー=ステージ選択で、このステージの次に並ぶボーナス（3なら3と4のあいだ）
-  3:{time:30,goal:10,types:['normal','normal2','normal3','slow','boost','normal2']},   // かんたん：ふつう3種＋低速・加速
-  6:{time:30,goal:12,types:['normal','normal3','slow','boost','pulse','fast']},        // ふつう  ：変速・高速が登場
-  9:{time:30,goal:15,types:['normal2','boost','pulse','fast','ultra','small']}         // むずかしい：超高速・小型が登場
+  3:{time:30,goal:6,types:['normal','normal2','normal3','slow','boost','normal2']},   // かんたん：ふつう3種＋低速・加速
+  6:{time:30,goal:8,types:['normal','normal3','slow','boost','pulse','fast']},        // ふつう  ：変速・高速が登場
+  9:{time:30,goal:10,types:['normal2','boost','pulse','fast','ultra','small']}         // むずかしい：超高速・小型が登場
 };   // types は惑星の配置順（左上・右上・中央左・中央右・左下・右下）
 const BONUS_CFG={
   ready:1.8,                 // 開始前の準備時間(秒)。この間は時間が進まない
@@ -1156,7 +1156,7 @@ const BONUS_CFG={
   radius:{normal:22,normal2:30,normal3:38,small:12},   // 惑星の種類ごとの大きさ
   hues:[215,170,35,290,120,330],                       // ふつうの惑星の色
   outPenalty:5,              // 場外に出たときの減点
-  allyStep:5,                // 仲間の獲得ライン：目標点 / +allyStep点 / +2×allyStep点
+  allyStep:2,                // 仲間の獲得ライン：目標点 / +allyStep点 / +2×allyStep点（B1=6/8/10、B2=8/10/12、B3=10/12/14）
   freeRatio:.5,              // ターゲットを「惑星の間以外の空いた場所」に出す割合
   kinds:[{v:1,r:17,life:3.2,w:50,h:200},{v:2,r:20,life:2.8,w:32,h:130},{v:3,r:23,life:2.4,w:18,h:48}],  // 得点・大きさ・消えるまでの秒数・出やすさ・色
   layout:[[.16,.20],[.84,.20],[.22,.52],[.78,.52],[.16,.88],[.84,.88]],   // 0左上 1右上 2中央左 3中央右 4左下 5右下（画面に対する割合）
@@ -1176,7 +1176,7 @@ const Bonus=(()=>{
       B.t=B.cfg.time;B.score=0;B.ready=BONUS_CFG.ready;B.targets=[];B.spawn=0;B.win=false;
       state='bonus';bgmPlay();$('ov').classList.add('hide');$('ssel').classList.add('hide');$('rsbtn').classList.add('hide');$('hud').classList.remove('hide');B.hud()},
     // --- ごほうび（仲間）とランキング ---
-    thresholds(goal){const st=BONUS_CFG.allyStep;return[goal,goal+st,goal+2*st]},                     // 獲得ライン：決められた点 / +5点 / +10点
+    thresholds(goal){const st=BONUS_CFG.allyStep;return[goal,goal+st,goal+2*st]},                     // 獲得ライン：決められた点 / +2点 / +4点
     allies(k){return ALLY_DATA.filter(a=>a.bonus===k).sort((x,y)=>x.tier-y.tier)},
     rank(k){const r=Slot.bonus[k]&&Slot.bonus[k].rank;return Array.isArray(r)?r.filter(e=>e&&isFinite(+e.s)).map(e=>({s:+e.s,t:+e.t||0})).sort((a,b)=>b.s-a.s||a.t-b.t).slice(0,3):[]},
     addRank(k,score){const rec=Slot.bonus[k]=Slot.bonus[k]||{},e={s:score,t:Date.now()},l=B.rank(k).concat([e]).sort((a,b)=>b.s-a.s||a.t-b.t).slice(0,3);rec.rank=l;return l.indexOf(e)},   // 入った順位(0〜2)、圏外なら-1
@@ -1189,7 +1189,7 @@ const Bonus=(()=>{
       const cfg=BONUS_STAGES[k],n=Object.keys(BONUS_STAGES).indexOf(String(k))+1,th=B.thresholds(cfg.goal),al=B.allies(k),P=$('bibody');
       $('bititle').textContent='ボーナスステージ '+n;P.innerHTML='';
       const E=(tag,cls,html)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(html!==undefined)e.innerHTML=html;return e};
-      P.appendChild(E('div','bil','目標 <b>'+cfg.goal+'点</b> ／ '+cfg.time+'秒　場外に出ると −'+BONUS_CFG.outPenalty+'点'));
+      P.appendChild(E('div','bil','目標 <b>'+cfg.goal+'点</b> ／ '+cfg.time+'秒　場外に出ると −'+BONUS_CFG.outPenalty+'点（0点で止まります）'));
       const rb=E('div','rwb');rb.appendChild(E('div','rkt','仲間のごほうび（得点で獲得）'));
       al.forEach((a,i)=>{const own=!!Ally.rescued[a.id],row=E('div','bir'+(own?' ok':'')),c=document.createElement('canvas');c.width=c.height=88;Ally.paint(c,a,own);row.appendChild(c);
         row.appendChild(E('div','','<div class="bn1">'+th[i]+'点 でゲット</div><div class="bn2">'+(own?a.name:'？？？？')+'</div>'));row.appendChild(E('div','bst',own?'✓ 獲得済み':'未獲得'));rb.appendChild(row)});
@@ -1226,7 +1226,7 @@ const Bonus=(()=>{
           if(d<zone(q)){cur=i;ang=Math.atan2(dy,dx);dir=(dx*P.vy-dy*P.vx)>0?1:-1;orbR=d;P.orbit=true;rings.push({x:q.x,y:q.y,r:q.r,life:1});blip(440+i*30,.05);Dex.touch(q);break}}
         if(!P.orbit&&(P.x<-12||P.x>W+12||P.y<-12||P.y>H+12)){     // 場外へ出たら減点して、直前の惑星に戻る（準備中は減点なし）
           P.orbit=true;ang=Math.PI/2;orbR=pl[cur].r+30;
-          if(B.ready<=0){B.score-=BONUS_CFG.outPenalty;texts.push({t:'場外！ -'+BONUS_CFG.outPenalty,x:pl[cur].x,y:pl[cur].y-pl[cur].r-44,life:1.5});blip(180,.2);vib(40);shake=.25}
+          if(B.ready<=0){const lost=Math.min(BONUS_CFG.outPenalty,B.score);B.score-=lost;texts.push({t:lost>0?'場外！ -'+lost:'場外！',x:pl[cur].x,y:pl[cur].y-pl[cur].r-44,life:1.5});blip(180,.2);vib(40);shake=.25}
           else texts.push({t:'もどった',x:pl[cur].x,y:pl[cur].y-pl[cur].r-40,life:1})}
       }
       trail.push({x:P.x,y:P.y});if(trail.length>26)trail.shift();
@@ -1246,7 +1246,7 @@ const Bonus=(()=>{
       const pv=Slot.bonus[B.st]||{},g=B.cfg.goal;Slot.bonus[B.st]=Object.assign({},pv,{best:Math.max(+pv.best||0,B.score),clear:!!(pv.clear||B.win)});   // ボーナスの記録（通常ステージのprogには触れない）
       const hi=B.win?B.addRank(B.st,B.score):-1;                                       // ランキングはクリア(目標達成)した得点だけ記録
       const th=B.thresholds(g),al=B.allies(B.st);
-      const got=Ally.grant(al.filter(a=>B.score>=th[a.tier]).map(a=>a.id));            // 目標点 / +5点 / +10点 で仲間を獲得
+      const got=Ally.grant(al.filter(a=>B.score>=th[a.tier]).map(a=>a.id));            // 目標点 / +2点 / +4点 で仲間を獲得
       Slot.save();
       $('t').textContent=B.win?'ボーナス成功！':'ボーナス失敗…';
       $('d').classList.remove('hide');$('d').innerHTML='得点 <b style="color:#ffb74a">'+B.score+'</b> / 目標 '+g+'点<br>'+(B.win?'目標達成！':'あと '+(g-B.score)+'点 たりなかった')

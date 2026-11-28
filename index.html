@@ -1151,16 +1151,15 @@ const BONUS_STAGES={          // キー=ステージ選択で、このステー�
 const BONUS_CFG={
   ready:1.8,                 // 開始前の準備時間(秒)。この間は時間が進まない
   spawnEvery:.8,             // ターゲットの出現間隔(秒)
-  maxTargets:3,              // 同時に出る最大数
+  maxTargets:6,              // 同時に出る最大数（6個に達したら止まり、取って6未満になるとまた出現）
   planetR:22,
   radius:{normal:22,normal2:30,normal3:38,small:12},   // 惑星の種類ごとの大きさ
   hues:[215,170,35,290,120,330],                       // ふつうの惑星の色
   outPenalty:5,              // 場外に出たときの減点
   allyStep:2,                // 仲間の獲得ライン：目標点 / +allyStep点 / +2×allyStep点（B1=6/8/10、B2=8/10/12、B3=10/12/14）
-  freeRatio:.5,              // ターゲットを「惑星の間以外の空いた場所」に出す割合
-  kinds:[{v:1,r:17,life:3.2,w:50,h:200},{v:2,r:20,life:2.8,w:32,h:130},{v:3,r:23,life:2.4,w:18,h:48}],  // 得点・大きさ・消えるまでの秒数・出やすさ・色
+  kinds:[{v:1,r:17,w:50,h:200},{v:2,r:20,w:32,h:130},{v:3,r:23,w:18,h:48}],  // 得点・大きさ・出やすさ・色（ターゲットは時間では消えない）
   layout:[[.16,.20],[.84,.20],[.22,.52],[.78,.52],[.16,.88],[.84,.88]],   // 0左上 1右上 2中央左 3中央右 4左下 5右下（画面に対する割合）
-  edges:[[0,1],[4,5],[0,2],[2,4],[1,3],[3,5],[2,3]],                       // ターゲットが出てよい「惑星と惑星の間」
+  edges:[[0,1],[0,2],[0,3],[0,4],[0,5],[1,2],[1,3],[1,4],[1,5],[2,3],[2,4],[2,5],[3,4],[3,5],[4,5]],   // ターゲットが出てよい「惑星と惑星の間」（縦・横・斜めの全組み合わせ）
   startPlanet:2
 };
 const Bonus=(()=>{
@@ -1197,19 +1196,16 @@ const Bonus=(()=>{
       const pb=E('button','','あそぶ');pb.id='biplay';pb.onclick=e=>{e.stopPropagation();$('binfo').classList.add('hide');B.start(k)};P.appendChild(pb);
       $('binfo').classList.remove('hide');P.scrollTop=0},
     hud(){$('dir').classList.add('hide');$('bkbtn').classList.remove('hide');$('score').textContent='ボーナス';$('combo').textContent='のこり '+Math.max(0,Math.ceil(B.t))+'秒　得点 '+B.score+' / 目標 '+B.cfg.goal+'点'},
-    // ターゲットを「惑星と惑星の間」(edges) の線分上にだけ出す。惑星の周回軌道とは重ならない位置に限る
+    // ターゲットを「惑星と惑星の間」(edges) の線分上にだけ出す（縦・横・斜め全て）。どの惑星の周回軌道とも重ならない位置に限る
     trySpawn(){
       let x=Math.random()*100,K=BONUS_CFG.kinds[0];for(const k of BONUS_CFG.kinds){if(x<k.w){K=k;break}x-=k.w}
-      const free=Math.random()<BONUS_CFG.freeRatio;                       // 半分ほどは惑星の間以外（空いた場所）に出す
-      for(let tr=0;tr<30;tr++){
-        let tx,ty,kind;
-        if(free){tx=34+Math.random()*(W-68);ty=130+Math.random()*(H-130-34);kind='free';
-          if(pl.some(q=>Math.hypot(q.x-tx,q.y-ty)<q.r+30+K.r+8))continue}     // 惑星の周回軌道には重ねない
-        else{const e=BONUS_CFG.edges[Math.floor(Math.random()*BONUS_CFG.edges.length)],a=pl[e[0]],b=pl[e[1]],L=Math.hypot(b.x-a.x,b.y-a.y);
-          const m=Math.max(a.r,b.r)+30+K.r+8,lo=m/L,hi=1-m/L;if(lo>=hi)continue;
-          const u=lo+Math.random()*(hi-lo);tx=a.x+(b.x-a.x)*u;ty=a.y+(b.y-a.y)*u;kind='edge'}
+      for(let tr=0;tr<80;tr++){
+        const e=BONUS_CFG.edges[Math.floor(Math.random()*BONUS_CFG.edges.length)],a=pl[e[0]],b=pl[e[1]],L=Math.hypot(b.x-a.x,b.y-a.y);
+        const m=Math.max(a.r,b.r)+30+K.r+8,lo=m/L,hi=1-m/L;if(lo>=hi)continue;
+        const u=lo+Math.random()*(hi-lo),tx=a.x+(b.x-a.x)*u,ty=a.y+(b.y-a.y)*u;
+        if(pl.some(q=>Math.hypot(q.x-tx,q.y-ty)<q.r+30+K.r+8))continue;      // 線上に別の惑星があるときはその軌道を避ける
         if(B.targets.some(o=>Math.hypot(o.x-tx,o.y-ty)<o.r+K.r+10))continue;
-        B.targets.push({x:tx,y:ty,v:K.v,r:K.r,h:K.h,life:K.life,max:K.life,done:false,kind});return true}
+        B.targets.push({x:tx,y:ty,v:K.v,r:K.r,h:K.h,done:false,kind:'edge'});return true}
       return false},
     update(dt){
       clock+=dt;
@@ -1233,11 +1229,11 @@ const Bonus=(()=>{
       if(B.ready>0){B.ready-=dt;B.hud();return}
       B.t-=dt;B.spawn-=dt;
       if(B.spawn<=0&&B.targets.length<BONUS_CFG.maxTargets){B.trySpawn();B.spawn=BONUS_CFG.spawnEvery}
-      for(const g of B.targets){g.life-=dt;
+      for(const g of B.targets){
         if(!g.done&&Math.hypot(P.x-g.x,P.y-g.y)<g.r+11){g.done=true;B.score+=g.v;            // 触れたら得点。消えるので同じターゲットでは二重に得点できない
           for(let k=0;k<14;k++){const an=Math.random()*6.28,sp=60+Math.random()*120;parts.push({x:g.x,y:g.y,vx:Math.cos(an)*sp,vy:Math.sin(an)*sp,life:1,h:g.h})}
           texts.push({t:'+'+g.v,x:g.x,y:g.y-g.r-6,life:1});blip(520+g.v*140,.07);vib(8)}}
-      B.targets=B.targets.filter(g=>!g.done&&g.life>0);
+      B.targets=B.targets.filter(g=>!g.done);
       B.hud();
       if(B.t<=0){B.t=0;B.end()}
     },
@@ -1261,8 +1257,8 @@ const Bonus=(()=>{
       if(state!=='bonus'&&state!=='bonusend')return;
       ctx.save();ctx.strokeStyle='rgba(154,160,189,.16)';ctx.lineWidth=1.5;ctx.setLineDash([3,7]);
       for(const e of BONUS_CFG.edges){ctx.beginPath();ctx.moveTo(pl[e[0]].x,pl[e[0]].y);ctx.lineTo(pl[e[1]].x,pl[e[1]].y);ctx.stroke()}ctx.restore();ctx.setLineDash([]);
-      for(const g of B.targets){const a=Math.min(1,g.life/.5),f=g.life/g.max;
-        ctx.save();ctx.globalAlpha=a;ctx.beginPath();ctx.arc(g.x,g.y,g.r,0,7);ctx.fillStyle=`hsla(${g.h},85%,60%,.28)`;ctx.fill();
+      for(const g of B.targets){const f=1;
+        ctx.save();ctx.globalAlpha=1;ctx.beginPath();ctx.arc(g.x,g.y,g.r,0,7);ctx.fillStyle=`hsla(${g.h},85%,60%,.28)`;ctx.fill();
         ctx.beginPath();ctx.arc(g.x,g.y,g.r,-Math.PI/2,-Math.PI/2+6.2832*f);ctx.strokeStyle=`hsl(${g.h},90%,68%)`;ctx.lineWidth=3;ctx.stroke();
         ctx.fillStyle='#fff';ctx.font='900 '+Math.round(g.r*1.1)+'px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(g.v,g.x,g.y+1);ctx.textBaseline='alphabetic';ctx.restore()}
     },
@@ -1271,7 +1267,7 @@ const Bonus=(()=>{
       const g=ctx;g.save();
       const f=Math.max(0,Math.min(1,B.t/B.cfg.time));g.fillStyle='rgba(255,255,255,.12)';g.fillRect(20,100,W-40,6);g.fillStyle=f<.25?'#ff6b6b':'#ffb74a';g.fillRect(20,100,(W-40)*f,6);
       if(state==='bonus'&&B.ready>0){g.fillStyle='rgba(8,10,24,.62)';g.fillRect(0,H*.39,W,H*.25);g.fillStyle='#fff';g.textAlign='center';g.font='900 26px sans-serif';g.fillText('ボーナスステージ！',W/2,H*.45);
-        g.font='700 15px sans-serif';g.fillStyle='#ffe066';g.fillText('目標 '+B.cfg.goal+'点 ／ '+B.cfg.time+'秒',W/2,H*.495);g.fillStyle='#cfd3ea';g.font='700 13px sans-serif';g.fillText('惑星の間にも、空いた場所にもターゲットが出るよ',W/2,H*.53);
+        g.font='700 15px sans-serif';g.fillStyle='#ffe066';g.fillText('目標 '+B.cfg.goal+'点 ／ '+B.cfg.time+'秒',W/2,H*.495);g.fillStyle='#cfd3ea';g.font='700 13px sans-serif';g.fillText('ポイントは惑星の間に、6個まで同時に出るよ',W/2,H*.53);
         g.fillStyle='#ff8a8a';g.font='900 14px sans-serif';g.fillText('場外に出ると −'+BONUS_CFG.outPenalty+'点',W/2,H*.565)}
       g.restore()}
   };
